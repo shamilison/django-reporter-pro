@@ -1,1 +1,1 @@
-# django-reporter-pro
+# Django Reporter Pro
