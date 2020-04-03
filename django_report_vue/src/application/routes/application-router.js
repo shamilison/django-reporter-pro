@@ -1,14 +1,21 @@
 import VueRouter from "vue-router";
-import ApplicationBase from '@/application/views/ApplicationBase.vue';
+import BuildReport from "@/application/views/report/BuildReport";
+import ApplicationBase from "@/application/views/ApplicationBase";
 
 let applicationPages = {
     path: "/",
     name: "ApplicationBase",
     component: ApplicationBase,
+    redirect: '/build-report',
     children: [
+        {
+            path: "/build-report",
+            name: "BuildReport",
+            component: BuildReport,
+            meta: {},
+        },
     ],
-    meta: {
-    },
+    meta: {},
 };
 
 const routes = [
@@ -17,7 +24,6 @@ const routes = [
 
 let router = new VueRouter({
     routes: routes,
-    // mode: 'history',
     saveScrollPosition: true,
     history: true,
     linkExactActiveClass: "nav-item active",

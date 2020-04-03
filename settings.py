@@ -139,11 +139,15 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+APPLICATION_DIR = os.path.join(BASE_DIR, 'django_report_vue')
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(APPLICATION_DIR, 'dist'),
+)
 
 # VueJS Integration
-APPLICATION_DIR = os.path.join(BASE_DIR, 'django_report_vue')
 WEBPACK_LOADER = {
     'DEFAULT': {
         'CACHE': not DEBUG,
