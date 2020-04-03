@@ -2,7 +2,7 @@ let TABLES = [
     {value: 'survey_backbone:QuestionResponseEntity', text: 'Question Responses'},
     {value: 'survey_reward:RedeemRequest', text: 'Redeem Requests'},
     {value: 'survey_reward:RechargeRequest', text: 'Recharge Requests'},
-]
+];
 
 let TABLE_FIELDS = {
     'survey_backbone:QuestionResponseEntity': {
@@ -33,7 +33,7 @@ let TABLE_FIELDS = {
             },
         ],
     },
-}
+};
 
 
 export {TABLES, TABLE_FIELDS};

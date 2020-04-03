@@ -1,25 +1,35 @@
 <template>
-    <v-container>
-        <v-row>
-            <v-col cols="3" sm="3">
-                <v-overflow-btn
-                        :items="tables" class="my-2" clearable="false" editable
-                        item-value="value" label="Select Table" v-model="report_schema['table']">
-                </v-overflow-btn>
-            </v-col>
-            <v-col cols="3" sm="3">
-                {{report_schema}}
-            </v-col>
-        </v-row>
-    </v-container>
+	<v-row>
+		<v-col cols="4" sm="4">
+			<v-overflow-btn
+					:clearable="true" :items="tables" class="my-2" editable
+					item-value="value" label="Select Table" v-model="report_schema['table']">
+			</v-overflow-btn>
+		</v-col>
+		<v-col cols="4" sm="4">
+			{{report_schema}}
+		</v-col>
+		<v-col cols="12" sm="12">
+			<Dimension></Dimension>
+		</v-col>
+		<v-col cols="12" sm="12">
+			<Refiner></Refiner>
+		</v-col>
+		<v-col cols="12" sm="12">
+			<Measure></Measure>
+		</v-col>
+	</v-row>
 </template>
 
 <script>
-    import {TABLES, TABLE_FIELDS} from "@/application/tests/data/report_builder";
+    import {TABLE_FIELDS, TABLES} from "@/application/tests/data/report_builder";
+    import Dimension from "@/application/views/report/dimensions/Dimension";
+    import Measure from "@/application/views/report/measures/Measure";
+    import Refiner from "@/application/views/report/filters/Refiner";
 
     export default {
         name: 'BuildReport',
-        components: {},
+        components: {Refiner, Measure, Dimension},
         mixins: [],
         data() {
             return {
