@@ -16,8 +16,9 @@
                             </v-tab>
                         </v-tabs>
                         <v-tabs-items v-model="tab">
-                            <v-tab-item :key="item.tab" v-for="item in items">
-                                <v-card flat>
+                            <v-tab-item :key="item.tab" :reverse-transition="false"
+                                        :transition="false" v-for="item in items">
+                                <v-card class="pb-2" flat>
                                     <DimensionList :reportSchema="reportSchema" v-if="item.tab === 'dimensions'"></DimensionList>
                                     <MeasureList :reportSchema="reportSchema" v-else-if="item.tab === 'measures'"></MeasureList>
                                     <FilterList :reportSchema="reportSchema" v-else-if="item.tab === 'filters'"></FilterList>
@@ -56,7 +57,7 @@
                     table: null,
                     dimensions: {},
                     measures: {},
-                    filters: {},
+                    filters: [],
                     fields: {},
                 },
                 tab: null,
@@ -103,7 +104,9 @@
             let measureItem = this.tableFieldMap[this.selectedTable]['measures'][0];
             this.reportSchema['measures'][measureItem.name] = measureItem;
             let filterItem = this.tableFieldMap[this.selectedTable]['measures'][0];
-            this.reportSchema['filters'][filterItem.name] = filterItem;
+            let filterObject = {};
+            filterObject[filterItem.name] = filterItem;
+            this.reportSchema['filters'].push(filterObject);
             ///////////////////////////////////////////////
         },
     };

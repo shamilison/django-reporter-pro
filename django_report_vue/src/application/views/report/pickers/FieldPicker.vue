@@ -1,9 +1,9 @@
 <template>
     <v-toolbar color="white" flat>
-        <v-toolbar-title>{{purpose}} Fields</v-toolbar-title>
-        <v-divider class="mx-4" inset vertical></v-divider>
+        <v-toolbar-title v-if="purpose != null">{{purpose}} Fields</v-toolbar-title>
+        <v-divider class="mx-4" inset v-if="purpose != null" vertical></v-divider>
         <v-spacer></v-spacer>
-        <v-dialog max-width="500px" v-model="dialog">
+        <v-dialog max-width="500px" v-if="onItemSelected!= null" v-model="dialog">
             <template v-slot:activator="{ on }">
                 <v-btn class="mb-2" color="primary" dark v-on="on">Add {{purpose}} Field</v-btn>
             </template>
@@ -76,9 +76,7 @@
             },
             onItemSelected: {
                 type: Function,
-                default: function (field) {
-                    return field;
-                }
+                default: null,
             },
         },
         components: {},

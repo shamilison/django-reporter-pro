@@ -1,10 +1,11 @@
 <template>
-    <v-list>
+    <v-list dense>
         <FieldPicker :fields="reportSchema['fields']" :onItemSelected="onItemSelected"
                      :purpose="'Dimension'">
         </FieldPicker>
         <v-list-item :key="item.name" @click="" v-for="item in fields">
-            <v-list-item-content>
+            <v-list-item-content class="pt-0 pb-0">
+                <v-divider></v-divider>
                 <DimensionField :field="item"></DimensionField>
             </v-list-item-content>
         </v-list-item>
@@ -29,8 +30,6 @@
         mixins: [],
         data() {
             return {
-                singleSelect: true,
-                selected: [],
                 fields: [],
             }
         },

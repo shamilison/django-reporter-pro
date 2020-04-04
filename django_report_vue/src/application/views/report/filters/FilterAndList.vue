@@ -1,12 +1,12 @@
 <template>
     <v-list dense>
         <FieldPicker :fields="reportSchema['fields']" :onItemSelected="onItemSelected"
-                     :purpose="'Measure'">
+                     :purpose="null">
         </FieldPicker>
         <v-list-item :key="item.name" @click="" v-for="item in fields">
             <v-list-item-content class="pt-0 pb-0">
                 <v-divider></v-divider>
-                <MeasureField :field="item"></MeasureField>
+                <FilterField :field="item"></FilterField>
             </v-list-item-content>
         </v-list-item>
     </v-list>
@@ -14,10 +14,10 @@
 
 <script>
     import FieldPicker from "@/application/views/report/pickers/FieldPicker";
-    import MeasureField from "@/application/views/report/measures/MeasureField";
+    import FilterField from "@/application/views/report/filters/FilterField";
 
     export default {
-        name: 'MeasureList',
+        name: 'FilterAndList',
         props: {
             reportSchema: {
                 type: Object,
@@ -25,8 +25,14 @@
                     return {};
                 }
             },
+            filters: {
+                type: Object,
+                default: function () {
+                    return {};
+                }
+            },
         },
-        components: {MeasureField, FieldPicker},
+        components: {FilterField, FieldPicker},
         mixins: [],
         data() {
             return {
@@ -45,8 +51,8 @@
                 }
             },
             onItemSelected(item) {
-                this.reportSchema['measures'][item.name] = item;
-                this.populateListItems(this.reportSchema['measures']);
+                this.filters[item.name] = item;
+                this.populateListItems(this.filters);
             },
             editItem(item) {
             },
@@ -54,7 +60,7 @@
             },
         },
         mounted() {
-            this.populateListItems(this.reportSchema['measures']);
+            this.populateListItems(this.filters);
         }
     };
 </script>
