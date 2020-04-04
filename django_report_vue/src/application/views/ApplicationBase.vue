@@ -1,21 +1,20 @@
 <template>
-    <v-container>
-        <router-view></router-view>
-    </v-container>
+    <v-content>
+        <v-container fluid>
+            <router-view></router-view>
+        </v-container>
+    </v-content>
 </template>
 
 <script>
     export default {
         name: 'ApplicationBase',
-        components: {
-        },
+        components: {},
         mixins: [],
         data() {
-            return {
-            };
+            return {};
         },
-        methods: {
-        },
+        methods: {},
         mounted() {
         }
     };

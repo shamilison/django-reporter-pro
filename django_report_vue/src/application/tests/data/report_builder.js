@@ -8,28 +8,33 @@ let TABLE_FIELDS = {
     'survey_backbone:QuestionResponseEntity': {
         'dimensions': [
             {
-                'verbose_name': 'Accessor',
-                'name': 'accessor',
+                verbose_name: 'Accessor',
+                name: 'accessor',
+                icon: 'mdi-clock',
             },
             {
-                'verbose_name': 'Unique ID',
-                'name': 'uuid',
+                verbose_name: 'Unique ID',
+                name: 'uuid',
+                icon: 'mdi-clock',
             },
         ],
         'measures': [
             {
-                'verbose_name': 'Created At',
-                'name': 'created_at',
+                verbose_name: 'Created At',
+                name: 'created_at',
+                icon: 'mdi-clock',
             },
             {
-                'verbose_name': 'Executed At',
-                'name': 'executed_at',
+                verbose_name: 'Executed At',
+                name: 'executed_at',
+                icon: 'mdi-clock',
             },
         ],
         'relations': [
             {
-                'verbose_name': 'Question',
-                'name': 'question',
+                verbose_name: 'Question',
+                name: 'question',
+                icon: 'mdi-clock',
             },
         ],
     },

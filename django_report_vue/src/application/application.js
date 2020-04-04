@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import UUID from 'vue-uuid';
 import VueRouter from "vue-router";
 import Application from './Application.vue'
 import router from "./routes/application-router";
@@ -8,6 +9,8 @@ import vuetify from './plugins/vuetify';
 Vue.config.productionTip = false;
 
 Vue.use(VueRouter);
+Vue.use(UUID);
+
 
 new Vue({
     vuetify,
