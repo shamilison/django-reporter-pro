@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <v-col class="pa-3 pt-1 pb-2" cols="9">
-            <div class="pt-2 pb-2">{{field.verbose_name}}</div>
+            <div class="pt-2 pb-2">{{field.name}}</div>
         </v-col>
         <v-col class="pa-3 pt-2 pb-1" cols="3">
             <v-icon @click="deleteItem(field)" class="mr-2 ml-2 mt-1 float-right" small>

@@ -4,8 +4,8 @@
             <v-row>
                 <v-col cols="12" sm="12">
                     <v-overflow-btn
-                            :clearable="true" :items="tables" class="my-2" editable
-                            item-value="value" label="Select Table" v-model="selectedTable">
+                            :clearable="true" :items="tables" class="my-2" editable item-text="label"
+                            item-value="label" label="Select Table" v-model="selectedTable">
                     </v-overflow-btn>
                 </v-col>
                 <v-col cols="12" sm="12">
@@ -44,11 +44,12 @@
     import MeasureList from "@/application/views/report/measures/MeasureList";
     import FilterList from "@/application/views/report/filters/FilterList";
     import VueJsonPretty from 'vue-json-pretty'
+    import ModelInfoMixin from "@/application/views/report/enums/ModelInfoMixin";
 
     export default {
         name: 'BuildReport',
         components: {FilterList, MeasureList, DimensionList, VueJsonPretty},
-        mixins: [],
+        mixins: [ModelInfoMixin],
         data() {
             return {
                 tables: [],
@@ -70,17 +71,18 @@
                 uniqueJsonPrettify: this.$uuid.v4(),
             };
         },
-        methods: {},
+        methods: {
+        },
         watch: {
             selectedTable: {
                 immediate: true,
                 handler(newVal, oldVal) {
                     if (newVal !== null && newVal !== undefined) {
                         this.reportSchema['table'] = newVal;
-                        this.reportSchema['fields'] = this.tableFieldMap[newVal];
                     } else {
                         this.reportSchema['table'] = null;
                         this.reportSchema['fields'] = {};
+                        this.tableFieldMap = {};
                     }
                 },
             },
@@ -95,19 +97,19 @@
         mounted() {
             ///////////////////////////////////////////////
             // Supposed to call API for Table information
-            this.tables = Test_model_list;
+            this.tables = this.convertToModelList(Test_model_list);
             // Supposed to call API for Table Field information when a table is selected
-            this.tableFieldMap = Test_model_info;
+            this.tableFieldMap = this.convertToFieldMap(Test_model_info);
+            this.reportSchema['fields'] = this.tableFieldMap;
             // Set preselected value
-            // this.selectedTable = this.tables[0].value;
-            // let dimensionItem = this.tableFieldMap[this.selectedTable]['dimensions'][0];
-            // this.reportSchema['dimensions'][dimensionItem.name] = dimensionItem;
-            // let measureItem = this.tableFieldMap[this.selectedTable]['measures'][0];
-            // this.reportSchema['measures'][measureItem.name] = measureItem;
-            // let filterItem = this.tableFieldMap[this.selectedTable]['measures'][0];
-            // let filterObject = {};
-            // filterObject[filterItem.name] = filterItem;
-            // this.reportSchema['filters'].push(filterObject);
+            let dimensionItem = this.tableFieldMap['dimensions'][0];
+            this.reportSchema['dimensions'][dimensionItem.name] = dimensionItem;
+            let measureItem = this.tableFieldMap['measures'][0];
+            this.reportSchema['measures'][measureItem.name] = measureItem;
+            let filterItem = this.tableFieldMap['measures'][0];
+            let filterObject = {};
+            filterObject[filterItem.name] = filterItem;
+            this.reportSchema['filters'].push(filterObject);
             ///////////////////////////////////////////////
         },
     };

@@ -7,7 +7,7 @@
             <FilterAndList :filters="item" :reportSchema="reportSchema" @click="">
             </FilterAndList>
             <div class="text-center">
-                <v-btn outlined small v-on="on" @click="addItem">
+                <v-btn outlined small @click="addItem">
                     <v-icon left small>mdi-pencil</v-icon>
                     Or
                 </v-btn>

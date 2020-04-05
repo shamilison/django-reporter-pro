@@ -24,7 +24,7 @@
                                 <v-icon v-text="item.icon"></v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
-                                <v-list-item-title v-text="item.verbose_name"></v-list-item-title>
+                                <v-list-item-title v-text="item.name"></v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list-item-group>
@@ -36,7 +36,7 @@
                                 <v-icon v-text="item.icon"></v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
-                                <v-list-item-title v-text="item.verbose_name"></v-list-item-title>
+                                <v-list-item-title v-text="item.name"></v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list-item-group>
@@ -48,7 +48,7 @@
                                 <v-icon v-text="item.icon"></v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
-                                <v-list-item-title v-text="item.verbose_name"></v-list-item-title>
+                                <v-list-item-title v-text="item.name"></v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list-item-group>
