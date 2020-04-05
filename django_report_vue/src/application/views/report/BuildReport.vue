@@ -38,7 +38,8 @@
 </template>
 
 <script>
-    import {TABLE_FIELDS, TABLES} from "@/application/tests/data/report_builder";
+    import Test_model_list from "@/application/tests/data/test_model_list";
+    import Test_model_info from "@/application/tests/data/test_model_info";
     import DimensionList from "@/application/views/report/dimensions/DimensionList";
     import MeasureList from "@/application/views/report/measures/MeasureList";
     import FilterList from "@/application/views/report/filters/FilterList";
@@ -94,19 +95,19 @@
         mounted() {
             ///////////////////////////////////////////////
             // Supposed to call API for Table information
-            this.tables = TABLES;
+            this.tables = Test_model_list;
             // Supposed to call API for Table Field information when a table is selected
-            this.tableFieldMap = TABLE_FIELDS;
+            this.tableFieldMap = Test_model_info;
             // Set preselected value
-            this.selectedTable = this.tables[0].value;
-            let dimensionItem = this.tableFieldMap[this.selectedTable]['dimensions'][0];
-            this.reportSchema['dimensions'][dimensionItem.name] = dimensionItem;
-            let measureItem = this.tableFieldMap[this.selectedTable]['measures'][0];
-            this.reportSchema['measures'][measureItem.name] = measureItem;
-            let filterItem = this.tableFieldMap[this.selectedTable]['measures'][0];
-            let filterObject = {};
-            filterObject[filterItem.name] = filterItem;
-            this.reportSchema['filters'].push(filterObject);
+            // this.selectedTable = this.tables[0].value;
+            // let dimensionItem = this.tableFieldMap[this.selectedTable]['dimensions'][0];
+            // this.reportSchema['dimensions'][dimensionItem.name] = dimensionItem;
+            // let measureItem = this.tableFieldMap[this.selectedTable]['measures'][0];
+            // this.reportSchema['measures'][measureItem.name] = measureItem;
+            // let filterItem = this.tableFieldMap[this.selectedTable]['measures'][0];
+            // let filterObject = {};
+            // filterObject[filterItem.name] = filterItem;
+            // this.reportSchema['filters'].push(filterObject);
             ///////////////////////////////////////////////
         },
     };

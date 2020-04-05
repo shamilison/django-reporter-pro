@@ -7,6 +7,8 @@ from django_reporter_pro.extensions.handlers.json_handler import JSONHandler
 
 
 class ModelJsonHandlerView(APIView):
+    authentication_classes = ()
+    permission_classes = ()
 
     def dispatch(self, request, *args, **kwargs):
         return super(ModelJsonHandlerView, self).dispatch(request, *args, **kwargs)
