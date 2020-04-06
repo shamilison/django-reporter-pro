@@ -1,0 +1,11 @@
+// src/sass/variables.scss
+
+// Globals
+$font-size-root: 12px;
+$line-height-root: 1.2 !default;
+$border-radius-root: 4px !default;
+
+$list-padding: 0 !default;
+
+// Required for modifying core defaults
+@import '~vuetify/src/styles/styles.sass';

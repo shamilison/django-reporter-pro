@@ -1,8 +1,5 @@
 <template>
     <v-list dense>
-        <v-toolbar color="white" flat>
-            <v-toolbar-title>Filter Fields</v-toolbar-title>
-        </v-toolbar>
         <template v-for="item in reportSchema['filters']">
             <FilterAndList :filters="item" :reportSchema="reportSchema" @click="">
             </FilterAndList>

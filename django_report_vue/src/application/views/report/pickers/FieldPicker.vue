@@ -1,11 +1,11 @@
 <template>
-    <v-toolbar color="white" flat>
+    <v-toolbar color="white" flat dense>
         <v-toolbar-title v-if="purpose != null">{{purpose}} Fields</v-toolbar-title>
         <v-divider class="mx-4" inset v-if="purpose != null" vertical></v-divider>
         <v-spacer></v-spacer>
         <v-dialog max-width="500px" v-if="onItemSelected!= null" v-model="dialog">
             <template v-slot:activator="{ on }">
-                <v-btn class="mb-2" color="primary" dark v-on="on">Add {{purpose}} Field</v-btn>
+                <v-btn class="mb-1" color="primary" dark v-on="on" small>Add {{purpose}} Field</v-btn>
             </template>
             <v-card class="mx-auto">
                 <v-toolbar light>
