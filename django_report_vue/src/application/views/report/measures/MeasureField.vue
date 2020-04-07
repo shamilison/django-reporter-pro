@@ -15,7 +15,7 @@
                         Settings
                     </v-btn>
                 </template>
-                <MeasureSetting :closeMenu="closeMenu"></MeasureSetting>
+                <MeasureSetting :closeMenu="closeMenu" :field="field"></MeasureSetting>
             </v-menu>
         </v-col>
     </v-row>

@@ -13,6 +13,11 @@
         name: 'MeasureSetting',
         components: {},
         props: {
+            field: {
+                type: Object,
+                default: function () {
+                }
+            },
             closeMenu: {
                 type: Function,
                 default: function () {
@@ -41,7 +46,18 @@
             }
         },
         computed: {},
-        watch: {}, created() {
+        watch: {
+            label: function (newVal, oldVal) {
+                this.field['_measure_config']['label'] = newVal;
+            },
+            sort: function (newVal, oldVal) {
+                this.field['_measure_config']['sort'] = newVal;
+            },
+            aggregation: function (newVal, oldVal) {
+                this.field['_measure_config']['aggregation'] = newVal;
+            },
+        },
+        created() {
         },
         methods: {
             submit: function () {
@@ -52,6 +68,12 @@
             },
         },
         mounted() {
+            if (this.field['_measure_config'] === undefined) {
+                this.field['_measure_config'] = {};
+                this.field['_measure_config']['label'] = "";
+                this.field['_measure_config']['sort'] = null;
+                this.field['_measure_config']['aggregation'] = null;
+            }
         }
     };
 </script>

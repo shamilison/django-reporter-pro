@@ -20,9 +20,6 @@
                     <v-list-item-group color="primary">
                         <v-list-item :key="i" @click="displaySelected(item)"
                                      v-for="(item, i) in fields['dimensions']">
-                            <v-list-item-icon>
-                                <v-icon v-text="item.icon"></v-icon>
-                            </v-list-item-icon>
                             <v-list-item-content>
                                 <v-list-item-title v-text="item.name"></v-list-item-title>
                             </v-list-item-content>
@@ -32,9 +29,6 @@
                     <v-list-item-group color="primary">
                         <v-list-item :key="i" @click="measureSelected(item)"
                                      v-for="(item, i) in fields['measures']">
-                            <v-list-item-icon>
-                                <v-icon v-text="item.icon"></v-icon>
-                            </v-list-item-icon>
                             <v-list-item-content>
                                 <v-list-item-title v-text="item.name"></v-list-item-title>
                             </v-list-item-content>
@@ -44,9 +38,6 @@
                     <v-list-item-group color="primary">
                         <v-list-item :key="i" @click="relationSelected(item)"
                                      v-for="(item, i) in fields['relations']">
-                            <v-list-item-icon>
-                                <v-icon v-text="item.icon"></v-icon>
-                            </v-list-item-icon>
                             <v-list-item-content>
                                 <v-list-item-title v-text="item.name"></v-list-item-title>
                             </v-list-item-content>

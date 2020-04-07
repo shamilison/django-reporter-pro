@@ -15,7 +15,7 @@
                         Settings
                     </v-btn>
                 </template>
-                <DimensionSetting :closeMenu="closeMenu"></DimensionSetting>
+                <DimensionSetting :closeMenu="closeMenu" :field="field"></DimensionSetting>
             </v-menu>
         </v-col>
     </v-row>

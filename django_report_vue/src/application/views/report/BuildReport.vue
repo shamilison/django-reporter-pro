@@ -1,14 +1,13 @@
 <template>
     <v-row>
-        <v-col cols="8" sm="8">
+        <v-col class="pt-0 pb-0" cols="8" sm="8">
             <v-row>
-                <v-col cols="12" sm="12">
-                    <v-overflow-btn
-                            :clearable="true" :items="tables" class="my-2" editable item-text="label"
-                            item-value="label" label="Select Table" v-model="selectedTable">
-                    </v-overflow-btn>
+                <v-col class="pb-0" cols="12" sm="12">
+                    <v-autocomplete :clearable="true" :items="tables" class="my-2" dense item-text="label" item-value="label"
+                                    label="Select Table" outlined v-model="selectedTable">
+                    </v-autocomplete>
                 </v-col>
-                <v-col cols="12" sm="12">
+                <v-col class="pt-0" cols="12" sm="12">
                     <v-card>
                         <v-tabs background-color="primary" dark v-model="tab">
                             <v-tab :key="item.tab" v-for="item in items">
@@ -71,8 +70,7 @@
                 uniqueJsonPrettify: this.$uuid.v4(),
             };
         },
-        methods: {
-        },
+        methods: {},
         watch: {
             selectedTable: {
                 immediate: true,

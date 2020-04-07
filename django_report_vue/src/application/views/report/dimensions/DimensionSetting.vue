@@ -12,6 +12,11 @@
         name: 'DimensionSetting',
         components: {},
         props: {
+            field: {
+                type: Object,
+                default: function () {
+                }
+            },
             closeMenu: {
                 type: Function,
                 default: function () {
@@ -30,7 +35,15 @@
             }
         },
         computed: {},
-        watch: {}, created() {
+        watch: {
+            label: function (newVal, oldVal) {
+                this.field['_display_config']['label'] = newVal;
+            },
+            sort: function (newVal, oldVal) {
+                this.field['_display_config']['sort'] = newVal;
+            },
+        },
+        created() {
         },
         methods: {
             submit: function () {
@@ -41,6 +54,11 @@
             },
         },
         mounted() {
+            if (this.field['_display_config'] === undefined) {
+                this.field['_display_config'] = {};
+                this.field['_display_config']['label'] = "";
+                this.field['_display_config']['sort'] = null;
+            }
         }
     };
 </script>

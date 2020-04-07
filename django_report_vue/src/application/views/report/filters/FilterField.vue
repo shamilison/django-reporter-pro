@@ -12,7 +12,7 @@
                         Settings
                     </v-btn>
                 </template>
-                <FilterSetting :closeMenu="closeMenu"></FilterSetting>
+                <FilterSetting :closeMenu="closeMenu" :field="field"></FilterSetting>
             </v-menu>
             <v-icon @click="deleteItem(field)" class="mr-2 ml-2 mt-1 float-right" small>
                 mdi-delete
