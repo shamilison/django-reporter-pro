@@ -1,11 +1,30 @@
 // src/sass/variables.scss
 
-// Globals
-$font-size-root: 12px;
-$line-height-root: 1.2 !default;
-$border-radius-root: 4px !default;
+// Vuetify Global
+$font-size-root: 13px;
+$line-height-root: 1.2;
+$border-radius-root: 4px;
 
-$list-padding: 0 !default;
+// VList
+$list-padding: 0;
+
+// VTab
+$tabs-bar-height: 36px;
+
+// VInput
+$input-font-size: 13px;
+$input-max-height: 28px;
+$input-label-height: 16px;
+
+// VLabel
+$label-font-size: 13px;
+
+// VTextField
+$text-field-dense-icon-append-prepend-margin-top: 8px;
+
+// VIcon
+$icon-size: 18px;
+$icon-size-dense: 16px;
 
 // Required for modifying core defaults
-@import '~vuetify/src/styles/styles.sass';
+//@import '~vuetify/src/styles/styles.sass';
