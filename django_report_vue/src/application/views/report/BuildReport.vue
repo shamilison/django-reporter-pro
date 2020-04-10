@@ -1,56 +1,57 @@
 <template>
-    <v-row>
-        <v-col class="pt-0 pb-0" cols="8" sm="8">
-            <v-row>
-                <v-col class="pb-0" cols="12" sm="12">
-                    <v-autocomplete :clearable="true" :items="tables" class="my-2" dense item-text="label"
-                                    label="Select Table" outlined return-object v-model="selectedTable">
-                    </v-autocomplete>
-                </v-col>
-                <v-col class="pt-0" cols="12" sm="12">
-                    <v-card>
-                        <v-tabs background-color="primary" dark v-model="tab">
-                            <v-tab :key="item.tab" v-for="item in items">
-                                {{ item.tab }}
-                            </v-tab>
-                        </v-tabs>
-                        <v-tabs-items v-model="tab">
-                            <v-tab-item :key="item.tab" :reverse-transition="false" :transition="false"
-                                        class="pb-5" v-for="item in items">
-                                <v-card class="pb-2" flat>
-                                    <DimensionList :reportSchema="reportSchema" v-if="item.tab === 'dimensions'"></DimensionList>
-                                    <MeasureList :reportSchema="reportSchema" v-else-if="item.tab === 'measures'"></MeasureList>
-                                    <FilterList :reportSchema="reportSchema" v-else-if="item.tab === 'filters'"></FilterList>
-                                </v-card>
-                            </v-tab-item>
-                        </v-tabs-items>
-                        <v-btn @click="submitReportConfiguration" absolute
-                               class="float-right mt-n5" color="primary" dark fab right small>
-                            <v-icon>mdi-content-save</v-icon>
-                        </v-btn>
-                        <v-btn @click="previewReportConfiguration" absolute
-                               class="float-right mr-12 mt-n5" color="info" dark fab right small>
-                            <v-icon>mdi-eye</v-icon>
-                        </v-btn>
-                    </v-card>
-                </v-col>
-                <v-col class="mt-1" cols="12" sm="12">
-                    <TableRenderer></TableRenderer>
-                </v-col>
-            </v-row>
-        </v-col>
-        <v-col cols="4" sm="4">
-            <VueJsonPretty :data="reportSchema" :deep="4" :highlightMouseoverNode="true" :key="uniqueJsonPrettify"
-                           :showLength="true" :showLine="true" :showSelectController="true">
-            </VueJsonPretty>
-        </v-col>
-    </v-row>
+	<v-row>
+		<v-col class="pt-0 pb-0" cols="8" sm="8">
+			<v-row>
+				<v-col class="pb-0" cols="12" sm="12">
+					<v-autocomplete :clearable="true" :items="tables" class="my-2" dense item-text="label"
+									label="Select Table" outlined return-object v-model="selectedTable">
+					</v-autocomplete>
+				</v-col>
+				<v-col class="pt-0" cols="12" sm="12">
+					<v-card>
+						<v-tabs background-color="primary" dark v-model="tab">
+							<v-tab :key="item.tab" v-for="item in items">
+								{{ item.tab }}
+							</v-tab>
+						</v-tabs>
+						<v-tabs-items v-model="tab">
+							<v-tab-item :key="item.tab" :reverse-transition="false" :transition="false"
+										class="pb-5" v-for="item in items">
+								<v-card class="pb-2" flat>
+									<DimensionList :reportSchema="reportSchema"
+												   v-if="item.tab === 'dimensions'"></DimensionList>
+									<MeasureList :reportSchema="reportSchema"
+												 v-else-if="item.tab === 'measures'"></MeasureList>
+									<FilterList :reportSchema="reportSchema"
+												v-else-if="item.tab === 'filters'"></FilterList>
+								</v-card>
+							</v-tab-item>
+						</v-tabs-items>
+						<v-btn @click="submitReportConfiguration" absolute
+							   class="float-right mt-n5" color="primary" dark fab right small>
+							<v-icon>mdi-content-save</v-icon>
+						</v-btn>
+						<v-btn @click="previewReportConfiguration" absolute
+							   class="float-right mr-12 mt-n5" color="info" dark fab right small>
+							<v-icon>mdi-eye</v-icon>
+						</v-btn>
+					</v-card>
+				</v-col>
+				<v-col class="mt-1" cols="12" sm="12">
+					<TableRenderer></TableRenderer>
+				</v-col>
+			</v-row>
+		</v-col>
+		<v-col cols="4" sm="4">
+			<VueJsonPretty :data="reportSchema" :deep="4" :highlightMouseoverNode="true" :key="uniqueJsonPrettify"
+						   :showLength="true" :showLine="true" :showSelectController="true">
+			</VueJsonPretty>
+		</v-col>
+	</v-row>
 </template>
 
 <script>
     import axios from 'axios';
-    import Test_model_list from "@/application/tests/data/test_model_list";
-    import Test_model_info from "@/application/tests/data/test_model_info";
     import DimensionList from "@/application/views/report/dimensions/DimensionList";
     import MeasureList from "@/application/views/report/measures/MeasureList";
     import FilterList from "@/application/views/report/filters/FilterList";
@@ -198,7 +199,7 @@
         mounted() {
             ///////////////////////////////////////////////
             // // Supposed to call API for Table information
-            this.tables = this.convertToModelList(Test_model_list);
+            // this.tables = this.convertToModelList(Test_model_list);
             // this.selectedTable = this.tables[0];
             // // Supposed to call API for Table Field information when a table is selected
             // this.tableFieldMap = this.convertToFieldMap(Test_model_info);
@@ -213,10 +214,23 @@
             // filterObject[filterItem.name] = filterItem;
             // this.reportSchema['filters'].push(filterObject);
             ///////////////////////////////////////////////
-            if (this.$route.params.contentID > 0) {
-                this.contentID = this.$route.params.contentID;
-                this.getReportConfiguration();
-            }
+            axios.get(
+                '/report-model-info/', {
+                    headers: {}, params: {
+                        all_models: 'yes',
+                    },
+                }
+            ).then(response => {
+                let data = response.data;
+                this.tables = this.convertToModelList(data);
+                if (this.$route.params.contentID > 0) {
+                    this.contentID = this.$route.params.contentID;
+                    this.getReportConfiguration();
+                }
+            }).catch(error => {
+                console.log(error);
+            }).finally(() => {
+            });
         },
     };
 </script>
