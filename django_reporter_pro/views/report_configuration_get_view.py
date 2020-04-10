@@ -5,8 +5,8 @@ from django.http.response import JsonResponse
 from rest_framework.exceptions import APIException
 from rest_framework.views import APIView
 
-from django_reporter_pro.extensions.handlers.json_handler import JSONHandler
-from django_reporter_pro.models import ReportConfiguration
+from django_reporter.django_reporter_pro.extensions.handlers.json_handler import JSONHandler
+from django_reporter.django_reporter_pro.models import ReportConfiguration
 
 
 class ReportConfigurationGETView(APIView):
@@ -20,7 +20,7 @@ class ReportConfigurationGETView(APIView):
         report_config = ReportConfiguration.objects.get(pk=kwargs.get('pk'))
         return JsonResponse(data={
             'table': JSONHandler().to_json(
-                report_config.model, depth=2,
+                report_config.model.model_class(), depth=2,
                 expand=[(
                     '_meta', [
                         'label', 'app_label', 'model_name', 'object_name', 'db_table', 'installed',
