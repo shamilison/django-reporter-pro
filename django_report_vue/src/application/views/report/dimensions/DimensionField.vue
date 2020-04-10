@@ -4,9 +4,6 @@
             <div class="pt-2 pb-2">{{field.name}}</div>
         </v-col>
         <v-col class="pa-3 pt-2 pb-1" cols="3">
-            <v-icon @click="deleteItem(field)" class="mr-2 ml-2 mt-1 float-right" small>
-                mdi-delete
-            </v-icon>
             <v-menu :close-on-click="false" :close-on-content-click="false"
                     bottom offset-y v-model="settingShown">
                 <template v-slot:activator="{ on }">
@@ -17,6 +14,9 @@
                 </template>
                 <DimensionSetting :closeMenu="closeMenu" :field="field"></DimensionSetting>
             </v-menu>
+            <v-icon @click="deleteItem(field)" class="mr-2 ml-2 mt-1 float-right" small>
+                mdi-delete
+            </v-icon>
         </v-col>
     </v-row>
 </template>

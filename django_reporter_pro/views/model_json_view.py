@@ -15,9 +15,7 @@ class ModelJsonHandlerView(APIView):
 
     def get_json(self, request, data, expand=[], *args, **kwargs):
         if not isinstance(data, dict):
-            data = {
-                'results': JSONHandler().to_json(data, depth=2, expand=expand)
-            }
+            data = {'results': JSONHandler().to_json(data, depth=2, expand=expand)}
         return JsonResponse(data)
 
     def post_json(self, request, data, *args, **kwargs):

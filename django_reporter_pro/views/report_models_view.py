@@ -1,8 +1,11 @@
 # coding=utf-8
 # Created by shamilsakib at 7/19/2016
-from django.apps import apps
+import importlib
 
-from django_reporter_pro.views.model_json_info_view import ModelJsonHandlerView
+from django.apps import apps
+from django.conf import settings
+
+from django_reporter_pro.views.model_json_view import ModelJsonHandlerView
 
 
 class ReportModelView(ModelJsonHandlerView):
@@ -10,22 +13,47 @@ class ReportModelView(ModelJsonHandlerView):
     def dispatch(self, request, *args, **kwargs):
         return super(ReportModelView, self).dispatch(request, *args, **kwargs)
 
+    def get_class_by_types(self, module, class_types):
+        response = list()
+        for _class_type in class_types:
+            _module = importlib.import_module('{0}.{1}'.format(module, _class_type['package']))
+            if _class_type['indicator']:
+                _classes = [_cls for _cls in dir(_module) if _cls.endswith(_class_type['indicator'])]
+            else:
+                _classes = [_cls for _cls in dir(_module)]
+            for _class in _classes:
+                response.append(getattr(_module, _class))
+        return response
+
+    def get_class_by_params(self, class_types=[], decorator_name='', modules=None, **kwargs):
+        if not class_types or not modules:
+            return []
+        response = list()
+        for module in modules:
+            try:
+                for _class in self.get_class_by_types(module, class_types):
+                    if hasattr(_class, '_params') and \
+                            _class.__name__ in _class._params.keys() and \
+                            decorator_name in _class._params[_class.__name__].keys():
+                        response.append(_class)
+            except Exception as error:
+                print(error)
+        return response
+
     def get_json(self, request, data=None, expand=[], *args, **kwargs):
         if request.GET.get('all_models', 'no') == 'yes':
-            models = apps.get_models(include_auto_created=True)
+            models = self.get_class_by_params(
+                class_types=[{'package': 'models', 'indicator': None}],
+                decorator_name='enable_as_access', modules=settings.INSTALLED_APPS
+            )
             return super(ReportModelView, self).get_json(
                 request, data=models,
                 expand=[
                     (
                         '_meta', [
-                            'label', 'app_label', 'model_name',
-                            'object_name', 'db_table',
+                            'label', 'app_label', 'model_name', 'object_name', 'db_table',
                             'installed', 'abstract', 'proxy', 'auto_created',
-                            (
-                                'pk', [
-                                    'column', 'verbose_name'
-                                ]
-                            ),
+                            ('pk', ['column', 'verbose_name']),
                         ],
                     ),
                 ],

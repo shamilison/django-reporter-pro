@@ -1,5 +1,5 @@
 <template>
-    <v-list dense>
+    <v-list dense :key="uniqueKey">
         <FieldPicker :fields="reportSchema['fields']" :onItemSelected="onItemSelected"
                      :purpose="'Measure'">
         </FieldPicker>
@@ -31,10 +31,15 @@
         data() {
             return {
                 fields: [],
+                uniqueKey: this.$uuid.v4(),
             }
         },
         computed: {},
-        watch: {}, created() {
+        watch: {
+            'reportSchema.measures': function (newVal) {
+                this.uniqueKey = this.$uuid.v4();
+            }
+        }, created() {
         },
         methods: {
             populateListItems(fields) {

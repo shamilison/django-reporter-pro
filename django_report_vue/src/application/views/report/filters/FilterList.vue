@@ -1,10 +1,10 @@
 <template>
-    <v-list dense>
+    <v-list dense :key="uniqueKey">
         <template v-for="item in reportSchema['filters']">
             <FilterAndList :filters="item" :reportSchema="reportSchema" @click="">
             </FilterAndList>
             <div class="text-center">
-                <v-btn outlined small @click="addItem">
+                <v-btn @click="addItem" outlined small>
                     <v-icon left small>mdi-pencil</v-icon>
                     Or
                 </v-btn>
@@ -32,10 +32,17 @@
         data() {
             return {
                 fields: [],
+                uniqueKey: this.$uuid.v4(),
             }
         },
         computed: {},
-        watch: {}, created() {
+        watch: {
+            'reportSchema.filters': function (newVal) {
+                if (newVal.length === 0)
+                    this.addItem();
+                this.uniqueKey = this.$uuid.v4();
+            }
+        }, created() {
         },
         methods: {
             addItem() {
@@ -43,6 +50,8 @@
             },
         },
         mounted() {
+            if (this.reportSchema['filters'].length === 0)
+                this.addItem();
         }
     };
 </script>
