@@ -75,11 +75,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'urls'
 
-TEMPLATES_DIR = os.path.join(BASE_DIR, 'report_templates')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR, ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -143,15 +142,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 APPLICATION_DIR = os.path.join(BASE_DIR, 'django_report_vue')
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'django_reporter_pro', 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
+    os.path.join(APPLICATION_DIR, 'dist'),
     os.path.join(APPLICATION_DIR, 'dist'),
 )
 
 # VueJS Integration
 WEBPACK_LOADER = {
-    'DEFAULT': {
+    'DJANGO_REPORT_PRO': {
         'CACHE': not DEBUG,
         'BUNDLE_DIR_NAME': '/bundles/',  # must end with slash
         'STATS_FILE': os.path.join(APPLICATION_DIR, 'webpack-application-stats.json'),

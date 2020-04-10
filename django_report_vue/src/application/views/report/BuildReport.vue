@@ -136,7 +136,7 @@
                 }
             },
             getReportConfiguration: function () {
-                let _vm = this;
+                let˚ _vm = this;
                 if (_vm.contentID > 0) {
                     axios.get(
                         this.reportGetURL + this.contentID + '/', {
@@ -161,11 +161,11 @@
                 handler(newVal, oldVal) {
                     this.tableFieldMap = {};
                     this.reportSchema['fields'] = {};
-                    if (oldVal !== null) {
-                        this.reportSchema['dimensions'] = {};
-                        this.reportSchema['measures'] = {};
-                        this.reportSchema['filters'] = [];
-                    }
+                    // if (oldVal !== null) {
+                    //     this.reportSchema['dimensions'] = {};
+                    //     this.reportSchema['measures'] = {};
+                    //     this.reportSchema['filters'] = [];
+                    // }
                     if (newVal !== null && newVal !== undefined) {
                         this.reportSchema['table'] = newVal;
                         axios.get(

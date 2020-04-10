@@ -5,9 +5,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from jsonfield import JSONField
 
-BASE_MODEL = settings.BASE_MODEL
-if not settings.BASE_MODEL:
-    BASE_MODEL = models.Model
+BASE_MODEL = models.Model
+if hasattr(settings, 'BASE_MODEL') and getattr(settings, 'BASE_MODEL'):
+    BASE_MODEL = getattr(settings, 'BASE_MODEL')
 
 
 class ReportConfiguration(BASE_MODEL):

@@ -1,4 +1,4 @@
-{% load render_bundle from webpack_loader %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +8,7 @@
     <title>Django Reporter Pro</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
+    <link rel="stylesheet" href="{% static 'reporter_pro/css/application.d2bf61b1.css' %}">
 </head>
 <body>
 <noscript>
@@ -17,10 +18,8 @@
     </strong>
 </noscript>
 <div id="application">
-    <application></application>
 </div>
-{% render_bundle 'application' %}
 <!-- built files will be auto injected -->
-
+<script type="text/javascript" src="{% static 'reporter_pro/js/application.1ea255ca.js' %}" type="module"></script>
 </body>
 </html>

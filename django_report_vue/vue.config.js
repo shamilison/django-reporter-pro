@@ -7,7 +7,7 @@ function resolve (dir) {
 
 module.exports = {
     publicPath: "http://127.0.0.1:9899/static/",
-    outputDir: 'dist',
+    outputDir: 'dist/reporter_pro',
     assetsDir: '',
     configureWebpack: {
         resolve: {
