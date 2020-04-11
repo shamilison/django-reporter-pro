@@ -1,16 +1,16 @@
 # Created by shamilsakib at 04/10/20
 
-from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from jsonfield import JSONField
 
-BASE_MODEL = models.Model
-if hasattr(settings, 'BASE_MODEL') and getattr(settings, 'BASE_MODEL'):
-    BASE_MODEL = getattr(settings, 'BASE_MODEL')
+
+# BASE_MODEL = models.Model
+# if hasattr(settings, 'BASE_MODEL') and getattr(settings, 'BASE_MODEL'):
+#     BASE_MODEL = getattr(settings, 'BASE_MODEL')
 
 
-class ReportConfiguration(BASE_MODEL):
+class ReportConfiguration(models.Model):
     model = models.ForeignKey(ContentType, default=None, null=True, on_delete=models.SET_NULL, related_name='reports')
     dimensions = JSONField(max_length=8192, default=None, null=True)
     measures = JSONField(max_length=8192, default=None, null=True)

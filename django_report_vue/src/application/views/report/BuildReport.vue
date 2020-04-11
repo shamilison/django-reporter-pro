@@ -69,6 +69,7 @@
                 reportPostURL: '/report-configuration/create',
                 reportPutURL: '/report-configuration/update/',
                 reportGetURL: '/report-configuration/detail/',
+                reportPreviewURL: '/report-configuration-preview/',
                 contentID: 0,
                 tables: [],
                 tableFieldMap: {},
@@ -92,18 +93,17 @@
         methods: {
             previewReportConfiguration: function () {
                 let _vm = this;
-                // axios({
-                //     method: 'post', url:
-                //     _vm.reportPostURL,
-                //     params: {},
-                //     headers: {'Content-Type': 'application/json',},
-                //     data: _vm.reportSchema,
-                // }).then(response => {
-                //     console.log(response);
-                // }).catch(error => {
-                //     console.log(error);
-                // }).finally(() => {
-                // });
+                axios({
+                    method: 'post', url: _vm.reportPreviewURL,
+                    params: {},
+                    headers: {'Content-Type': 'application/json',},
+                    data: _vm.reportSchema,
+                }).then(response => {
+                    console.log(response);
+                }).catch(error => {
+                    console.log(error);
+                }).finally(() => {
+                });
             },
             submitReportConfiguration: function () {
                 let _vm = this;

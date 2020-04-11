@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 
 from django_reporter.django_reporter_pro.views.report_configuration_get_view import ReportConfigurationGETView
 from django_reporter.django_reporter_pro.views.report_configuration_post_view import ReportConfigurationPOSTView
+from django_reporter.django_reporter_pro.views.report_configuration_preview import ReportConfigurationPreView
 from django_reporter.django_reporter_pro.views.report_models_view import ReportModelView
 
 urlpatterns = [
@@ -19,4 +20,6 @@ urlpatterns = [
         name='report_configuration_update'),
     url(r'report-configuration/detail/(?P<pk>(\d{,}))/$', ReportConfigurationGETView.as_view(),
         name='report_configuration_get'),
+    url(r'report-configuration-preview/$', ReportConfigurationPreView.as_view(),
+        name='report_configuration_preview'),
 ]
