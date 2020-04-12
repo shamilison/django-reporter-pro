@@ -1,11 +1,18 @@
 <template>
 	<v-row>
-		<v-col class="pa-3 pt-1 pb-2" cols="9">
+		<v-col class="pa-3 pt-1 pb-2" cols="6">
 			<div class="pt-2 pb-2">
 				<span v-if="field._display_config !== undefined && field._display_config.label !== ''">
 					{{field._display_config.label}} ({{field.key_name}})
 				</span>
 				<span v-else>{{field.key_name}}</span>
+			</div>
+		</v-col>
+		<v-col class="pa-3 pt-1 pb-2" cols="3">
+			<div class="pt-2 pb-2">
+				<span v-if="field._display_config !== undefined && field._display_config.sort !== ''">
+					{{field._display_config.sort}}
+				</span>
 			</div>
 		</v-col>
 		<v-col class="pa-3 pt-2 pb-1" cols="3">

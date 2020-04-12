@@ -1,10 +1,20 @@
 <template>
 	<v-row>
-		<v-col class="pa-3 pt-1 pb-2" cols="9">
+		<v-col class="pa-3 pt-1 pb-2" cols="5">
 			<span v-if="field._measure_config !== undefined && field._measure_config.label !== ''">
 				{{field._measure_config.label}} ({{field.key_name}})
 			</span>
 			<span v-else>{{field.key_name}}</span>
+		</v-col>
+		<v-col class="pa-3 pt-1 pb-2" cols="2">
+			<span v-if="field._measure_config !== undefined && field._measure_config.aggregation !== ''">
+				{{field._measure_config.aggregation}}
+			</span>
+		</v-col>
+		<v-col class="pa-3 pt-1 pb-2" cols="2">
+			<span v-if="field._measure_config !== undefined && field._measure_config.sort !== ''">
+				{{field._measure_config.sort}}
+			</span>
 		</v-col>
 		<v-col class="pa-3 pt-2 pb-1" cols="3">
 			<v-menu :close-on-click="false" :close-on-content-click="false"

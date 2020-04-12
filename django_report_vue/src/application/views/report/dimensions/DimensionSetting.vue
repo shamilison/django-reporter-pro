@@ -1,7 +1,7 @@
 <template>
     <form class="pa-5 pt-5 pb-5 white">
         <v-text-field label="Field Label" v-model="label"></v-text-field>
-        <v-select :items="sortOptions" label="Sort by" v-model="sort"></v-select>
+        <v-select :items="sortOptions" label="Sort by" v-model="sort" clearable></v-select>
         <v-btn @click="submit" class="mr-4 primary">ok</v-btn>
         <v-btn @click="cancel">cancel</v-btn>
     </form>

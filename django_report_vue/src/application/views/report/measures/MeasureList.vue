@@ -3,21 +3,25 @@
 		<FieldPicker :fields="reportSchema['fields']" :model="reportSchema['table']"
 					 :onItemSelected="onItemSelected" :purpose="'Measure'">
 		</FieldPicker>
-		<v-list-item :key="item.key_name" @click="" v-for="item in fields">
-			<v-list-item-content class="pt-0 pb-0">
-				<v-divider></v-divider>
-				<MeasureField :field="item" :deleteField="deleteField"></MeasureField>
-			</v-list-item-content>
-		</v-list-item>
+		<Draggable @end="dragAction(false)" @start="dragAction(true)" group="measure" v-model="fields">
+			<v-list-item :key="item.key_name" @click="" v-for="item in fields">
+				<v-list-item-content class="pt-0 pb-0">
+					<v-divider></v-divider>
+					<MeasureField :deleteField="deleteField" :field="item"></MeasureField>
+				</v-list-item-content>
+			</v-list-item>
+		</Draggable>
 	</v-list>
 </template>
 
 <script>
     import FieldPicker from "@/application/views/report/pickers/FieldPicker";
     import MeasureField from "@/application/views/report/measures/MeasureField";
+    import Draggable from 'vuedraggable'
 
     export default {
         name: 'MeasureList',
+        components: {MeasureField, FieldPicker, Draggable},
         props: {
             reportSchema: {
                 type: Object,
@@ -26,7 +30,6 @@
                 }
             },
         },
-        components: {MeasureField, FieldPicker},
         mixins: [],
         data() {
             return {
@@ -37,12 +40,18 @@
         computed: {},
         watch: {
             'reportSchema.measures': function (newVal) {
-                this.uniqueKey = this.$uuid.v4();
                 this.populateListItems(this.reportSchema['measures']);
+                this.uniqueKey = this.$uuid.v4();
             }
         }, created() {
         },
         methods: {
+            dragAction(drag) {
+                if (!drag) {
+                    this.serializeMeasures(this.fields);
+                    this.uniqueKey = this.$uuid.v4();
+                }
+            },
             deleteField(field) {
                 delete this.reportSchema['measures'][field.key_name];
                 this.populateListItems(this.reportSchema['measures']);
@@ -55,12 +64,20 @@
                 }
                 this.fields = _fields;
             },
+            serializeMeasures(fields) {
+                let measures = {};
+                for (let index = 0; index < fields.length; index++) {
+                    let _field = fields[index];
+                    measures[_field.key_name] = _field;
+                }
+                this.reportSchema['measures'] = measures;
+            },
             onItemSelected(item) {
                 if (!this.reportSchema['measures'].hasOwnProperty(item.key_name)) {
                     this.reportSchema['measures'][item.key_name] = item;
                     this.populateListItems(this.reportSchema['measures']);
                 } else {
-					this.$notify({
+                    this.$notify({
                         type: 'warn',
                         title: 'Field already ADDED!',
                         text: 'The field you are trying to add, has been added in list already!',
@@ -68,7 +85,7 @@
                         speed: 1000,
                         data: {}
                     });
-				}
+                }
             },
             editItem(item) {
             },
