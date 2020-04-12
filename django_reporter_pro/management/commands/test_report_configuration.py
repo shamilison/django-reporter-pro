@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         report_config = ReportConfiguration.objects.last()
-        query = QueryProcessor().build_query(configuration={
+        headers, query = QueryProcessor.build_query(configuration={
             'table': JSONHandler().to_json(
                 report_config.model.model_class(), depth=2,
                 expand=[(

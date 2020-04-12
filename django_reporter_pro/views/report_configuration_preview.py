@@ -19,8 +19,8 @@ class ReportConfigurationPreView(APIView):
 
     def post(self, request, *args, **kwargs):
         post_data = request.data
-        query = QueryProcessor().build_query(configuration=post_data)
-        print(query)
-        if query.query:
-            print(str(query.query))
-        return JsonResponse(data={})
+        headers, query = QueryProcessor.build_query(configuration=post_data)
+        return JsonResponse(data={
+            'headers': headers,
+            'results': list(query),
+        })

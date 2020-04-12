@@ -38,7 +38,8 @@
 					</v-card>
 				</v-col>
 				<v-col class="mt-1" cols="12" sm="12">
-					<TableRenderer></TableRenderer>
+					<TableRenderer :data="previewData" :headers="previewHeaders"
+								   :key="uniquePreviewKey"></TableRenderer>
 				</v-col>
 			</v-row>
 		</v-col>
@@ -87,6 +88,9 @@
                     {tab: 'measures', content: 'Measure'},
                     {tab: 'dimensions', content: 'Dimension'},
                 ],
+                uniquePreviewKey: this.$uuid.v4(),
+                previewHeaders: [],
+                previewData: [],
                 uniqueJsonPrettify: this.$uuid.v4(),
             };
         },
@@ -99,7 +103,10 @@
                     headers: {'Content-Type': 'application/json',},
                     data: _vm.reportSchema,
                 }).then(response => {
-                    console.log(response);
+                    let data = response.data;
+                    this.previewHeaders = data.headers;
+                    this.previewData = data.results;
+                    this.uniquePreviewKey = this.$uuid.v4();
                 }).catch(error => {
                     console.log(error);
                 }).finally(() => {
