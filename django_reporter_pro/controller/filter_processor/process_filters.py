@@ -34,7 +34,8 @@ class ProcessFilter(object):
                 _and_queries = _filter_query if not _and_queries else _and_queries & _filter_query
             if _and_queries:
                 filter_queries = _and_queries if not filter_queries else filter_queries | Q(_and_queries)
-        query = query.filter(filter_queries)
+        if filter_queries:
+            query = query.filter(filter_queries)
         return query
 
     @classmethod
@@ -50,5 +51,9 @@ class ProcessFilter(object):
         elif filter_type == FilterTypeEnum.GREATER_THAN.value:
             _query_dict = {}
             _query_dict[key + '__gt'] = float(filter_inputs[0])
+            query = Q(**_query_dict)
+        elif filter_type == FilterTypeEnum.EQUAL.value:
+            _query_dict = {}
+            _query_dict[key] = filter_inputs[0]
             query = Q(**_query_dict)
         return query

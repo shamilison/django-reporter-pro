@@ -1,4 +1,4 @@
-from django.db.models import F, Sum
+from django.db.models import F, Sum, Count
 
 from areion.areion_extension.enums.strong_enum import StrongEnum
 
@@ -43,4 +43,6 @@ class ProcessMeasure(object):
         _function = F(key)
         if measure == AggregateEnum.SUM.value:
             _function = Sum(key)
+        elif measure == AggregateEnum.COUNT_ALL.value:
+            _function = Count(key)
         return _function
