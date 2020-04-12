@@ -24,6 +24,8 @@
 												 v-else-if="item.tab === 'measures'"></MeasureList>
 									<FilterList :reportSchema="reportSchema"
 												v-else-if="item.tab === 'filters'"></FilterList>
+									<SearchList :reportSchema="reportSchema"
+												v-if="item.tab === 'searches'"></SearchList>
 								</v-card>
 							</v-tab-item>
 						</v-tabs-items>
@@ -43,7 +45,7 @@
 				</v-col>
 			</v-row>
 		</v-col>
-		<v-col cols="4" sm="4" class="json-container">
+		<v-col class="json-container" cols="4" sm="4">
 			<VueJsonPretty :data="reportSchema" :deep="4" :highlightMouseoverNode="true"
 						   :showLength="true" :showLine="true" :showSelectController="true">
 			</VueJsonPretty>
@@ -59,10 +61,11 @@
     import VueJsonPretty from 'vue-json-pretty'
     import ModelInfoMixin from "@/application/views/report/enums/ModelInfoMixin";
     import TableRenderer from "@/application/views/report/renderer/TableRenderer";
+    import SearchList from "@/application/views/report/searches/SearchList";
 
     export default {
         name: 'BuildReport',
-        components: {TableRenderer, FilterList, MeasureList, DimensionList, VueJsonPretty},
+        components: {SearchList, TableRenderer, FilterList, MeasureList, DimensionList, VueJsonPretty},
         mixins: [ModelInfoMixin],
         data() {
             return {
@@ -81,9 +84,11 @@
                     measures: {},
                     filters: [],
                     fields: {},
+                    searches: {},
                 },
                 tab: null,
                 items: [
+                    {tab: 'searches', content: 'Searches'},
                     {tab: 'dimensions', content: 'Dimension'},
                     {tab: 'filters', content: 'Filter'},
                     {tab: 'measures', content: 'Measure'},
@@ -151,9 +156,18 @@
                     ).then(response => {
                         let data = response.data;
                         this.selectedTable = data.table;
+                        if (data.dimensions === undefined || data.dimensions === null)
+                            data.dimensions = {};
                         this.reportSchema['dimensions'] = data.dimensions;
+                        if (data.measures === undefined || data.measures === null)
+                            data.measures = {};
                         this.reportSchema['measures'] = data.measures;
+                        if (data.filters === undefined || data.filters === null)
+                            data.filters = [];
                         this.reportSchema['filters'] = data.filters;
+                        if (data.searches === undefined || data.searches === null)
+                            data.searches = {};
+                        this.reportSchema['searches'] = data.searches;
                     }).catch(error => {
                         console.log(error);
                     }).finally(() => {
@@ -167,11 +181,11 @@
                 handler(newVal, oldVal) {
                     this.tableFieldMap = {};
                     this.reportSchema['fields'] = {};
-                    // if (oldVal !== null) {
-                    //     this.reportSchema['dimensions'] = {};
-                    //     this.reportSchema['measures'] = {};
-                    //     this.reportSchema['filters'] = [];
-                    // }
+                    if (oldVal !== null) {
+                        this.reportSchema['dimensions'] = {};
+                        this.reportSchema['measures'] = {};
+                        this.reportSchema['filters'] = [];
+                    }
                     if (newVal !== null && newVal !== undefined) {
                         this.reportSchema['table'] = newVal;
                         axios.get(
