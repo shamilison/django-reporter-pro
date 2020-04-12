@@ -38,7 +38,8 @@
 					</v-card>
 				</v-col>
 				<v-col class="mt-1" cols="12" sm="12">
-					<TableRenderer></TableRenderer>
+					<TableRenderer :data="previewData" :headers="previewHeaders"
+								   :key="uniquePreviewKey"></TableRenderer>
 				</v-col>
 			</v-row>
 		</v-col>
@@ -69,6 +70,7 @@
                 reportPostURL: '/report-configuration/create',
                 reportPutURL: '/report-configuration/update/',
                 reportGetURL: '/report-configuration/detail/',
+                reportPreviewURL: '/report-configuration-preview/',
                 contentID: 0,
                 tables: [],
                 tableFieldMap: {},
@@ -86,24 +88,29 @@
                     {tab: 'measures', content: 'Measure'},
                     {tab: 'dimensions', content: 'Dimension'},
                 ],
+                uniquePreviewKey: this.$uuid.v4(),
+                previewHeaders: [],
+                previewData: [],
                 uniqueJsonPrettify: this.$uuid.v4(),
             };
         },
         methods: {
             previewReportConfiguration: function () {
                 let _vm = this;
-                // axios({
-                //     method: 'post', url:
-                //     _vm.reportPostURL,
-                //     params: {},
-                //     headers: {'Content-Type': 'application/json',},
-                //     data: _vm.reportSchema,
-                // }).then(response => {
-                //     console.log(response);
-                // }).catch(error => {
-                //     console.log(error);
-                // }).finally(() => {
-                // });
+                axios({
+                    method: 'post', url: _vm.reportPreviewURL,
+                    params: {},
+                    headers: {'Content-Type': 'application/json',},
+                    data: _vm.reportSchema,
+                }).then(response => {
+                    let data = response.data;
+                    this.previewHeaders = data.headers;
+                    this.previewData = data.results;
+                    this.uniquePreviewKey = this.$uuid.v4();
+                }).catch(error => {
+                    console.log(error);
+                }).finally(() => {
+                });
             },
             submitReportConfiguration: function () {
                 let _vm = this;
