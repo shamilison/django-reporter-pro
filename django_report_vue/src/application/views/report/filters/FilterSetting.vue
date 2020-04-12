@@ -1,17 +1,17 @@
 <template>
-    <form class="pa-5 pt-5 pb-5 white">
-        <v-text-field label="Field Label" v-model="label"></v-text-field>
-        <v-select :items="filterOptions" dense label="Condition" return-object v-model="filter"></v-select>
-        <v-content :key="filterInputKey" class="mb-4 text-center" v-if="filterInputs.length > 0 || showAddInput">
-            <v-text-field :label="`Input ` + (index + 1)" @click:clear="clearInput(index)" clearable
-                          v-for="(input, index) in filterInputs" v-model="filterInputs[index]"></v-text-field>
-            <v-btn @click="addInput" icon outlined small v-show="showAddInput">
-                <v-icon small>mdi-plus</v-icon>
-            </v-btn>
-        </v-content>
-        <v-btn @click="submit" class="mr-4 primary" small>ok</v-btn>
-        <v-btn @click="cancel" small>cancel</v-btn>
-    </form>
+	<form class="pa-5 pt-5 pb-5 white">
+		<v-text-field label="Field Label" v-model="label"></v-text-field>
+		<v-select :items="filterOptions" dense label="Condition" return-object v-model="filter"></v-select>
+		<v-content :key="filterInputKey" class="mb-4 text-center" v-if="filterInputs.length > 0 || showAddInput">
+			<v-text-field :label="`Input ` + (index + 1)" @click:clear="clearInput(index)" clearable
+						  v-for="(input, index) in filterInputs" v-model="filterInputs[index]"></v-text-field>
+			<v-btn @click="addInput" icon outlined small v-show="showAddInput">
+				<v-icon small>mdi-plus</v-icon>
+			</v-btn>
+		</v-content>
+		<v-btn @click="submit" class="mr-4 primary" small>ok</v-btn>
+		<v-btn @click="cancel" small>cancel</v-btn>
+	</form>
 </template>
 
 <script>
@@ -75,17 +75,19 @@
                 this.field['_filter_config']['label'] = newVal;
             },
             filter: function (newVal, oldVal) {
-                let result = []
-                if (newVal.input >= 0) {
-                    for (let index = 0; index < newVal.input; index++) {
-                        result.push("");
-                    }
-                    this.showAddInput = false;
-                } else {
-                    this.showAddInput = true;
-                }
                 this.field['_filter_config']['filter'] = newVal.value;
-                this.filterInputs = result;
+                if (oldVal !== null) {
+                    let result = [];
+                    if (newVal.input >= 0) {
+                        for (let index = 0; index < newVal.input; index++) {
+                            result.push("");
+                        }
+                        this.showAddInput = false;
+                    } else {
+                        this.showAddInput = true;
+                    }
+                    this.filterInputs = result;
+                }
             },
             filterInputs: function (newVal, oldVal) {
                 this.field['_filter_config']['filterInputs'] = newVal;
@@ -110,18 +112,21 @@
             },
         },
         mounted() {
-            if (this.field['_filter_config'] === undefined) {
-                this.field['_filter_config'] = {};
-                this.field['_filter_config']['label'] = "";
-                this.field['_filter_config']['sort'] = null;
-                this.field['_filter_config']['filter'] = null;
-                this.field['_filter_config']['filterInputs'] = [];
-            }
             let fieldType = this.getFieldCategory(this.field);
             if (fieldType === 'measure') {
                 this.filterOptions = this.measureFilterOptions;
             } else if (fieldType === 'dimension') {
                 this.filterOptions = this.dimensionFilterOptions;
+            }
+            if (this.field['_filter_config'] === undefined || this.field['_filter_config'] === null) {
+                this.field['_filter_config'] = {};
+                this.field['_filter_config']['label'] = "";
+                this.field['_filter_config']['filter'] = null;
+                this.field['_filter_config']['filterInputs'] = [];
+            } else {
+                this.label = this.field['_filter_config']['label'];
+                this.filter = this.field['_filter_config']['filter'];
+                this.filterInputs = this.field['_filter_config']['filterInputs'];
             }
         }
     };

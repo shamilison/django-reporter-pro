@@ -44,7 +44,7 @@
 			</v-row>
 		</v-col>
 		<v-col cols="4" sm="4">
-			<VueJsonPretty :data="reportSchema" :deep="4" :highlightMouseoverNode="true" :key="uniqueJsonPrettify"
+			<VueJsonPretty :data="reportSchema" :deep="4" :highlightMouseoverNode="true"
 						   :showLength="true" :showLine="true" :showSelectController="true">
 			</VueJsonPretty>
 		</v-col>
@@ -91,7 +91,6 @@
                 uniquePreviewKey: this.$uuid.v4(),
                 previewHeaders: [],
                 previewData: [],
-                uniqueJsonPrettify: this.$uuid.v4(),
             };
         },
         methods: {
@@ -194,12 +193,6 @@
                     } else {
                         this.reportSchema['table'] = null;
                     }
-                },
-            },
-            reportSchema: {
-                deep: true,
-                handler(newVal, oldVal) {
-                    this.uniqueJsonPrettify = this.$uuid.v4();
                 },
             },
         },

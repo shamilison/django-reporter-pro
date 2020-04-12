@@ -54,10 +54,13 @@
             },
         },
         mounted() {
-            if (this.field['_display_config'] === undefined) {
+            if (this.field['_display_config'] === undefined || this.field['_display_config'] === null) {
                 this.field['_display_config'] = {};
                 this.field['_display_config']['label'] = "";
                 this.field['_display_config']['sort'] = null;
+            } else {
+                this.label = this.field['_display_config']['label'];
+                this.sort = this.field['_display_config']['sort'];
             }
         }
     };
