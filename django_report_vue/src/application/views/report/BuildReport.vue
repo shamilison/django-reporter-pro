@@ -43,7 +43,7 @@
 				</v-col>
 			</v-row>
 		</v-col>
-		<v-col cols="4" sm="4">
+		<v-col cols="4" sm="4" class="json-container">
 			<VueJsonPretty :data="reportSchema" :deep="4" :highlightMouseoverNode="true"
 						   :showLength="true" :showLine="true" :showSelectController="true">
 			</VueJsonPretty>
@@ -84,9 +84,9 @@
                 },
                 tab: null,
                 items: [
+                    {tab: 'dimensions', content: 'Dimension'},
                     {tab: 'filters', content: 'Filter'},
                     {tab: 'measures', content: 'Measure'},
-                    {tab: 'dimensions', content: 'Dimension'},
                 ],
                 uniquePreviewKey: this.$uuid.v4(),
                 previewHeaders: [],
@@ -236,4 +236,8 @@
 </script>
 
 <style lang="scss" scoped>
+	.json-container {
+		max-height: 700px;
+		overflow-y: scroll;
+	}
 </style>

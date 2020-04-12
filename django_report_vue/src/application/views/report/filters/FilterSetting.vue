@@ -125,7 +125,11 @@
                 this.field['_filter_config']['filterInputs'] = [];
             } else {
                 this.label = this.field['_filter_config']['label'];
-                this.filter = this.field['_filter_config']['filter'];
+                for (let index = 0; index < this.filterOptions.length; index++) {
+					if(this.filterOptions[index].value === this.field['_filter_config']['filter']) {
+                        this.filter = this.filterOptions[index];
+					}
+                }
                 this.filterInputs = this.field['_filter_config']['filterInputs'];
             }
         }

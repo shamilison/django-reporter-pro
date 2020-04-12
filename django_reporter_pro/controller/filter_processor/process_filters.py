@@ -29,7 +29,7 @@ class ProcessFilter(object):
             _and_queries = None
             for key in _and_filters.keys():
                 _filter = _and_filters.get(key)
-                _filter_key = _filter.get('attname')
+                _filter_key = _filter.get('query_name')
                 _filter_query = cls.get_q_expression(key=_filter_key, config=_filter.get('_filter_config'))
                 _and_queries = _filter_query if not _and_queries else _and_queries & _filter_query
             if _and_queries:

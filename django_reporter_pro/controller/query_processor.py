@@ -2,6 +2,7 @@ from django.apps import apps
 
 from django_reporter.django_reporter_pro.controller.dimension_processor.process_dimensions import ProcessDimension
 from django_reporter.django_reporter_pro.controller.filter_processor.process_filters import ProcessFilter
+from django_reporter.django_reporter_pro.controller.measure_processor.process_measures import ProcessMeasure
 
 get_model = apps.get_model
 
@@ -15,6 +16,10 @@ class QueryProcessor(object):
         model_info = configuration.get('table')
         model = get_model(model_info.get('app_label'), model_info.get('model_name'))
         query = model.objects.all()
-        headers, query = ProcessDimension.build_query(query=query, dimensions=configuration.get('dimensions'))
-        query = ProcessFilter.build_query(query=query, filters=configuration.get('filters'))
+        query = ProcessFilter.build_query(
+            query=query, filters=configuration.get('filters'))
+        headers, query = ProcessDimension.build_query(
+            query=query, dimensions=configuration.get('dimensions'))
+        headers, query = ProcessMeasure.build_query(
+            query=query, measures=configuration.get('measures'), headers=headers)
         return headers, query

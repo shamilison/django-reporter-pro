@@ -3,6 +3,7 @@
         <v-container class="pt-0 pb-0" fluid>
             <router-view></router-view>
         </v-container>
+        <notifications position="bottom right"></notifications>
     </v-content>
 </template>
 
