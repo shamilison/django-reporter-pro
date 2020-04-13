@@ -32,6 +32,7 @@ class ReportConfigurationGETView(APIView):
             'dimensions': report_config.dimensions,
             'measures': report_config.measures,
             'filters': report_config.filters,
+            'searches': report_config.searches,
         })
 
     def post(self, request, *args, **kwargs):

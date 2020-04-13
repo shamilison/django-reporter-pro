@@ -15,6 +15,7 @@ class ReportConfiguration(models.Model):
     dimensions = JSONField(max_length=8192, default=None, null=True)
     measures = JSONField(max_length=8192, default=None, null=True)
     filters = JSONField(max_length=8192, default=None, null=True)
+    searches = JSONField(max_length=8192, default=None, null=True)
 
     def __init__(self, *args, **kwargs):
         super(ReportConfiguration, self).__init__(*args, **kwargs)

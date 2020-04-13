@@ -28,6 +28,7 @@ class ReportConfigurationPOSTView(APIView):
         report_config.dimensions = _post_data.get('dimensions')
         report_config.measures = _post_data.get('measures')
         report_config.filters = _post_data.get('filters')
+        report_config.searches = _post_data.get('searches')
         report_config.save()
         return JsonResponse(data={
             'uuid': report_config.pk
@@ -43,6 +44,7 @@ class ReportConfigurationPOSTView(APIView):
         report_config.dimensions = _put_data.get('dimensions')
         report_config.measures = _put_data.get('measures')
         report_config.filters = _put_data.get('filters')
+        report_config.searches = _put_data.get('searches')
         report_config.save()
         return JsonResponse(data={
             'uuid': report_config.pk
