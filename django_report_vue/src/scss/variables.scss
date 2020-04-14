@@ -32,5 +32,9 @@ $text-field-dense-icon-append-prepend-margin-top: 8px;
 $icon-size: 18px;
 $icon-size-dense: 16px;
 
+// VExpansionPanel
+$expansion-panel-header-font-size: 12px !default;
+$expansion-panel-header-padding: 16px 16px;
+
 // Required for modifying core defaults
 //@import '~vuetify/src/styles/styles.sass';
