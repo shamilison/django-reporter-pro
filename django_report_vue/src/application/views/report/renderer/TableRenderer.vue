@@ -3,7 +3,6 @@
 		<v-data-table :custom-filter="filterSearch" :headers="headers"
 					  :items="data" :search="search" item-key="name">
 			<template v-slot:top>
-				<v-text-field class="mx-0" label="Search..." v-model="search"></v-text-field>
 			</template>
 		</v-data-table>
 	</v-card>

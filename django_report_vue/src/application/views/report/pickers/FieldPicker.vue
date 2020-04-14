@@ -95,6 +95,20 @@
             fields(newVal) {
                 this.currentFields = newVal;
             },
+			model(newVal) {
+				this.currentFields = this.fields;
+				if (newVal !== null) {
+					this.breadCrumbs.push({
+						key: this.$uuid.v4(),
+						label: newVal.label,
+						text: newVal.object_name,
+						model: newVal,
+						selectedField: null,
+						fields: null,
+						disabled: true,
+					});
+				}
+            },
         }, created() {
             this.initialize()
         },

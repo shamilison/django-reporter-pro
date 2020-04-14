@@ -1,6 +1,7 @@
 import VueRouter from "vue-router";
 import BuildReport from "@/application/views/report/BuildReport";
 import ApplicationBase from "@/application/views/ApplicationBase";
+import ViewReport from "@/application/views/report/ViewReport";
 
 let applicationPages = {
     path: "/",
@@ -18,6 +19,12 @@ let applicationPages = {
             path: "/build-report/update/:contentID/",
             name: "BuildReport",
             component: BuildReport,
+            meta: {},
+        },
+        {
+            path: "/build-report/view/:contentID/",
+            name: "ViewReport",
+            component: ViewReport,
             meta: {},
         },
     ],
