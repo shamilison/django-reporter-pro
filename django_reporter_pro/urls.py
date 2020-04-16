@@ -21,5 +21,7 @@ urlpatterns = [
     url(r'report-configuration/detail/(?P<pk>(\d{,}))/$', ReportConfigurationGETView.as_view(),
         name='report_configuration_get'),
     url(r'report-configuration-preview/$', ReportConfigurationPreView.as_view(),
-        name='report_configuration_preview'),
+        name='report_configuration_generic_preview'),
+    url(r'report-configuration-preview/(?P<pk>(\d{,}))/$', ReportConfigurationPreView.as_view(),
+        name='report_configuration_targeted_preview'),
 ]
