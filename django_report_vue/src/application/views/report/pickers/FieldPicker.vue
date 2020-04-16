@@ -49,7 +49,7 @@
 
 <script>
     import axios from 'axios';
-    import ModelInfoMixin from "@/application/views/report/enums/ModelInfoMixin";
+    import ModelInfoMixin from "@/application/views/report/mixin/ModelInfoMixin";
 
     export default {
         name: 'FieldPicker',

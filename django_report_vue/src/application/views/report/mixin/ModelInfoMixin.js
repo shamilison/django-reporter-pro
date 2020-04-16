@@ -1,4 +1,4 @@
-import {INPUT_TYPE} from './ModelInfoConstants';
+import {INPUT_TYPE} from '../enums/ModelInfoConstants';
 
 export default {
     props: {},
@@ -38,6 +38,12 @@ export default {
                 return 'relation';
             }
             return 'dimension';
+        },
+        isDateType: function (field) {
+            if (['datetime'].indexOf(INPUT_TYPE[field._python_type]) >= 0) {
+                return true;
+            }
+            return false;
         },
     },
     created() {

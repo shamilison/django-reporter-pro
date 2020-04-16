@@ -23,5 +23,5 @@ class QueryProcessor(object):
         headers, query = ProcessDimension.build_query(
             query=query, dimensions=configuration.get('dimensions'))
         headers, query = ProcessMeasure.build_query(
-            query=query, measures=configuration.get('measures'), headers=headers)
+            model=model, query=query, measures=configuration.get('measures'), headers=headers)
         return headers, query

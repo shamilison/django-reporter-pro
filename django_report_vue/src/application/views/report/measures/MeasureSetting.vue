@@ -9,6 +9,8 @@
 </template>
 
 <script>
+    import ModelInfoMixin from "@/application/views/report/mixin/ModelInfoMixin";
+
     export default {
         name: 'MeasureSetting',
         components: {},
@@ -24,12 +26,13 @@
                 }
             },
         },
-        mixins: [],
+        mixins: [ModelInfoMixin],
         data() {
             return {
                 label: "",
                 aggregation: null,
-                aggregateOptions: [
+                aggregateOptions: [],
+                generalAnnotations: [
                     {value: 'unagg', text: 'Unaggregated'},
                     {value: 'count', text: 'Count of distinct'},
                     {value: 'countall', text: 'Count of all'},
@@ -37,6 +40,15 @@
                     {value: 'average', text: 'Average'},
                     {value: 'min', text: 'Minimum'},
                     {value: 'max', text: 'Maximum'},
+                ],
+                timeAnnotations: [
+                    {value: 'daily', text: 'By daily'},
+                    {value: 'weekly', text: 'By weekly'},
+                    {value: 'bi_weekly', text: 'By bi-weekly'},
+                    {value: 'monthly', text: 'By month'},
+                    {value: 'quarterly', text: 'By quarter year'},
+                    {value: 'half_yearly', text: 'By half year'},
+                    {value: 'yearly', text: 'By year'},
                 ],
                 sort: null,
                 sortOptions: [
@@ -77,6 +89,11 @@
                 this.label = this.field['_measure_config']['label'];
                 this.sort = this.field['_measure_config']['sort'];
                 this.aggregation = this.field['_measure_config']['aggregation'];
+                if(this.isDateType(this.field)) {
+                    this.aggregateOptions = this.timeAnnotations;
+                } else {
+                    this.aggregateOptions = this.generalAnnotations;
+                }
             }
         }
     };

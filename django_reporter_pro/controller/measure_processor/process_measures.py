@@ -1,6 +1,8 @@
 from django.db.models import F, Sum, Count
+from django.db.models.expressions import RawSQL
 
 from areion.areion_extension.enums.strong_enum import StrongEnum
+from django_reporter.django_reporter_pro.extensions.django.functions.timestamp import DateFromTimeStamp
 
 
 class AggregateEnum(StrongEnum):
@@ -11,11 +13,12 @@ class AggregateEnum(StrongEnum):
     AVERAGE = 'average'
     MINIMUM = 'min'
     MAXIMUM = 'max'
+    GROUP_DAILY = 'daily'
 
 
 class ProcessMeasure(object):
     @classmethod
-    def build_query(cls, query=None, measures=None, headers=None):
+    def build_query(cls, model=None, query=None, measures=None, headers=None):
         annotations = {}
         headers = [] if not headers else headers
         for key in measures.keys():
@@ -45,4 +48,6 @@ class ProcessMeasure(object):
             _function = Sum(key)
         elif measure == AggregateEnum.COUNT_ALL.value:
             _function = Count(key)
+        elif measure == AggregateEnum.GROUP_DAILY.value:
+            _function = DateFromTimeStamp(key)
         return _function

@@ -6,10 +6,12 @@
 
 <script>
 
+    import HighChartRenderMixin from "@/application/views/report/mixin/HighChartRenderMixin";
+
     export default {
         name: 'HighChartRenderer',
         components: {},
-        mixins: [],
+        mixins: [HighChartRenderMixin],
         props: {
 			headers: {
 				type: Array,
@@ -26,17 +28,13 @@
         },
         data() {
             return {
-				chartOptions: {
-					series: [{
-						data: [1, 2, 3]
-					}]
-				}
             }
         },
         computed: {},
         methods: {
         },
         mounted() {
+            this.renderLineChart(this.headers, this.data);
         },
     };
 </script>

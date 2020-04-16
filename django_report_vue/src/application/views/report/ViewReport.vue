@@ -30,7 +30,7 @@
     import MeasureList from "@/application/views/report/measures/MeasureList";
     import FilterList from "@/application/views/report/filters/FilterList";
     import VueJsonPretty from 'vue-json-pretty'
-    import ModelInfoMixin from "@/application/views/report/enums/ModelInfoMixin";
+    import ModelInfoMixin from "@/application/views/report/mixin/ModelInfoMixin";
     import TableRenderer from "@/application/views/report/renderer/TableRenderer";
     import SearchList from "@/application/views/report/searches/SearchList";
     import SearchRenderer from "@/application/views/report/renderer/search/SearchRenderer";

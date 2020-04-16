@@ -52,6 +52,9 @@
             </v-row>
         </v-col>
         <v-col class="json-container" cols="4" sm="4">
+            <VueJsonPretty :data="previewHeaders" :deep="4" :highlightMouseoverNode="true"
+                           :showLength="true" :showLine="true" :showSelectController="true">
+            </VueJsonPretty>
             <VueJsonPretty :data="reportSchema" :deep="4" :highlightMouseoverNode="true"
                            :showLength="true" :showLine="true" :showSelectController="true">
             </VueJsonPretty>
@@ -65,7 +68,7 @@
     import MeasureList from "@/application/views/report/measures/MeasureList";
     import FilterList from "@/application/views/report/filters/FilterList";
     import VueJsonPretty from 'vue-json-pretty'
-    import ModelInfoMixin from "@/application/views/report/enums/ModelInfoMixin";
+    import ModelInfoMixin from "@/application/views/report/mixin/ModelInfoMixin";
     import TableRenderer from "@/application/views/report/renderer/TableRenderer";
     import SearchList from "@/application/views/report/searches/SearchList";
     import HighChartRenderer from "@/application/views/report/renderer/HighChartRenderer";
