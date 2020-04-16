@@ -1,17 +1,17 @@
 <template>
-	<form class="pa-5 pt-5 pb-5 white">
-		<v-text-field label="Field Label" v-model="label"></v-text-field>
-		<v-select :items="filterOptions" dense label="Condition" return-object v-model="filter"></v-select>
-		<v-content :key="filterInputKey" class="mb-4 text-center" v-if="filterInputs.length > 0 || showAddInput">
-			<v-text-field :label="`Input ` + (index + 1)" @click:clear="clearInput(index)" clearable
-						  v-for="(input, index) in filterInputs" v-model="filterInputs[index]"></v-text-field>
-			<v-btn @click="addInput" icon outlined small v-show="showAddInput">
-				<v-icon small>mdi-plus</v-icon>
-			</v-btn>
-		</v-content>
-		<v-btn @click="submit" class="mr-4 primary" small>ok</v-btn>
-		<v-btn @click="cancel" small>cancel</v-btn>
-	</form>
+    <form class="pa-5 pt-5 pb-5 white">
+        <v-text-field label="Field Label" v-model="label"></v-text-field>
+        <v-select :items="filterOptions" dense label="Condition" outlined return-object v-model="filter"></v-select>
+        <v-content :key="filterInputKey" class="mb-4 text-center" v-if="filterInputs.length > 0 || showAddInput">
+            <v-text-field :label="`Input ` + (index + 1)" @click:clear="clearInput(index)" clearable
+                          v-for="(input, index) in filterInputs" v-model="filterInputs[index]"></v-text-field>
+            <v-btn @click="addInput" icon outlined small v-show="showAddInput">
+                <v-icon small>mdi-plus</v-icon>
+            </v-btn>
+        </v-content>
+        <v-btn @click="submit" class="mr-4 primary" small>ok</v-btn>
+        <v-btn @click="cancel" small>cancel</v-btn>
+    </form>
 </template>
 
 <script>
@@ -126,9 +126,9 @@
             } else {
                 this.label = this.field['_filter_config']['label'];
                 for (let index = 0; index < this.filterOptions.length; index++) {
-					if(this.filterOptions[index].value === this.field['_filter_config']['filter']) {
+                    if (this.filterOptions[index].value === this.field['_filter_config']['filter']) {
                         this.filter = this.filterOptions[index];
-					}
+                    }
                 }
                 this.filterInputs = this.field['_filter_config']['filterInputs'];
             }

@@ -7,6 +7,7 @@
                                     :searchFields="reportSchema['searches']" @searched="previewReportConfiguration"></SearchRenderer>
                 </v-col>
                 <v-col class="mt-1" cols="12" sm="12">
+                    <HighChartRenderer></HighChartRenderer>
                     <TableRenderer :data="previewData" :headers="previewHeaders"
                                    :key="uniquePreviewKey"></TableRenderer>
                 </v-col>
@@ -33,10 +34,11 @@
     import TableRenderer from "@/application/views/report/renderer/TableRenderer";
     import SearchList from "@/application/views/report/searches/SearchList";
     import SearchRenderer from "@/application/views/report/renderer/search/SearchRenderer";
+    import HighChartRenderer from "@/application/views/report/renderer/HighChartRenderer";
 
     export default {
         name: 'ViewReport',
-        components: {SearchRenderer, SearchList, TableRenderer, FilterList, MeasureList, DimensionList, VueJsonPretty},
+        components: {HighChartRenderer, SearchRenderer, SearchList, TableRenderer, FilterList, MeasureList, DimensionList, VueJsonPretty},
         mixins: [ModelInfoMixin],
         data() {
             return {

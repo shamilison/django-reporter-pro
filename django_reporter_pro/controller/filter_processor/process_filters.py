@@ -27,7 +27,6 @@ class ProcessFilter(object):
         _filter_queries = None
         if model and hasattr(model, 'provide_reporter_pro_query_request'):
             query = getattr(model, 'provide_reporter_pro_query_request')(model=model, request=request, query=query)
-        query = query.filter(_filter_queries)
         for _and_filters in filters:
             _and_queries = None
             for key in _and_filters.keys():
@@ -46,6 +45,8 @@ class ProcessFilter(object):
 
     @classmethod
     def build_search_query(cls, searches=None, search_inputs=None):
+        if not search_inputs:
+            return None
         _search_queries = None
         for _key in searches.keys():
             _values = search_inputs.get(_key)
