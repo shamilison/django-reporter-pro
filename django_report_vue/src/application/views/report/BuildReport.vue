@@ -1,65 +1,67 @@
 <template>
-    <v-row>
-        <v-col class="pt-0 pb-0" cols="8" sm="8">
-            <v-row>
-                <v-col class="pb-0" cols="6" sm="6">
-                    <v-autocomplete :clearable="true" :items="tables" class="mt-2" dense item-text="label"
-                                    label="Select Table" outlined return-object v-model="selectedTable">
-                    </v-autocomplete>
-                </v-col>
-                <v-col class="pb-0" cols="6" sm="6">
-                    <v-select :items="reportTypes" class="mt-2" dense label="Report Type"
-                              outlined v-model="reportType"></v-select>
-                </v-col>
-                <v-col class="pt-0" cols="12" sm="12">
-                    <v-card>
-                        <v-tabs background-color="primary" dark v-model="tab">
-                            <v-tab :key="item.tab" v-for="item in items">
-                                {{ item.tab }}
-                            </v-tab>
-                        </v-tabs>
-                        <v-tabs-items v-model="tab">
-                            <v-tab-item :key="item.tab" :reverse-transition="false" :transition="false"
-                                        class="pb-5" v-for="item in items">
-                                <v-card class="pb-2" flat>
-                                    <DimensionList :reportSchema="reportSchema"
-                                                   v-if="item.tab === 'dimensions'"></DimensionList>
-                                    <MeasureList :reportSchema="reportSchema"
-                                                 v-else-if="item.tab === 'measures'"></MeasureList>
-                                    <FilterList :reportSchema="reportSchema"
-                                                v-else-if="item.tab === 'filters'"></FilterList>
-                                    <SearchList :reportSchema="reportSchema"
-                                                v-if="item.tab === 'searches'"></SearchList>
-                                </v-card>
-                            </v-tab-item>
-                        </v-tabs-items>
-                        <v-btn @click="submitReportConfiguration" absolute
-                               class="float-right mt-n5" color="primary" dark fab right small>
-                            <v-icon>mdi-content-save</v-icon>
-                        </v-btn>
-                        <v-btn @click="previewReportConfiguration" absolute
-                               class="float-right mr-12 mt-n5" color="info" dark fab right small>
-                            <v-icon>mdi-eye</v-icon>
-                        </v-btn>
-                    </v-card>
-                </v-col>
-                <v-col class="mt-1" cols="12" sm="12">
-                    <TableRenderer :data="previewData" :headers="previewHeaders"
-                                   :key="uniqueTablePreviewKey" v-if="reportType === 'table'"></TableRenderer>
-                    <HighChartRenderer :data="previewData" :headers="previewHeaders"
-                                       :key="uniqueReportPreviewKey" v-else></HighChartRenderer>
-                </v-col>
-            </v-row>
-        </v-col>
-        <v-col class="json-container" cols="4" sm="4">
-            <VueJsonPretty :data="previewHeaders" :deep="4" :highlightMouseoverNode="true"
-                           :showLength="true" :showLine="true" :showSelectController="true">
-            </VueJsonPretty>
-            <VueJsonPretty :data="previewData" :deep="4" :highlightMouseoverNode="true"
-                           :showLength="true" :showLine="true" :showSelectController="true">
-            </VueJsonPretty>
-        </v-col>
-    </v-row>
+	<v-row>
+		<v-col class="pt-0 pb-0" cols="8" sm="8">
+			<v-row>
+				<v-col class="pb-0" cols="6" sm="6">
+					<v-autocomplete :clearable="true" :items="tables" class="mt-2" dense item-text="label"
+									label="Select Table" outlined return-object v-model="selectedTable">
+					</v-autocomplete>
+				</v-col>
+				<v-col class="pb-0" cols="6" sm="6">
+					<v-select :items="reportTypes" class="mt-2" dense label="Report Type"
+							  outlined v-model="reportType"></v-select>
+				</v-col>
+				<v-col class="pt-0" cols="12" sm="12">
+					<v-card>
+						<v-tabs background-color="primary" dark v-model="tab">
+							<v-tab :key="item.tab" v-for="item in items">
+								{{ item.tab }}
+							</v-tab>
+						</v-tabs>
+						<v-tabs-items v-model="tab">
+							<v-tab-item :key="item.tab" :reverse-transition="false" :transition="false"
+										class="pb-5" v-for="item in items">
+								<v-card class="pb-2" flat>
+									<DimensionList :reportSchema="reportSchema"
+												   v-if="item.tab === 'dimensions'"></DimensionList>
+									<MeasureList :reportSchema="reportSchema"
+												 v-else-if="item.tab === 'measures'"></MeasureList>
+									<FilterList :reportSchema="reportSchema"
+												v-else-if="item.tab === 'filters'"></FilterList>
+									<SearchList :reportSchema="reportSchema"
+												v-if="item.tab === 'searches'"></SearchList>
+								</v-card>
+							</v-tab-item>
+						</v-tabs-items>
+						<v-btn @click="submitReportConfiguration" absolute
+							   class="float-right mt-n5" color="primary" dark fab right small>
+							<v-icon>mdi-content-save</v-icon>
+						</v-btn>
+						<v-btn @click="previewReportConfiguration" absolute
+							   class="float-right mr-12 mt-n5" color="info" dark fab right small>
+							<v-icon>mdi-eye</v-icon>
+						</v-btn>
+					</v-card>
+				</v-col>
+				<v-col class="mt-1" cols="12" sm="12">
+					<TableRenderer :data="previewData" :headers="previewHeaders"
+								   :key="uniqueTablePreviewKey" v-if="reportType === 'table'"></TableRenderer>
+					<HighChartRenderer :data="previewData" :headers="previewHeaders"
+									   :key="uniqueReportPreviewKey" v-else-if="reportType === 'chart'"></HighChartRenderer>
+					<SummeryRenderer :data="previewData" :headers="previewHeaders"
+									 :key="uniqueSummeryPreviewKey" v-else></SummeryRenderer>
+				</v-col>
+			</v-row>
+		</v-col>
+		<v-col class="json-container" cols="4" sm="4">
+			<VueJsonPretty :data="previewHeaders" :deep="4" :highlightMouseoverNode="true"
+						   :showLength="true" :showLine="true" :showSelectController="true">
+			</VueJsonPretty>
+			<VueJsonPretty :data="previewData" :deep="4" :highlightMouseoverNode="true"
+						   :showLength="true" :showLine="true" :showSelectController="true">
+			</VueJsonPretty>
+		</v-col>
+	</v-row>
 </template>
 
 <script>
@@ -72,10 +74,14 @@
     import TableRenderer from "@/application/views/report/renderer/TableRenderer";
     import SearchList from "@/application/views/report/searches/SearchList";
     import HighChartRenderer from "@/application/views/report/renderer/HighChartRenderer";
+    import SummeryRenderer from "@/application/views/report/renderer/SummeryRenderer";
 
     export default {
         name: 'BuildReport',
-        components: {HighChartRenderer, SearchList, TableRenderer, FilterList, MeasureList, DimensionList, VueJsonPretty},
+        components: {
+            SummeryRenderer,
+            HighChartRenderer, SearchList, TableRenderer, FilterList, MeasureList, DimensionList, VueJsonPretty
+        },
         mixins: [ModelInfoMixin],
         data() {
             return {
@@ -90,6 +96,7 @@
                 selectedTable: null,
                 reportType: null,
                 reportTypes: [
+                    {value: 'summery', text: 'Summery'},
                     {value: 'chart', text: 'Chart'},
                     {value: 'table', text: 'Table'},
                 ],
@@ -110,6 +117,7 @@
                 ],
                 uniqueTablePreviewKey: this.$uuid.v4(),
                 uniqueReportPreviewKey: this.$uuid.v4(),
+                uniqueSummeryPreviewKey: this.$uuid.v4(),
                 previewHeaders: [],
                 previewData: [],
             };
@@ -128,6 +136,7 @@
                     this.previewData = data.results;
                     this.uniqueTablePreviewKey = this.$uuid.v4();
                     this.uniqueReportPreviewKey = this.$uuid.v4();
+                    this.uniqueSummeryPreviewKey = this.$uuid.v4();
                 }).catch(error => {
                     console.log(error);
                 }).finally(() => {
@@ -267,8 +276,8 @@
 </script>
 
 <style lang="scss" scoped>
-    .json-container {
-        max-height: 700px;
-        overflow-y: scroll;
-    }
+	.json-container {
+		max-height: 700px;
+		overflow-y: scroll;
+	}
 </style>
