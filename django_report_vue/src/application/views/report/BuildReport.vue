@@ -55,7 +55,7 @@
             <VueJsonPretty :data="previewHeaders" :deep="4" :highlightMouseoverNode="true"
                            :showLength="true" :showLine="true" :showSelectController="true">
             </VueJsonPretty>
-            <VueJsonPretty :data="reportSchema" :deep="4" :highlightMouseoverNode="true"
+            <VueJsonPretty :data="previewData" :deep="4" :highlightMouseoverNode="true"
                            :showLength="true" :showLine="true" :showSelectController="true">
             </VueJsonPretty>
         </v-col>
