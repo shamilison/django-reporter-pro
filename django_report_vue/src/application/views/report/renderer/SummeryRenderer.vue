@@ -46,7 +46,11 @@
         },
         watch: {
             summeryField: function (newValue) {
-                this.summeryValue = this.data[0][newValue];
+                try {
+                    this.summeryValue = this.data[0][newValue];
+                } catch (e) {
+                    this.summeryValue = 0;
+                }
             }
         },
         data() {
@@ -58,7 +62,10 @@
         computed: {},
         methods: {},
         mounted() {
-            this.summeryField = this.headers[1].value;
+            try {
+                this.summeryField = this.headers[1].value;
+            } catch (e) {
+            }
         },
     };
 </script>

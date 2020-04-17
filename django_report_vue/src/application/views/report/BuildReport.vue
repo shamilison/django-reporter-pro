@@ -110,10 +110,10 @@
                 },
                 tab: null,
                 items: [
-                    {tab: 'searches', content: 'Searches'},
-                    {tab: 'dimensions', content: 'Dimension'},
                     {tab: 'filters', content: 'Filter'},
                     {tab: 'measures', content: 'Measure'},
+                    {tab: 'dimensions', content: 'Dimension'},
+                    {tab: 'searches', content: 'Searches'},
                 ],
                 uniqueTablePreviewKey: this.$uuid.v4(),
                 uniqueReportPreviewKey: this.$uuid.v4(),
