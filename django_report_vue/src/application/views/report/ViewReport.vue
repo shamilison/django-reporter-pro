@@ -1,27 +1,37 @@
 <template>
-    <v-row>
-        <v-col class="pt-0" cols="8" sm="8">
-            <v-row>
-                <v-col class="mt-1 pb-0 mb-2" cols="12" sm="12">
-                    <SearchRenderer :key="uniqueSearchKey" :searchConfig="searchConfig"
-                                    :searchFields="reportSchema['searches']" @searched="previewReportConfiguration"></SearchRenderer>
-                </v-col>
-                <v-col class="mt-1" cols="12" sm="12">
-                    <HighChartRenderer></HighChartRenderer>
-                    <TableRenderer :data="previewData" :headers="previewHeaders"
-                                   :key="uniquePreviewKey"></TableRenderer>
-                </v-col>
-            </v-row>
-        </v-col>
-        <v-col class="json-container" cols="4" sm="4">
-            <VueJsonPretty :data="searchConfig" :deep="4" :highlightMouseoverNode="true"
-                           :showLength="true" :showLine="true" :showSelectController="true">
-            </VueJsonPretty>
-            <VueJsonPretty :data="reportSchema['searches']" :deep="4" :highlightMouseoverNode="true"
-                           :showLength="true" :showLine="true" :showSelectController="true">
-            </VueJsonPretty>
-        </v-col>
-    </v-row>
+	<v-row>
+		<v-col class="pt-0" cols="8" sm="8">
+			<v-row>
+				<v-col class="mt-1 pb-0 mb-2" cols="12" sm="12">
+					<SearchRenderer :key="uniqueSearchKey" :searchConfig="searchConfig"
+									:searchFields="reportSchema['searches']"
+									@searched="previewReportConfiguration"></SearchRenderer>
+				</v-col>
+				<v-col class="mt-1" cols="12" sm="12">
+					<SummeryRenderer :data="previewData" :headers="previewHeaders" :key="uniqueSummeryPreviewKey"
+									 :reportSchema="reportSchema" :update="false"
+									 v-if="reportSchema.report_config.report_type.value === 'summery'">
+					</SummeryRenderer>
+					<HighChartRenderer :data="previewData" :headers="previewHeaders" :key="uniqueReportPreviewKey"
+									   :reportSchema="reportSchema" :update="false"
+									   v-else-if="reportSchema.report_config.report_type.value === 'chart'">
+					</HighChartRenderer>
+					<TableRenderer :data="previewData" :headers="previewHeaders"
+								   :key="uniqueTablePreviewKey" :reportSchema="reportSchema"
+								   v-else-if="reportSchema.report_config.report_type.value === 'table'">
+					</TableRenderer>
+				</v-col>
+			</v-row>
+		</v-col>
+		<v-col class="json-container" cols="4" sm="4">
+			<VueJsonPretty :data="searchConfig" :deep="4" :highlightMouseoverNode="true"
+						   :showLength="true" :showLine="true" :showSelectController="true">
+			</VueJsonPretty>
+			<VueJsonPretty :data="reportSchema['searches']" :deep="4" :highlightMouseoverNode="true"
+						   :showLength="true" :showLine="true" :showSelectController="true">
+			</VueJsonPretty>
+		</v-col>
+	</v-row>
 </template>
 
 <script>
@@ -35,10 +45,21 @@
     import SearchList from "@/application/views/report/searches/SearchList";
     import SearchRenderer from "@/application/views/report/renderer/search/SearchRenderer";
     import HighChartRenderer from "@/application/views/report/renderer/HighChartRenderer";
+    import SummeryRenderer from "@/application/views/report/renderer/SummeryRenderer";
 
     export default {
         name: 'ViewReport',
-        components: {HighChartRenderer, SearchRenderer, SearchList, TableRenderer, FilterList, MeasureList, DimensionList, VueJsonPretty},
+        components: {
+            SummeryRenderer,
+            HighChartRenderer,
+            SearchRenderer,
+            SearchList,
+            TableRenderer,
+            FilterList,
+            MeasureList,
+            DimensionList,
+            VueJsonPretty
+        },
         mixins: [ModelInfoMixin],
         data() {
             return {
@@ -48,6 +69,13 @@
                 contentID: 0,
                 reportSchema: {
                     table: null,
+                    report_config: {
+                        report_type: {
+                            value: null,
+                        },
+                        chart: {},
+                        widget: {},
+                    },
                     dimensions: {},
                     measures: {},
                     filters: [],
@@ -55,7 +83,9 @@
                     searches: {},
                 },
                 uniqueSearchKey: this.$uuid.v4(),
-                uniquePreviewKey: this.$uuid.v4(),
+                uniqueTablePreviewKey: this.$uuid.v4(),
+                uniqueReportPreviewKey: this.$uuid.v4(),
+                uniqueSummeryPreviewKey: this.$uuid.v4(),
                 previewHeaders: [],
                 previewData: [],
                 searchConfig: {},
@@ -77,7 +107,9 @@
                     let data = response.data;
                     this.previewHeaders = data.headers;
                     this.previewData = data.results;
-                    this.uniquePreviewKey = this.$uuid.v4();
+                    this.uniqueTablePreviewKey = this.$uuid.v4();
+                    this.uniqueReportPreviewKey = this.$uuid.v4();
+                    this.uniqueSummeryPreviewKey = this.$uuid.v4();
                 }).catch(error => {
                     console.log(error);
                 }).finally(() => {
@@ -105,6 +137,8 @@
                         if (data.searches === undefined || data.searches === null)
                             data.searches = {};
                         this.reportSchema['searches'] = data.searches;
+                        if (data.report_config !== null && data.report_config !== undefined)
+                            this.reportSchema.report_config = data.report_config;
                         this.previewReportConfiguration();
                     }).catch(error => {
                         console.log(error);
@@ -124,8 +158,8 @@
 </script>
 
 <style lang="scss" scoped>
-    .json-container {
-        max-height: 700px;
-        overflow-y: scroll;
-    }
+	.json-container {
+		max-height: 700px;
+		overflow-y: scroll;
+	}
 </style>

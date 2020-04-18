@@ -141,27 +141,23 @@ export default {
             }
         },
         chartType: function (newVal, oldVal) {
-            if (newVal === 'bar') {
-                this.chartOptions.plotOptions.series.stacking = null;
-                this.chartOptions.chart.type = this.chartType;
-            } else if (newVal === 'column') {
-                this.chartOptions.plotOptions.column.stacking = null;
-                this.chartOptions.chart.type = this.chartType;
-            } else if (newVal === 'stack_bar') {
+            if (newVal.value === 'stack_bar') {
                 this.chartOptions.chart.type = 'bar';
                 this.chartOptions.plotOptions.series.stacking = 'normal';
-            } else if (newVal === 'stack_column') {
+            } else if (newVal.value === 'stack_column') {
                 this.chartOptions.chart.type = 'column';
                 this.chartOptions.plotOptions.column.stacking = 'normal';
             } else {
-                this.chartOptions.chart.type = this.chartType;
+                this.chartOptions.plotOptions.series.stacking = null;
+                this.chartOptions.plotOptions.column.stacking = null;
+                this.chartOptions.chart.type = this.chartType.value;
             }
             this.renderChart();
         },
     },
     methods: {
         renderChart: function () {
-            if (this.chartType === 'pie')
+            if (this.chartType.value === 'pie')
                 this.renderPieChart();
             else
                 this.renderLineChart();
@@ -171,22 +167,22 @@ export default {
             let groupDataFormatter = {};
             let xDataFormatter = {};
             for (let index = 0; index < this.data.length; index++) {
-                let _key = this.data[index][this.xColumn];
-                let _groupKey = this.data[index][this.chartGroup];
+                let _key = this.data[index][this.xColumn.value];
+                let _groupKey = this.data[index][this.chartGroup.value];
                 // X-Axis Data
                 if (!xDataFormatter.hasOwnProperty(_key))
                     xDataFormatter[_key] = {};
                 if (!xDataFormatter[_key].hasOwnProperty(_groupKey))
-                    xDataFormatter[_key][_groupKey] = this.data[index][this.yColumn];
+                    xDataFormatter[_key][_groupKey] = this.data[index][this.yColumn.value];
                 else
-                    xDataFormatter[_key][_groupKey] += this.data[index][this.yColumn];
+                    xDataFormatter[_key][_groupKey] += this.data[index][this.yColumn.value];
                 // Grouping Data
                 if (!groupDataFormatter.hasOwnProperty(_groupKey))
                     groupDataFormatter[_groupKey] = {};
                 if (!groupDataFormatter[_groupKey].hasOwnProperty(_key))
-                    groupDataFormatter[_groupKey][_key] = this.data[index][this.yColumn];
+                    groupDataFormatter[_groupKey][_key] = this.data[index][this.yColumn.value];
                 else
-                    groupDataFormatter[_groupKey][_key] += this.data[index][this.yColumn];
+                    groupDataFormatter[_groupKey][_key] += this.data[index][this.yColumn.value];
             }
             let groupData = Object.keys(groupDataFormatter);
             let xSeriesData = Object.keys(xDataFormatter);
@@ -214,12 +210,12 @@ export default {
             // Prepare X-Series values and format data to generate Y-Series values
             let groupDataFormatter = {};
             for (let index = 0; index < this.data.length; index++) {
-                let _groupKey = this.data[index][this.chartGroup];
+                let _groupKey = this.data[index][this.chartGroup.value];
                 // Grouping Data
                 if (!groupDataFormatter.hasOwnProperty(_groupKey))
-                    groupDataFormatter[_groupKey] = this.data[index][this.yColumn];
+                    groupDataFormatter[_groupKey] = this.data[index][this.yColumn.value];
                 else
-                    groupDataFormatter[_groupKey] += this.data[index][this.yColumn];
+                    groupDataFormatter[_groupKey] += this.data[index][this.yColumn.value];
             }
             let groupData = Object.keys(groupDataFormatter);
             let pieSeriesData = {
@@ -245,17 +241,5 @@ export default {
     created() {
     },
     mounted() {
-        this.chartGroups = this.headers;
-        this.xColumns = this.headers;
-        this.yColumns = this.headers;
-        if (this.headers.length >= 3) {
-            if (this.chartGroup == null)
-                this.chartGroup = this.headers[1].value;
-            if (this.xColumn == null)
-                this.xColumn = this.headers[2].value;
-            if (this.yColumn == null)
-                this.yColumn = this.headers[3].value;
-        }
-        this.chartType = 'line';
     }
 }

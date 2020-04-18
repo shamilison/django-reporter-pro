@@ -9,7 +9,7 @@
 				</v-col>
 				<v-col class="pb-0" cols="6" sm="6">
 					<v-select :items="reportTypes" class="mt-2" dense label="Report Type"
-							  outlined v-model="reportType"></v-select>
+							  outlined return-object v-model="reportType"></v-select>
 				</v-col>
 				<v-col class="pt-0" cols="12" sm="12">
 					<v-card>
@@ -45,11 +45,17 @@
 				</v-col>
 				<v-col class="mt-1" cols="12" sm="12">
 					<TableRenderer :data="previewData" :headers="previewHeaders"
-								   :key="uniqueTablePreviewKey" v-if="reportType === 'table'"></TableRenderer>
+								   :key="uniqueTablePreviewKey" :reportSchema="reportSchema"
+								   v-if="reportType !== null && reportType.value === 'table'">
+					</TableRenderer>
 					<HighChartRenderer :data="previewData" :headers="previewHeaders"
-									   :key="uniqueReportPreviewKey" v-else-if="reportType === 'chart'"></HighChartRenderer>
+									   :key="uniqueReportPreviewKey" :reportSchema="reportSchema"
+									   v-else-if="reportType !== null && reportType.value === 'chart'">
+					</HighChartRenderer>
 					<SummeryRenderer :data="previewData" :headers="previewHeaders"
-									 :key="uniqueSummeryPreviewKey" v-else></SummeryRenderer>
+									 :key="uniqueSummeryPreviewKey" :reportSchema="reportSchema"
+									 v-else-if="reportType !== null && reportType.value === 'summery'">
+					</SummeryRenderer>
 				</v-col>
 			</v-row>
 		</v-col>
@@ -99,6 +105,13 @@
                 ],
                 reportSchema: {
                     table: null,
+                    report_config: {
+                        report_type: {
+                            value: null,
+                        },
+                        chart: {},
+                        widget: {},
+                    },
                     dimensions: {},
                     measures: {},
                     filters: [],
@@ -191,6 +204,12 @@
                         if (data.searches === undefined || data.searches === null)
                             data.searches = {};
                         this.reportSchema['searches'] = data.searches;
+                        if (data.report_config === undefined || data.report_config === null)
+                            data.report_config = {};
+                        this.reportSchema['report_config'] = data.report_config;
+                        this.reportType = data.report_config['report_type'];
+
+                        this.previewReportConfiguration();
                     }).catch(error => {
                         console.log(error);
                     }).finally(() => {
@@ -231,6 +250,9 @@
                         this.reportSchema['table'] = null;
                     }
                 },
+            },
+            reportType: function (newVal, oldVal) {
+                this.reportSchema.report_config['report_type'] = newVal;
             },
         },
         mounted() {
