@@ -15,6 +15,12 @@
         components: {},
         mixins: [],
         props: {
+            reportSchema: {
+                type: Object,
+                default: function () {
+                    return {};
+                }
+            },
             headers: {
                 type: Array,
                 default: function () {

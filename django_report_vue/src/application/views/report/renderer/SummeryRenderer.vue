@@ -1,9 +1,9 @@
 <template>
 	<v-card class="mb-3 pa-3" max-width="400">
-		<v-row>
+		<v-row v-show="update">
 			<v-col class="pb-0" cols="12" sm="12">
 				<v-select :items="headers" class="mt-2" dense label="Summery Field"
-						  outlined v-model="summeryField"></v-select>
+						  outlined return-object v-model="summeryField"></v-select>
 			</v-col>
 		</v-row>
 		<v-list class="transparent">
@@ -31,6 +31,18 @@
         components: {},
         mixins: [],
         props: {
+            reportSchema: {
+                type: Object,
+                default: function () {
+                    return {};
+                }
+            },
+            update: {
+                type: Boolean,
+                default: function () {
+                    return true;
+                }
+            },
             headers: {
                 type: Array,
                 default: function () {
@@ -47,11 +59,14 @@
         watch: {
             summeryField: function (newValue) {
                 try {
-                    this.summeryValue = this.data[0][newValue];
+                    this.summeryValue = this.data[0][newValue.value];
                 } catch (e) {
                     this.summeryValue = 0;
                 }
-            }
+                if (!this.reportSchema.report_config.hasOwnProperty('widget'))
+                    this.reportSchema.report_config['widget'] = {};
+                this.reportSchema.report_config.widget['summery_field'] = newValue;
+            },
         },
         data() {
             return {
@@ -63,7 +78,9 @@
         methods: {},
         mounted() {
             try {
-                this.summeryField = this.headers[1].value;
+                if (this.reportSchema.report_config !== null && this.reportSchema.report_config.widget !== null) {
+                    this.summeryField = this.reportSchema.report_config.widget['summery_field'];
+                }
             } catch (e) {
             }
         },
