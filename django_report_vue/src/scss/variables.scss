@@ -1,0 +1,40 @@
+// src/sass/variables.scss
+
+// Vuetify Global
+$font-size-root: 13px;
+$line-height-root: 1.2;
+$border-radius-root: 4px;
+
+// VList
+$list-padding: 0;
+
+// VTab
+$tabs-bar-height: 36px;
+
+// VInput
+$input-font-size: 13px;
+$input-max-height: 28px;
+$input-label-height: 16px;
+
+// VSubheader
+$subheader-item-single-height: 36px !default;
+
+// VChip
+$chip-avatar-size: 24px !default;
+
+// VLabel
+$label-font-size: 13px;
+
+// VTextField
+$text-field-dense-icon-append-prepend-margin-top: 8px;
+
+// VIcon
+$icon-size: 18px;
+$icon-size-dense: 16px;
+
+// VExpansionPanel
+$expansion-panel-header-font-size: 12px !default;
+$expansion-panel-header-padding: 16px 16px;
+
+// Required for modifying core defaults
+//@import '~vuetify/src/styles/styles.sass';

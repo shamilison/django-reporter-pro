@@ -1,15 +1,15 @@
 <template>
-    <v-list dense>
-        <FieldPicker :fields="reportSchema['fields']" :onItemSelected="onItemSelected"
-                     :purpose="null">
-        </FieldPicker>
-        <v-list-item :key="item.name" @click="" v-for="item in fields">
-            <v-list-item-content class="pt-0 pb-0">
-                <v-divider></v-divider>
-                <FilterField :field="item"></FilterField>
-            </v-list-item-content>
-        </v-list-item>
-    </v-list>
+	<v-list dense>
+		<FieldPicker :fields="reportSchema['fields']" :model="reportSchema['table']"
+					 :onItemSelected="onItemSelected" :purpose="'Filter'">
+		</FieldPicker>
+		<v-list-item :key="item.key_name" @click="" v-for="item in fields">
+			<v-list-item-content class="pt-0 pb-0">
+				<v-divider></v-divider>
+				<FilterField :deleteField="deleteField" :field="item"></FilterField>
+			</v-list-item-content>
+		</v-list-item>
+	</v-list>
 </template>
 
 <script>
@@ -40,19 +40,40 @@
             }
         },
         computed: {},
-        watch: {}, created() {
+        watch: {
+            filters: function (newVal) {
+                this.populateListItems(this.filters);
+            }
+        },
+        created() {
         },
         methods: {
+            deleteField(field) {
+                delete this.filters[field.key_name];
+                this.populateListItems(this.filters);
+            },
             populateListItems(fields) {
                 let keys = Object.keys(fields);
-                this.fields = [];
+                let _fields = [];
                 for (let index = 0; index < keys.length; index++) {
-                    this.fields.push(fields[keys[index]]);
+                    _fields.push(fields[keys[index]]);
                 }
+                this.fields = _fields;
             },
             onItemSelected(item) {
-                this.filters[item.name] = item;
-                this.populateListItems(this.filters);
+                if (!this.filters.hasOwnProperty(item.key_name)) {
+                    this.filters[item.key_name] = item;
+                    this.populateListItems(this.filters);
+                } else {
+                    this.$notify({
+                        type: 'warn',
+                        title: 'Field already ADDED!',
+                        text: 'The field you are trying to add, has been added in list already!',
+                        duration: 4000,
+                        speed: 1000,
+                        data: {}
+                    });
+                }
             },
             editItem(item) {
             },

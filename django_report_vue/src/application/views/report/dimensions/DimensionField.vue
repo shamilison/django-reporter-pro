@@ -1,24 +1,36 @@
 <template>
-    <v-row>
-        <v-col class="pa-3 pt-1 pb-2" cols="9">
-            <div class="pt-2 pb-2">{{field.name}}</div>
-        </v-col>
-        <v-col class="pa-3 pt-2 pb-1" cols="3">
-            <v-icon @click="deleteItem(field)" class="mr-2 ml-2 mt-1 float-right" small>
-                mdi-delete
-            </v-icon>
-            <v-menu :close-on-click="false" :close-on-content-click="false"
-                    bottom offset-y v-model="settingShown">
-                <template v-slot:activator="{ on }">
-                    <v-btn class="mr-2 ml-2 float-right" outlined small v-on="on">
-                        <v-icon left small>mdi-pencil</v-icon>
-                        Settings
-                    </v-btn>
-                </template>
-                <DimensionSetting :closeMenu="closeMenu"></DimensionSetting>
-            </v-menu>
-        </v-col>
-    </v-row>
+	<v-row>
+		<v-col class="pa-3 pt-1 pb-2" cols="6">
+			<div class="pt-2 pb-2">
+				<span v-if="field._display_config !== undefined && field._display_config.label !== ''">
+					{{field._display_config.label}} ({{field.key_name}})
+				</span>
+				<span v-else>{{field.key_name}}</span>
+			</div>
+		</v-col>
+		<v-col class="pa-3 pt-1 pb-2" cols="3">
+			<div class="pt-2 pb-2">
+				<span v-if="field._display_config !== undefined && field._display_config.sort !== ''">
+					{{field._display_config.sort}}
+				</span>
+			</div>
+		</v-col>
+		<v-col class="pa-3 pt-2 pb-1" cols="3">
+			<v-menu :close-on-click="false" :close-on-content-click="false"
+					bottom offset-y v-model="settingShown">
+				<template v-slot:activator="{ on }">
+					<v-btn class="mr-2 ml-2 float-right" outlined small v-on="on">
+						<v-icon left small>mdi-pencil</v-icon>
+						Settings
+					</v-btn>
+				</template>
+				<DimensionSetting :closeMenu="closeMenu" :field="field"></DimensionSetting>
+			</v-menu>
+			<v-icon @click="deleteField(field)" class="mr-2 ml-2 mt-1 float-right" small>
+				mdi-delete
+			</v-icon>
+		</v-col>
+	</v-row>
 </template>
 
 <script>
@@ -34,6 +46,11 @@
                     return {};
                 }
             },
+            deleteField: {
+                type: Function,
+                default: function (item) {
+                }
+            },
         },
         mixins: [],
         data() {
@@ -45,8 +62,6 @@
         watch: {}, created() {
         },
         methods: {
-            deleteItem(item) {
-            },
             closeMenu(item) {
                 this.settingShown = false;
             },

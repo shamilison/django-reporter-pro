@@ -18,12 +18,9 @@ import importlib
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path
-from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("django-report-pro/", TemplateView.as_view(template_name="django_report_pro.html"),
-         name="django_report_pro_url", ),
 ]
 
 for _app in settings.INSTALLED_APPS:
