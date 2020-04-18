@@ -25,7 +25,9 @@ class Command(BaseCommand):
                     ],
                 )]
             ).get('_meta'),
+            'report_config': report_config.report_config,
             'dimensions': report_config.dimensions,
             'measures': report_config.measures,
             'filters': report_config.filters,
+            'searches': report_config.searches,
         })

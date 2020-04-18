@@ -12,6 +12,7 @@ from jsonfield import JSONField
 
 class ReportConfiguration(models.Model):
     model = models.ForeignKey(ContentType, default=None, null=True, on_delete=models.SET_NULL, related_name='reports')
+    report_config = JSONField(max_length=8192, default=None, null=True)
     dimensions = JSONField(max_length=8192, default=None, null=True)
     measures = JSONField(max_length=8192, default=None, null=True)
     filters = JSONField(max_length=8192, default=None, null=True)

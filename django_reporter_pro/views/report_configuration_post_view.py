@@ -25,6 +25,7 @@ class ReportConfigurationPOSTView(APIView):
         report_config.model = ContentType.objects.get(
             app_label=model_info.get('app_label'), model=model_info.get('model_name')
         )
+        report_config.report_config = _post_data.get('report_config')
         report_config.dimensions = _post_data.get('dimensions')
         report_config.measures = _post_data.get('measures')
         report_config.filters = _post_data.get('filters')
@@ -41,6 +42,7 @@ class ReportConfigurationPOSTView(APIView):
         report_config.model = ContentType.objects.get(
             app_label=model_info.get('app_label'), model=model_info.get('model_name')
         )
+        report_config.report_config = _put_data.get('report_config')
         report_config.dimensions = _put_data.get('dimensions')
         report_config.measures = _put_data.get('measures')
         report_config.filters = _put_data.get('filters')
