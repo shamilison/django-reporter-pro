@@ -44,7 +44,7 @@ class ReportModelView(ModelJsonHandlerView):
         if request.GET.get('all_models', 'no') == 'yes':
             models = self.get_class_by_params(
                 class_types=[{'package': 'models', 'indicator': None}],
-                decorator_name='enable_as_access', modules=settings.INSTALLED_APPS
+                decorator_name='enable_for_reporter', modules=settings.INSTALLED_APPS
             )
             return super(ReportModelView, self).get_json(
                 request, data=models,
