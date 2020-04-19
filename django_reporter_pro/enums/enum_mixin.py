@@ -1,6 +1,6 @@
 from enum import Enum
 
-from areion.areion_extension.extensions.simple_title import camel_to_title
+from django_reporter_pro.extensions.basic.stringification import camel_to_title
 
 
 class EnumMixin(Enum):
