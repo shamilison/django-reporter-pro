@@ -26,6 +26,14 @@
 	}
 	```
 * Add `django_reporter_pro` app in our installed app's list
+	```bash
+	# Vuejs Integration Helpers
+    'webpack_loader',
+    'corsheaders',
+   
+	# Reporter app
+	'django_reporter_pro',
+	```
 * Include urls of reporter library in your project urls.py
 url(r'^', include('django_reporter_pro.urls')),
 * These are the URLS:
@@ -39,6 +47,7 @@ url(r'^', include('django_reporter_pro.urls')),
 	cd <reporting_cloned_folder_name>
 	pip install -r packages.txt
 	```
+* Run `python manage.py migrate` to introduce `django_reporter_pro` module models
 * Use following decorator over a model to make it available for reporter: `enable_for_reporter`
 * Here `<reporting_cloned_folder_name>/django_report_vue` is a standalone VueJS project:
 	Go to `<reporting_cloned_folder_name>/django_report_vue` and run:
