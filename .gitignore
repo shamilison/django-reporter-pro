@@ -212,9 +212,6 @@ ENV/
 # mkdocs documentation
 /site
 
-# migration files
-migrations
-
 #config files
 config/db_config.py
 config/celery_config.py
