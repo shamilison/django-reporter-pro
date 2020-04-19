@@ -2,9 +2,9 @@
 
 from django.core.management.base import BaseCommand
 
-from django_reporter.django_reporter_pro.controller.query_processor import QueryProcessor
-from django_reporter.django_reporter_pro.extensions.handlers.json_handler import JSONHandler
-from django_reporter.django_reporter_pro.models import ReportConfiguration
+from django_reporter_pro.controller.query_processor import QueryProcessor
+from django_reporter_pro.extensions.handlers.json_handler import JSONHandler
+from django_reporter_pro.models import ReportConfiguration
 
 
 class Command(BaseCommand):

@@ -5,7 +5,7 @@ import importlib
 from django.apps import apps
 from django.conf import settings
 
-from django_reporter.django_reporter_pro.views.model_json_view import ModelJsonHandlerView
+from django_reporter_pro.views.model_json_view import ModelJsonHandlerView
 
 
 class ReportModelView(ModelJsonHandlerView):
