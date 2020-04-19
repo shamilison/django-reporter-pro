@@ -4,9 +4,9 @@ from django.http.response import JsonResponse
 from rest_framework.exceptions import APIException
 from rest_framework.views import APIView
 
-from django_reporter.django_reporter_pro.controller.query_processor import QueryProcessor
-from django_reporter.django_reporter_pro.extensions.handlers.json_handler import JSONHandler
-from django_reporter.django_reporter_pro.models import ReportConfiguration
+from django_reporter_pro.controller.query_processor import QueryProcessor
+from django_reporter_pro.extensions.handlers.json_handler import JSONHandler
+from django_reporter_pro.models import ReportConfiguration
 
 
 class ReportConfigurationPreView(APIView):

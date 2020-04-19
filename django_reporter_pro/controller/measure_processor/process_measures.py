@@ -1,6 +1,6 @@
 from django.db.models import F, Sum, Count
-from django_reporter.django_reporter_pro.extensions.django.functions.timestamp import DateFromTimeStamp
 from django_reporter_pro.enums.enum_mixin import EnumMixin
+from django_reporter_pro.extensions.django.functions.timestamp import DateFromTimeStamp
 
 
 class AggregateEnum(EnumMixin):

@@ -1,8 +1,8 @@
 from django.apps import apps
 
-from django_reporter.django_reporter_pro.controller.dimension_processor.process_dimensions import ProcessDimension
-from django_reporter.django_reporter_pro.controller.filter_processor.process_filters import ProcessFilter
-from django_reporter.django_reporter_pro.controller.measure_processor.process_measures import ProcessMeasure
+from django_reporter_pro.controller.dimension_processor.process_dimensions import ProcessDimension
+from django_reporter_pro.controller.filter_processor.process_filters import ProcessFilter
+from django_reporter_pro.controller.measure_processor.process_measures import ProcessMeasure
 
 get_model = apps.get_model
 
