@@ -25,7 +25,7 @@
 	    },
 	}
 	```
-* Add `django_reporter_pro` app in our installed app's list
+* Add apps in our installed app's list
 	```bash
 	# Vuejs Integration Helpers
     'webpack_loader',
@@ -48,7 +48,6 @@ url(r'^', include('django_reporter_pro.urls')),
 	pip install -r packages.txt
 	```
 * Run `python manage.py migrate` to introduce `django_reporter_pro` module models
-* Use following decorator over a model to make it available for reporter: `enable_for_reporter`
 * Here `<reporting_cloned_folder_name>/django_report_vue` is a standalone VueJS project:
 	Go to `<reporting_cloned_folder_name>/django_report_vue` and run:
 	```
@@ -56,3 +55,4 @@ url(r'^', include('django_reporter_pro.urls')),
 	npm run serve
 	```
 	This will update a `webpack-application-stats.json` file for your django project's webpack.
+* Use following decorator over a model to make it available for reporter: `enable_for_reporter`
