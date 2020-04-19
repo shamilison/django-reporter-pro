@@ -1,10 +1,9 @@
 from django.db.models import F, Sum, Count
-
-from areion.areion_extension.enums.strong_enum import StrongEnum
 from django_reporter.django_reporter_pro.extensions.django.functions.timestamp import DateFromTimeStamp
+from django_reporter_pro.enums.enum_mixin import EnumMixin
 
 
-class AggregateEnum(StrongEnum):
+class AggregateEnum(EnumMixin):
     UN_AGGREGATED = 'unagg'
     COUNT_DISTINCT = 'count'
     COUNT_ALL = 'countall'

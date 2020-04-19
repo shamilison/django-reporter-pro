@@ -1,9 +1,8 @@
 from django.db.models import Q
+from django_reporter_pro.enums.enum_mixin import EnumMixin
 
-from areion.areion_extension.enums.strong_enum import StrongEnum
 
-
-class FilterTypeEnum(StrongEnum):
+class FilterTypeEnum(EnumMixin):
     EQUAL = 'eq'
     NOT_EQUAL = 'neq'
     IN = 'in'
