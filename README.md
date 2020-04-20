@@ -37,7 +37,7 @@
 * Include urls of reporter library in your project urls.py
 url(r'^', include('django_reporter_pro.urls')),
 * These are the URLS:
-	```
+	```bash
 	/django-reporter/#/build-report/create/ - to create report
 	/django-reporter/#/build-report/update/{pk}/ - to update report
 	/django-reporter/#/build-report/view/{pk}/ - to view the report output
@@ -50,7 +50,7 @@ url(r'^', include('django_reporter_pro.urls')),
 * Run `python manage.py migrate` to introduce `django_reporter_pro` module models
 * Here `<reporting_cloned_folder_name>/django_report_vue` is a standalone VueJS project:
 	Go to `<reporting_cloned_folder_name>/django_report_vue` and run:
-	```
+	```bash
 	npm install
 	npm run serve
 	```

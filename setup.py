@@ -10,14 +10,15 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name='django_reporter_pro',
-    version='2020.1.2',
+    name='django-reporter-pro',
+    version='2020.1.3',
     packages=find_packages(),
     include_package_data=True,
     license='Other/Proprietary License',  # example license
-    description='Django report builder pro.',
+    description='Django report builder pro',
     long_description=README,
-    url='',
+    long_description_content_type='text/markdown',
+    url='https://github.com/shamilison/django-reporter-pro',
     author='Shamil Sakib',
     author_email='shamilsakib@gmail.com',
     classifiers=[
@@ -35,6 +36,6 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
     install_requires=[
-        'djangorestframework==3.9.*',
+        'djangorestframework==3.*.*',
     ]
 )
