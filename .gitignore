@@ -222,7 +222,7 @@ config/voice_config.py
 config/email_config.py
 
 
-pocket_application/webpack-application-stats.json
+django_report_vue/webpack-application-stats.json
 
 static-collects/
 temp-media-files/
