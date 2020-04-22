@@ -22,6 +22,8 @@
 							<v-tab-item :key="item.tab" :reverse-transition="false" :transition="false"
 										class="pb-5" v-for="item in items">
 								<v-card class="pb-2" flat>
+									<ReportInformation :reportSchema="reportSchema"
+													   v-if="item.tab === 'information'"></ReportInformation>
 									<DimensionList :reportSchema="reportSchema"
 												   v-if="item.tab === 'dimensions'"></DimensionList>
 									<MeasureList :reportSchema="reportSchema"
@@ -78,10 +80,12 @@
     import SearchList from "@/application/views/report/searches/SearchList";
     import HighChartRenderer from "@/application/views/report/renderer/HighChartRenderer";
     import SummeryRenderer from "@/application/views/report/renderer/SummeryRenderer";
+    import ReportInformation from "@/application/views/report/information/ReportInformation";
 
     export default {
         name: 'BuildReport',
         components: {
+            ReportInformation,
             SummeryRenderer,
             HighChartRenderer, SearchList, TableRenderer, FilterList, MeasureList, DimensionList, VueJsonPretty
         },
@@ -112,6 +116,7 @@
                         chart: {},
                         widget: {},
                     },
+                    information: {},
                     dimensions: {},
                     measures: {},
                     filters: [],
@@ -120,10 +125,11 @@
                 },
                 tab: null,
                 items: [
+                    {tab: 'information', content: 'Information'},
+                    {tab: 'searches', content: 'Searches'},
                     {tab: 'filters', content: 'Filter'},
                     {tab: 'measures', content: 'Measure'},
                     {tab: 'dimensions', content: 'Dimension'},
-                    {tab: 'searches', content: 'Searches'},
                 ],
                 uniqueTablePreviewKey: this.$uuid.v4(),
                 uniqueReportPreviewKey: this.$uuid.v4(),
@@ -192,6 +198,9 @@
                     ).then(response => {
                         let data = response.data;
                         this.selectedTable = data.table;
+                        if (data.information === undefined || data.information === null)
+                            data.information = {};
+                        this.reportSchema['information'] = data.information;
                         if (data.dimensions === undefined || data.dimensions === null)
                             data.dimensions = {};
                         this.reportSchema['dimensions'] = data.dimensions;
@@ -224,6 +233,7 @@
                     this.tableFieldMap = {};
                     this.reportSchema['fields'] = {};
                     if (oldVal !== null) {
+                        this.reportSchema['information'] = {};
                         this.reportSchema['dimensions'] = {};
                         this.reportSchema['measures'] = {};
                         this.reportSchema['filters'] = [];
