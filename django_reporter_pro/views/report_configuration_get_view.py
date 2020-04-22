@@ -29,11 +29,12 @@ class ReportConfigurationGETView(APIView):
                     ],
                 )]
             ).get('_meta'),
-            'report_config': report_config.report_config,
+            'information': report_config.information,
             'dimensions': report_config.dimensions,
             'measures': report_config.measures,
             'filters': report_config.filters,
             'searches': report_config.searches,
+            'report_config': report_config.report_config,
         })
 
     def post(self, request, *args, **kwargs):

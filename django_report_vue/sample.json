@@ -1,0 +1,89 @@
+{
+    "executed_at": {
+        "attname": "executed_at",
+        "column": "executed_at",
+        "name": "executed_at",
+        "blank": false,
+        "editable": true,
+        "null": true,
+        "help_text": "",
+        "many_to_many": "None",
+        "many_to_one": "None",
+        "one_to_one": "None",
+        "one_to_many": "None",
+        "primary_key": false,
+        "unique": false,
+        "verbose_name": "executed at",
+        "_python_type": "django.db.models.fields.BigIntegerField",
+        "related_model": null,
+        "remote_field": null,
+        "key_name": "executed_at",
+        "query_name": "executed_at",
+        "relations": [
+        ],
+        "_measure_config": {
+            "label": "Responded At",
+            "sort": null,
+            "aggregation": "monthly",
+            "apply_as_date": true
+        }
+    },
+    "uuid": {
+        "attname": "uuid",
+        "column": "uuid",
+        "name": "uuid",
+        "blank": false,
+        "editable": true,
+        "null": false,
+        "help_text": "",
+        "many_to_many": "None",
+        "many_to_one": "None",
+        "one_to_one": "None",
+        "one_to_many": "None",
+        "primary_key": true,
+        "unique": true,
+        "verbose_name": "uuid",
+        "_python_type": "django.db.models.fields.CharField",
+        "related_model": null,
+        "remote_field": null,
+        "key_name": "uuid",
+        "query_name": "uuid",
+        "relations": [
+        ],
+        "_measure_config": {
+            "label": "Answer Count",
+            "sort": "descending",
+            "aggregation": "countall",
+            "apply_as_date": false
+        }
+    },
+    "reward": {
+        "attname": "reward",
+        "column": "reward",
+        "name": "reward",
+        "blank": false,
+        "editable": true,
+        "null": false,
+        "help_text": "",
+        "many_to_many": "None",
+        "many_to_one": "None",
+        "one_to_one": "None",
+        "one_to_many": "None",
+        "primary_key": false,
+        "unique": false,
+        "verbose_name": "reward",
+        "_python_type": "django.db.models.fields.IntegerField",
+        "related_model": null,
+        "remote_field": null,
+        "key_name": "reward",
+        "query_name": "reward",
+        "relations": [
+        ],
+        "_measure_config": {
+            "label": "Reward",
+            "sort": null,
+            "aggregation": "sum",
+            "apply_as_date": false
+        }
+    }
+}
