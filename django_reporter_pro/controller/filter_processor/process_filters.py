@@ -70,11 +70,10 @@ class ProcessFilter(object):
         if filter_type == FilterTypeEnum.BETWEEN_INCLUSIVE.value:
             _query_dict[key + '__gte'] = float(filter_inputs[0])
             _query_dict[key + '__lte'] = float(filter_inputs[1])
-            _query = Q(**_query_dict)
         elif filter_type == FilterTypeEnum.GREATER_THAN.value:
             _query_dict[key + '__gt'] = float(filter_inputs[0])
-            _query = Q(**_query_dict)
         elif filter_type == FilterTypeEnum.EQUAL.value:
             _query_dict[key] = filter_inputs[0]
+        if _query_dict:
             _query = Q(**_query_dict)
         return _query
