@@ -81,6 +81,7 @@
     import HighChartRenderer from "@/application/views/report/renderer/HighChartRenderer";
     import SummeryRenderer from "@/application/views/report/renderer/SummeryRenderer";
     import ReportInformation from "@/application/views/report/information/ReportInformation";
+	  import {ErrorWrapper} from "./services/utils";
 
     export default {
         name: 'BuildReport',
@@ -154,7 +155,7 @@
                     this.uniqueReportPreviewKey = this.$uuid.v4();
                     this.uniqueSummeryPreviewKey = this.$uuid.v4();
                 }).catch(error => {
-                    console.log(error);
+                    new ErrorWrapper(error)
                 }).finally(() => {
                 });
             },
@@ -170,7 +171,7 @@
                     }).then(response => {
                         console.log(response);
                     }).catch(error => {
-                        console.log(error);
+                        new ErrorWrapper(error)
                     }).finally(() => {
                     });
                 } else {
@@ -183,7 +184,7 @@
                     }).then(response => {
                         console.log(response);
                     }).catch(error => {
-                        console.log(error);
+                        new ErrorWrapper(error)
                     }).finally(() => {
                     });
                 }
@@ -220,7 +221,7 @@
 
                         this.previewReportConfiguration();
                     }).catch(error => {
-                        console.log(error);
+                        new ErrorWrapper(error)
                     }).finally(() => {
                     });
                 }
@@ -253,7 +254,7 @@
                             this.tableFieldMap = this.convertToFieldMap(data);
                             this.reportSchema['fields'] = this.tableFieldMap;
                         }).catch(error => {
-                            console.log(error);
+                            new ErrorWrapper(error)
                         }).finally(() => {
                         });
                     } else {
@@ -297,7 +298,7 @@
                     this.getReportConfiguration();
                 }
             }).catch(error => {
-                console.log(error);
+                new ErrorWrapper(error)
             }).finally(() => {
             });
         },
