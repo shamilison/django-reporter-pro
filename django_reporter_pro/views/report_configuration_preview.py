@@ -41,12 +41,13 @@ class ReportConfigurationPreView(APIView):
                     ],
                 )]
             ).get('_meta'),
-            'report_config': report_config.report_config,
+            'information': report_config.information,
             'dimensions': report_config.dimensions,
             'measures': report_config.measures,
             'filters': report_config.filters,
             'searches': report_config.searches,
             'search_inputs': search_inputs,
+            'report_config': report_config.report_config,
         }
         headers, query = QueryProcessor.build_query(request=request, configuration=configuration)
         return JsonResponse(data={

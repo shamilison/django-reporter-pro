@@ -1,8 +1,8 @@
 # Created by shamilsakib at 04/10/20
 
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.postgres.fields import JSONField
 from django.db import models
-from jsonfield import JSONField
 
 
 # BASE_MODEL = models.Model
