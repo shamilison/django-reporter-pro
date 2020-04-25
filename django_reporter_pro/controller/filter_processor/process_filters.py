@@ -55,7 +55,7 @@ class ProcessFilter(object):
             _search_key = _search.get('query_name')
             _or_queries = None
             for _val in _values.split(','):
-                if _search.get('many_to_one'):
+                if _search.get('many_to_one', None) is True:
                     _query = Q(**{_search_key: _val})
                 else:
                     _query = Q(**{_search_key + '__icontains': _val})

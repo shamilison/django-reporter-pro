@@ -123,11 +123,21 @@ panel
             },
             searchInputs: {
                 deep: true,
-                handler: function (newVal) {
+                handler: function (newVal, oldVal) {
                     let keys = Object.keys(newVal);
                     for (let index = 0; index < keys.length; index++) {
                         this.searchConfig[keys[index]] = newVal[keys[index]];
                     }
+                    // let encoded = btoa(JSON.stringify(newVal));
+                    // console.log(encoded);
+                    // let actual = JSON.parse(atob(encoded));
+                    // console.log(actual);
+                    this.$router.replace({
+                        ...this.$router.currentRoute,
+                        query: {
+                            search: btoa(JSON.stringify(newVal))
+                        }
+                    });
                 }
             },
         },
@@ -142,6 +152,11 @@ panel
             },
         },
         mounted() {
+            try {
+                this.searchInputs = JSON.parse(atob(this.$route.query.search));
+            } catch (error) {
+				console.log(error);
+            }
         },
     };
 </script>
