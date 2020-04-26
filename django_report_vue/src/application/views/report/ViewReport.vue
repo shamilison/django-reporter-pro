@@ -1,8 +1,8 @@
 <template>
 	<v-row>
-		<v-col class="pt-0" cols="8" sm="8">
+		<v-col class="pt-0" cols="12" sm="12">
 			<v-row>
-				<v-col class="mt-1 pb-0 mb-2" cols="12" sm="12">
+				<v-col class="mt-1 pb-0 mb-2" cols="12" sm="12" v-if="searchEnabled">
 					<SearchRenderer :key="uniqueSearchKey" :searchConfig="searchConfig"
 									:searchFields="reportSchema['searches']"
 									@searched="previewReportConfiguration"></SearchRenderer>
@@ -23,7 +23,7 @@
 				</v-col>
 			</v-row>
 		</v-col>
-		<v-col class="json-container" cols="4" sm="4">
+		<v-col class="json-container" cols="4" sm="4" v-if="jsonPrettyEnabled">
 			<VueJsonPretty :data="searchConfig" :deep="4" :highlightMouseoverNode="true"
 						   :showLength="true" :showLine="true" :showSelectController="true">
 			</VueJsonPretty>
@@ -64,6 +64,8 @@
         data() {
             return {
                 fabEnabled: false,
+                searchEnabled: false,
+                jsonPrettyEnabled: false,
                 reportGetURL: '/report-configuration/detail/',
                 reportPreviewURL: '/report-configuration-preview/',
                 contentID: 0,
@@ -96,7 +98,6 @@
                 let _vm = this;
                 this.previewHeaders = [];
                 this.previewData = [];
-                this.uniquePreviewKey = this.$uuid.v4();
                 axios({
                     method: 'put',
                     url: _vm.reportPreviewURL + this.contentID + '/',
@@ -149,6 +150,14 @@
         },
         watch: {},
         mounted() {
+            this.searchEnabled = this.$route.query['searchable'] !== '0';
+            if(!this.searchEnabled) {
+                try {
+                    this.searchConfig = JSON.parse(atob(this.$route.query.search));
+                } catch (error) {
+                    console.log(error);
+                }
+            }
             if (this.$route.params.contentID > 0) {
                 this.contentID = this.$route.params.contentID;
                 this.getReportConfiguration();
