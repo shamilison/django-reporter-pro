@@ -1,5 +1,8 @@
-from django.db.models import Q
+from django.db.models import Q, Field
 from django_reporter_pro.enums.enum_mixin import EnumMixin
+from django_reporter_pro.models.lookups import NotEqual
+
+Field.register_lookup(NotEqual)
 
 
 class FilterTypeEnum(EnumMixin):
@@ -16,8 +19,17 @@ class FilterTypeEnum(EnumMixin):
     LESS_THAN = 'lt'
     LESS_THAN_EQUAL = 'lte'
     BETWEEN_INCLUSIVE = 'numbti'
-    IS_NULL = 'is_null'
+    IS_NULL = 'isnull'
     NOT_NULL = 'not_null'
+    EXACT = 'exact'
+    IEXACT = 'iexact'
+    CONTAINS = 'contains'
+    ICONTAINS = 'icontains'
+    STARTSWITH = 'startswith'
+    ISTARTSWITH = 'istartswith'
+    ENDSWITH = 'endswith'
+    IENDSWITH = 'iendswith'
+    DATE_RANGE = 'range'
 
 
 class ProcessFilter(object):
@@ -74,6 +86,12 @@ class ProcessFilter(object):
             _query_dict[key + '__gt'] = float(filter_inputs[0])
         elif filter_type == FilterTypeEnum.EQUAL.value:
             _query_dict[key] = filter_inputs[0]
+        elif filter_type == FilterTypeEnum.NOT_EQUAL.value:
+            _query_dict[key + '__ne'] = filter_inputs[0]
+        elif filter_type == FilterTypeEnum.IS_NULL.value:
+            _query_dict[key + '__isnull'] = True
+        elif filter_type == FilterTypeEnum.NOT_NULL.value:
+            _query_dict[key + '__isnull'] = False
         if _query_dict:
             _query = Q(**_query_dict)
         return _query
