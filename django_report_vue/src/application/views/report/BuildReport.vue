@@ -11,7 +11,7 @@
 					<v-select :items="reportTypes" class="mt-2" dense label="Report Type"
 							  outlined return-object v-model="reportType"></v-select>
 				</v-col>
-				<v-col class="pt-0" cols="12" sm="12">
+				<v-col class="pt-0" cols="12" sm="12" v-if="selectedTable !== null">
 					<v-card>
 						<v-tabs background-color="primary" dark v-model="tab">
 							<v-tab :key="item.tab" v-for="item in items">
@@ -45,7 +45,7 @@
 						</v-btn>
 					</v-card>
 				</v-col>
-				<v-col class="mt-1" cols="12" sm="12">
+				<v-col class="mt-1" cols="12" sm="12" v-if="selectedTable !== null">
 					<TableRenderer :data="previewData" :headers="previewHeaders"
 								   :key="uniqueTablePreviewKey" :reportSchema="reportSchema"
 								   v-if="reportType !== null && reportType.value === 'table'">
@@ -81,14 +81,14 @@
     import HighChartRenderer from "@/application/views/report/renderer/HighChartRenderer";
     import SummeryRenderer from "@/application/views/report/renderer/SummeryRenderer";
     import ReportInformation from "@/application/views/report/information/ReportInformation";
-	  import {ErrorWrapper} from "./services/utils";
+    import {ErrorWrapper} from "./services/utils";
 
     export default {
         name: 'BuildReport',
         components: {
-            ReportInformation,
-            SummeryRenderer,
-            HighChartRenderer, SearchList, TableRenderer, FilterList, MeasureList, DimensionList, VueJsonPretty
+            ReportInformation, DimensionList, MeasureList, FilterList, SearchList,
+            SummeryRenderer, HighChartRenderer, TableRenderer,
+            VueJsonPretty,
         },
         mixins: [ModelInfoMixin],
         data() {
@@ -102,7 +102,7 @@
                 tables: [],
                 tableFieldMap: {},
                 selectedTable: null,
-                reportType: null,
+                reportType: {value: 'table', text: 'Table'},
                 reportTypes: [
                     {value: 'summery', text: 'Summery'},
                     {value: 'chart', text: 'Chart'},
@@ -126,8 +126,8 @@
                 },
                 tab: null,
                 items: [
-                    {tab: 'information', content: 'Information'},
                     {tab: 'searches', content: 'Searches'},
+                    {tab: 'information', content: 'Information'},
                     {tab: 'filters', content: 'Filter'},
                     {tab: 'measures', content: 'Measure'},
                     {tab: 'dimensions', content: 'Dimension'},
@@ -215,10 +215,11 @@
                             data.searches = {};
                         this.reportSchema['searches'] = data.searches;
                         if (data.report_config === undefined || data.report_config === null)
-                            data.report_config = {};
+                            data.report_config = {
+                                report_type: {value: 'table', text: 'Table'}
+                            };
                         this.reportSchema['report_config'] = data.report_config;
                         this.reportType = data.report_config['report_type'];
-
                         this.previewReportConfiguration();
                     }).catch(error => {
                         new ErrorWrapper(error)

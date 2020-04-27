@@ -11,13 +11,13 @@ let applicationPages = {
     children: [
         {
             path: "/build-report/create",
-            name: "BuildReport",
+            name: "CreateReport",
             component: BuildReport,
             meta: {},
         },
         {
             path: "/build-report/update/:contentID/",
-            name: "BuildReport",
+            name: "UpdateReport",
             component: BuildReport,
             meta: {},
         },
