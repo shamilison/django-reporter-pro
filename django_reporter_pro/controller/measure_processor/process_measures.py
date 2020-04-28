@@ -23,7 +23,7 @@ class ProcessMeasure(object):
         for key in measures.keys():
             _measure_field = measures.get(key)
             _measure_config = _measure_field.get('_measure_config')
-            _measure = _measure_config.get('aggregation')
+            _measure = _measure_config.get('aggregation', 'unagg')
             # Adding annotations functions
             _annotation_key = _measure_field.get('query_name') + '_' + _measure
             annotations[_annotation_key] = cls.build_measure_function(

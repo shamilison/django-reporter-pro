@@ -1,8 +1,11 @@
 from django.db.models import Q, Field
 from django_reporter_pro.enums.enum_mixin import EnumMixin
-from django_reporter_pro.models.lookups import NotEqual
+from django_reporter_pro.models.lookups import NotEqual, NotIn, NotLike, NotILike
 
 Field.register_lookup(NotEqual)
+Field.register_lookup(NotIn)
+Field.register_lookup(NotLike)
+Field.register_lookup(NotILike)
 
 
 class FilterTypeEnum(EnumMixin):
@@ -87,6 +90,18 @@ class ProcessFilter(object):
             _query_dict[key + '__lte'] = float(filter_inputs[1])
         elif filter_type == FilterTypeEnum.GREATER_THAN.value:
             _query_dict[key + '__gt'] = float(filter_inputs[0])
+        elif filter_type == FilterTypeEnum.IN.value:
+            _query_dict[key + '__in'] = filter_inputs
+        elif filter_type == FilterTypeEnum.NOT_IN.value:
+            _query_dict[key + '__not_in'] = filter_inputs
+        elif filter_type == FilterTypeEnum.LIKE.value:
+            _query_dict[key + '__contains'] = filter_inputs[0]
+        elif filter_type == FilterTypeEnum.NOT_LIKE.value:
+            _query_dict[key + '__not_contains'] = filter_inputs[0]
+        elif filter_type == FilterTypeEnum.LIKE_CASE_INS.value:
+            _query_dict[key + '__icontains'] = filter_inputs[0]
+        elif filter_type == FilterTypeEnum.NOT_LIKE_CASE_INS.value:
+            _query_dict[key + '__not_icontains'] = filter_inputs[0]
         elif filter_type == FilterTypeEnum.EQUAL.value:
             _query_dict[key] = filter_inputs[0]
         elif filter_type == FilterTypeEnum.NOT_EQUAL.value:
