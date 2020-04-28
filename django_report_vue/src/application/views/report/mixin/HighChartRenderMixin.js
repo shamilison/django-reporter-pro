@@ -220,7 +220,7 @@ export default {
             }
             let groupData = Object.keys(groupDataFormatter);
             let pieSeriesData = {
-                name: 'Brands',
+                name: this.yColumn.text,
                 colorByPoint: true,
                 data: []
             };
