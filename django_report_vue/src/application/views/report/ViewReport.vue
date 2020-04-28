@@ -118,7 +118,7 @@
             },
             getReportConfiguration: function () {
                 let _vm = this;
-                if (_vm.contentID > 0) {
+                if (_vm.contentID !== 0) {
                     axios.get(
                         this.reportGetURL + this.contentID + '/', {
                             headers: {}, params: {},
@@ -158,7 +158,7 @@
                     console.log(error);
                 }
             }
-            if (this.$route.params.contentID > 0) {
+            if (this.$route.params.contentID !== 0) {
                 this.contentID = this.$route.params.contentID;
                 this.getReportConfiguration();
             }
