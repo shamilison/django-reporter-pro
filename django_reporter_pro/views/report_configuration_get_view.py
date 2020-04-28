@@ -1,12 +1,10 @@
 # coding=utf-8
 # Created by shamilsakib at 7/19/2016
-from django.contrib.contenttypes.models import ContentType
 from django.http.response import JsonResponse
-from rest_framework.exceptions import APIException
-from rest_framework.views import APIView
-
 from django_reporter_pro.extensions.handlers.json_handler import JSONHandler
 from django_reporter_pro.models import ReportConfiguration
+from rest_framework.exceptions import APIException, NotFound
+from rest_framework.views import APIView
 
 
 class ReportConfigurationGETView(APIView):
@@ -17,7 +15,12 @@ class ReportConfigurationGETView(APIView):
         return super(ReportConfigurationGETView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        report_config = ReportConfiguration.objects.get(pk=kwargs.get('pk'))
+        try:
+            report_config = ReportConfiguration.objects.get(pk=int(kwargs.get('pk')))
+        except:
+            report_config = ReportConfiguration.objects.get(information__identifier=kwargs.get('pk'))
+        if not report_config:
+            raise NotFound("Report configuration not found.")
         return JsonResponse(data={
             'table': JSONHandler().to_json(
                 report_config.model.model_class(), depth=2,

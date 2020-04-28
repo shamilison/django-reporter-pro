@@ -128,10 +128,6 @@ panel
                     for (let index = 0; index < keys.length; index++) {
                         this.searchConfig[keys[index]] = newVal[keys[index]];
                     }
-                    // let encoded = btoa(JSON.stringify(newVal));
-                    // console.log(encoded);
-                    // let actual = JSON.parse(atob(encoded));
-                    // console.log(actual);
                     this.$router.replace({
                         ...this.$router.currentRoute,
                         query: {

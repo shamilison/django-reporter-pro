@@ -1,12 +1,11 @@
 # coding=utf-8
 # Created by shamilsakib at 7/19/2016
 from django.http.response import JsonResponse
-from rest_framework.exceptions import APIException
-from rest_framework.views import APIView
-
 from django_reporter_pro.controller.query_processor import QueryProcessor
 from django_reporter_pro.extensions.handlers.json_handler import JSONHandler
 from django_reporter_pro.models import ReportConfiguration
+from rest_framework.exceptions import APIException, NotFound
+from rest_framework.views import APIView
 
 
 class ReportConfigurationPreView(APIView):
@@ -28,7 +27,12 @@ class ReportConfigurationPreView(APIView):
         })
 
     def put(self, request, *args, **kwargs):
-        report_config = ReportConfiguration.objects.get(pk=kwargs.get('pk'))
+        try:
+            report_config = ReportConfiguration.objects.get(pk=int(kwargs.get('pk')))
+        except:
+            report_config = ReportConfiguration.objects.get(information__identifier=kwargs.get('pk'))
+        if not report_config:
+            raise NotFound("Report configuration not found.")
         search_inputs = request.data
         configuration = {
             'table': JSONHandler().to_json(

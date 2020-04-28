@@ -95,10 +95,11 @@ export default {
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
+                    showInLegend: true,
                     dataLabels: {
-                        enabled: false
-                    },
-                    showInLegend: true
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    }
                 },
             },
             series: [],

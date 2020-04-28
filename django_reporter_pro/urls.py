@@ -22,11 +22,11 @@ urlpatterns = [
         name='report_configuration_create'),
     url(r'report-configuration/update/(?P<pk>(\d{,}))/$', ReportConfigurationPOSTView.as_view(),
         name='report_configuration_update'),
-    url(r'report-configuration/detail/(?P<pk>(\d{,}))/$', ReportConfigurationGETView.as_view(),
+    url(r'report-configuration/detail/(?P<pk>[\w\-]+)/$', ReportConfigurationGETView.as_view(),
         name='report_configuration_get'),
     url(r'report-configuration-preview/$', ReportConfigurationPreView.as_view(),
         name='report_configuration_generic_preview'),
-    url(r'report-configuration-preview/(?P<pk>(\d{,}))/$', ReportConfigurationPreView.as_view(),
+    url(r'report-configuration-preview/(?P<pk>[\w\-]+)/$', ReportConfigurationPreView.as_view(),
         name='report_configuration_targeted_preview'),
 
     # Macro Report APIs
