@@ -5,7 +5,7 @@ import Application from './Application.vue'
 import router from "./routes/application-router";
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import vuetify from './plugins/vuetify';
-import HighchartsVue from 'highcharts-vue'
+import HighChartsVue from 'highcharts-vue'
 
 import Notifications from 'vue-notification';
 
@@ -14,7 +14,7 @@ Vue.config.productionTip = false;
 Vue.use(VueRouter);
 Vue.use(UUID);
 Vue.use(Notifications);
-Vue.use(HighchartsVue)
+Vue.use(HighChartsVue)
 
 
 new Vue({

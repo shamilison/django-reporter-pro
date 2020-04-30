@@ -50,8 +50,9 @@
 								   :key="uniqueTablePreviewKey" :reportSchema="reportSchema"
 								   v-if="reportType !== null && reportType.value === 'table'">
 					</TableRenderer>
-					<HighChartRenderer :data="previewData" :headers="previewHeaders"
-									   :key="uniqueReportPreviewKey" :reportSchema="reportSchema"
+					<HighChartRenderer :data="previewData" :headers="previewHeaders" :livePreview="false"
+									   :renderKey="uniqueReportPreviewKey" :key="uniqueReportPreviewKey"
+									   :reportSchema="reportSchema"
 									   v-else-if="reportType !== null && reportType.value === 'chart'">
 					</HighChartRenderer>
 					<SummeryRenderer :data="previewData" :headers="previewHeaders"

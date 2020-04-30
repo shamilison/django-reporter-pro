@@ -126,6 +126,9 @@
                     ).then(response => {
                         let data = response.data;
                         this.reportSchema['table'] = data.table;
+                        if (data.information === undefined || data.information === null)
+                            data.information = {};
+                        this.reportSchema['information'] = data.information;
                         if (data.dimensions === undefined || data.dimensions === null)
                             data.dimensions = {};
                         this.reportSchema['dimensions'] = data.dimensions;
