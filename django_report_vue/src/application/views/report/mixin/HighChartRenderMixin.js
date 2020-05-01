@@ -85,15 +85,22 @@ export default {
                 borderWidth: 0,
                 useHTML: true,
                 labelFormatter: function () {
-                    if (this.is_total === true) {
-                        return '<div class="mt-1 pt-1" style="width:200px; border-top: 1px solid darkgrey;">' +
-                            '<span style="float:left">' + this.name +
-                            '</span><span style="float:right">' + this.y_label +
-                            '</span></div>';
+                    if (this.y_label !== undefined) {
+                        if (this.is_total === true) {
+                            return '<div class="mt-1 pt-1" style="width:200px; border-top: 1px solid darkgrey;">' +
+                                '<span style="float:left">' + this.name +
+                                '</span><span style="float:right">' + this.y_label +
+                                '</span></div>';
+                        } else if (this.percentage !== undefined) {
+                            return '<div style="width:200px"><span style="float:left">' + this.name +
+                                '</span><span style="float:right">(' +
+                                this.percentage.toFixed(1) + '%) ' + this.y_label + ' </span></div>';
+                        } else {
+                            return '<div style="width:200px"><span style="float:left">' + this.name +
+                                '</span><span style="float:right">' + this.y_label + ' </span></div>';
+                        }
                     } else {
-                        return '<div style="width:200px"><span style="float:left">' + this.name +
-                            '</span><span style="float:right"> (' +
-                            this.percentage.toFixed(1) + '%) ' + this.y_label + ' </span></div>';
+                        return '<div style="width:200px"><span style="float:left">' + this.name + '</span></div>';
                     }
                 },
             },
@@ -209,6 +216,7 @@ export default {
             // Prepare X-Series values and format data to generate Y-Series values
             let groupDataFormatter = {};
             let xDataFormatter = {};
+            let chartSubTitle = null;
             for (let index = 0; index < this.data.length; index++) {
                 let _key = this.data[index][this.xColumn.value];
                 let _groupKey = this.data[index][this.chartGroup.value];
@@ -226,6 +234,7 @@ export default {
                     groupDataFormatter[_groupKey][_key] = this.data[index][this.yColumn.value];
                 else
                     groupDataFormatter[_groupKey][_key] += this.data[index][this.yColumn.value];
+                chartSubTitle = this.data[index][this.chartGroup.value];
             }
             let groupData = Object.keys(groupDataFormatter);
             let xSeriesData = Object.keys(xDataFormatter);
@@ -248,6 +257,8 @@ export default {
             }
             this.chartOptions.xAxis.categories = xSeriesData;
             this.chartOptions.series = ySeriesData;
+            this.chartOptions.title.text = this.reportSchema.information.title;
+            this.chartOptions.subtitle.text = chartSubTitle;
         },
         renderPieChart: function () {
             // Prepare X-Series values and format data to generate Y-Series values

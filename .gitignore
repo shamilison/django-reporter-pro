@@ -233,5 +233,3 @@ secret_config.py
 
 pybeyonic/
 report_builder_git/
-django_reporter/
-django_reporter_pro/static
