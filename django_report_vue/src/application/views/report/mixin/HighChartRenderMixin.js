@@ -48,12 +48,12 @@ export default {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false,
-                options3d: {
-                    enabled: true,
-                    alpha: 0,
-                    beta: -15,
-                    depth: 45,
-                }
+                // options3d: {
+                //     enabled: true,
+                //     alpha: 0,
+                //     beta: -15,
+                //     depth: 45,
+                // }
             },
             title: {
                 text: null

@@ -18,7 +18,7 @@
 						  outlined return-object v-model="yColumn"></v-select>
 			</v-col>
 		</v-row>
-		<highcharts :options="chartOptions" :highcharts="highChart3D"></highcharts>
+		<highcharts :options="chartOptions" :highcharts="highChart"></highcharts>
 	</v-card>
 </template>
 
@@ -64,6 +64,7 @@
         data() {
             return {
                 highChart3D: HighChart3D(HighChart),
+                highChart: HighChart,
 			}
         },
         computed: {},
