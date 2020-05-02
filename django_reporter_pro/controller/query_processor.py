@@ -20,8 +20,8 @@ class QueryProcessor(object):
             model=model, request=request, query=query, filters=configuration.get('filters'),
             searches=configuration.get('searches'), search_inputs=configuration.get('search_inputs')
         )
-        headers, query = ProcessDimension.build_query(
+        headers, values, query = ProcessDimension.build_query(
             query=query, dimensions=configuration.get('dimensions'))
         headers, query = ProcessMeasure.build_query(
-            model=model, query=query, measures=configuration.get('measures'), headers=headers)
+            model=model, query=query, values=values, measures=configuration.get('measures'), headers=headers)
         return headers, query

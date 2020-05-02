@@ -17,5 +17,6 @@ class ProcessDimension(object):
                 "text": _text,
                 "value": _field_key,
             })
-        query = query.values(*_values)
-        return _headers, query
+        if _values:
+            query = query.values(*_values)
+        return _headers, _values, query

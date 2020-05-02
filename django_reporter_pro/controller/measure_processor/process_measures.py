@@ -17,8 +17,10 @@ class AggregateEnum(EnumMixin):
 
 class ProcessMeasure(object):
     @classmethod
-    def build_query(cls, model=None, query=None, measures=None, headers=None):
+    def build_query(cls, model=None, query=None, values=None, measures=None, headers=None):
         annotations = {}
+        measured_values = []
+        values = [] if not values else values
         headers = [] if not headers else headers
         for key in measures.keys():
             _measure_field = measures.get(key)
@@ -28,6 +30,7 @@ class ProcessMeasure(object):
             _annotation_key = _measure_field.get('query_name') + '_' + _measure
             annotations[_annotation_key] = cls.build_measure_function(
                 key=_measure_field.get('name'), measure=_measure)
+            measured_values.append(_annotation_key)
             # Adding annotations in table values list
             _text = _measure_field.get('verbose_name')
             if _measure_config:
@@ -36,8 +39,10 @@ class ProcessMeasure(object):
                 "text": _text,
                 "value": _annotation_key,
             })
-        if annotations:
+        if values and annotations:
             query = query.annotate(**annotations)
+        elif not values and annotations:
+            query = query.aggregate(**annotations)
         return headers, query
 
     @classmethod
