@@ -102,6 +102,7 @@
                     this.xColumn = this.reportSchema.report_config.chart['x_column'];
                     this.yColumn = this.reportSchema.report_config.chart['y_column'];
                 }
+                this.renderChart();
             } catch (e) {
             }
         },

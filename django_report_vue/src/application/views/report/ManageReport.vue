@@ -1,71 +1,30 @@
 <template>
 	<v-row>
-		<v-col :key="uniqueReportKey" class="pt-0 pb-0" cols="8" sm="8">
-			<v-row>
-				<v-col class="pb-0" cols="6" sm="6">
-					<v-autocomplete :clearable="true" :items="tables" class="mt-2" dense item-text="label"
-									label="Select Table" outlined return-object v-model="selectedTable">
-					</v-autocomplete>
-				</v-col>
-				<v-col class="pb-0" cols="6" sm="6">
-					<v-select :items="reportTypes" class="mt-2" dense label="Report Type"
-							  outlined return-object v-model="reportType"></v-select>
-				</v-col>
-				<v-col class="pt-0" cols="12" sm="12" v-if="selectedTable !== null">
-					<v-card>
-						<v-tabs background-color="primary" dark v-model="tab">
-							<v-tab :key="item.tab" v-for="item in items">
-								{{ item.tab }}
-							</v-tab>
-						</v-tabs>
-						<v-tabs-items v-model="tab">
-							<v-tab-item :key="item.tab" :reverse-transition="false" :transition="false"
-										class="pb-5" v-for="item in items">
-								<v-card class="pb-2" flat>
-									<ReportInformation :reportSchema="reportSchema"
-													   v-if="item.tab === 'information'"></ReportInformation>
-									<DimensionList :reportSchema="reportSchema"
-												   v-if="item.tab === 'dimensions'"></DimensionList>
-									<MeasureList :reportSchema="reportSchema"
-												 v-else-if="item.tab === 'measures'"></MeasureList>
-									<FilterList :reportSchema="reportSchema"
-												v-else-if="item.tab === 'filters'"></FilterList>
-									<SearchList :reportSchema="reportSchema"
-												v-if="item.tab === 'searches'"></SearchList>
-								</v-card>
-							</v-tab-item>
-						</v-tabs-items>
-						<v-btn @click="submitReportConfiguration" absolute
-							   class="float-right mt-n5" color="primary" dark fab right small>
-							<v-icon>mdi-content-save</v-icon>
-						</v-btn>
-						<v-btn @click="previewReportConfiguration" absolute
-							   class="float-right mr-12 mt-n5" color="info" dark fab right small>
-							<v-icon>mdi-eye</v-icon>
-						</v-btn>
-					</v-card>
-				</v-col>
-				<v-col class="mt-1" cols="12" sm="12" v-if="selectedTable !== null">
-					<TableRenderer :data="previewData" :headers="previewHeaders"
-								   :key="uniqueTablePreviewKey" :reportSchema="reportSchema"
-								   v-if="reportType !== null && reportType.value === 'table'">
-					</TableRenderer>
-					<HighChartRenderer :data="previewData" :headers="previewHeaders" :key="uniqueReportPreviewKey"
-									   :livePreview="false" :renderKey="uniqueReportPreviewKey"
-									   :reportSchema="reportSchema"
-									   v-else-if="reportType !== null && reportType.value === 'chart'">
-					</HighChartRenderer>
-					<SummeryRenderer :data="previewData" :headers="previewHeaders"
-									 :key="uniqueSummeryPreviewKey" :reportSchema="reportSchema"
-									 v-else-if="reportType !== null && reportType.value === 'summery'">
-					</SummeryRenderer>
-				</v-col>
-			</v-row>
-		</v-col>
-		<v-col class="json-container" cols="4" sm="4">
-			<VueJsonPretty :data="reportSchema" :deep="4" :highlightMouseoverNode="true"
-						   :showLength="true" :showLine="true" :showSelectController="true">
-			</VueJsonPretty>
+		<v-col class="py-3" cols="12" sm="12">
+			<v-card>
+				<v-tabs background-color="primary" dark v-model="tab">
+					<v-tab :key="item.tab" v-for="item in items">
+						{{ item.tab }}
+					</v-tab>
+				</v-tabs>
+				<v-tabs-items v-model="tab">
+					<v-tab-item :key="item.tab" :reverse-transition="false" :transition="false"
+								class="pb-5" v-for="item in items">
+						<v-card class="pb-2" flat>
+							<ReportInformation :reportSchema="reportSchema"
+											   v-if="item.tab === 'information'"></ReportInformation>
+							<DimensionList :reportSchema="reportSchema"
+										   v-if="item.tab === 'dimensions'"></DimensionList>
+							<MeasureList :reportSchema="reportSchema"
+										 v-else-if="item.tab === 'measures'"></MeasureList>
+							<FilterList :reportSchema="reportSchema"
+										v-else-if="item.tab === 'filters'"></FilterList>
+							<SearchList :reportSchema="reportSchema"
+										v-if="item.tab === 'searches'"></SearchList>
+						</v-card>
+					</v-tab-item>
+				</v-tabs-items>
+			</v-card>
 		</v-col>
 	</v-row>
 </template>
@@ -85,7 +44,7 @@
     import {ErrorWrapper} from "./services/utils";
 
     export default {
-        name: 'BuildReport',
+        name: 'ManageReport',
         components: {
             ReportInformation, DimensionList, MeasureList, FilterList, SearchList,
             SummeryRenderer, HighChartRenderer, TableRenderer,
