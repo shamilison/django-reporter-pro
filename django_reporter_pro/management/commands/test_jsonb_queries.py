@@ -20,7 +20,6 @@ class Command(BaseCommand):
         # Adding extra JOIN
         join_config = JsonbFunctionTable(
             table_name=QuestionResponseEntity._meta.db_table,
-            alias='answers',
             function_name=JsonbFunction.JSONB_TO_RECORDSET,
             field_name='answer__value',
             columns=[('value', 'TEXT'), ('uuid', 'TEXT')]
@@ -29,8 +28,8 @@ class Command(BaseCommand):
         # Values
         responses = responses.values('question__title')
         responses = responses.annotate(
+            answer_value=ForceF(model=QuestionResponseEntity, name='value', json_field='answer'),
             count=Count(F('uuid')),
-            answer_value=ForceF(model=QuestionResponseEntity, name='answers__value'),
         )
         responses = responses.values("question__title", "answer_value", "count")
         print(responses.query)

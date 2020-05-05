@@ -1,9 +1,7 @@
 from django.db.models import F, CharField, Expression
 from django.db.models.constants import LOOKUP_SEP
 from django.utils.deconstruct import deconstructible
-
-from pocket_survey.survey_backbone.models import QuestionResponseEntity
-
+from django.contrib.postgres.fields import JSONField
 
 class ForceColumn(Expression):
     """
@@ -41,14 +39,20 @@ class ForceColumn(Expression):
 @deconstructible
 class ForceF(F):
     model = None
+    json_field = None
 
-    def __init__(self, model, name):
+    def __init__(self, model, name, json_field):
         super(ForceF, self).__init__(name)
         self.model = model
+        self.json_field = json_field
 
     def resolve_expression(self, query=None, allow_joins=True, reuse=None,
                            summarize=False, for_save=False, simple_col=False):
-        _field_ref = self.name.replace(LOOKUP_SEP, '.')
+        _field_ref = self.json_field + 's.' + self.name.replace(LOOKUP_SEP, '.')
+        path, final_field, targets, rest = query.names_to_path(
+            [self.json_field], query.get_meta(), query.get_initial_alias())
+        if not isinstance(final_field, JSONField):
+            raise Exception('`ForeF` only available for JSON Fields')
         _dummy_field = CharField(db_column=_field_ref, name=_field_ref)
         _dummy_field.contribute_to_class(cls=self.model, name=_field_ref)
         return ForceColumn(_dummy_field, _dummy_field)

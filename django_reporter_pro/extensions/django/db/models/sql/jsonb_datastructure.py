@@ -11,12 +11,13 @@ class JsonbFunctionTable(BaseTable):
     function_name = None
     function_alias = None
 
-    def __init__(self, table_name, alias, function_name, field_name, columns):
-        super(JsonbFunctionTable, self).__init__(table_name=table_name, alias=alias)
-        self.function_name = function_name
+    def __init__(self, table_name, function_name, field_name, columns):
         field_name_seq = field_name.split(LOOKUP_SEP)
         self.model_field = field_name_seq[0]
         self.json_path = field_name_seq[1:]
+        alias = self.model_field + 's'
+        super(JsonbFunctionTable, self).__init__(table_name=table_name, alias=alias)
+        self.function_name = function_name
         column_definitions = list()
         for _c in columns:
             column_definitions.append('{c_name} {c_type}'.format(c_name=_c[0], c_type=_c[1]))
@@ -24,14 +25,14 @@ class JsonbFunctionTable(BaseTable):
             alias=alias, column_definitions=','.join(column_definitions))
 
     def as_sql(self, compiler, connection):
-        return "{join_type} {function}({table}.{model_field} {sign} '{json_path}') {function_alias} {join_alias}".format(
-            join_type=self.jsonb_join_type[0],
-            join_alias=self.jsonb_join_type[1],
-            function_alias=self.function_alias,
+        return "{join} {function}({table}.{field} {sign} '{json_path}') {f_alias} {condition}".format(
+            join=self.jsonb_join_type[0],
+            condition=self.jsonb_join_type[1],
+            f_alias=self.function_alias,
             function=self.function_name[0],
             sign=self.function_name[1],
             table=compiler.quote_name_unless_alias(self.table_name),
-            model_field=compiler.quote_name_unless_alias(self.model_field),
+            field=compiler.quote_name_unless_alias(self.model_field),
             json_path='{' + ",".join(self.json_path) + '}'
         ), []
 
