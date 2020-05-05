@@ -2,7 +2,8 @@
 
 from django.core.management.base import BaseCommand
 from django.db.models import Count, F
-from django.db.models.sql.datastructures import BaseTable
+from django_reporter_pro.extensions.django.db.models.expressions import ForceF
+from django_reporter_pro.extensions.django.db.models.sql.jsonb_datastructure import JsonbFunctionTable, JsonbFunction
 
 from pocket_survey.survey_backbone.models import QuestionResponseEntity, QuestionGroup
 
@@ -15,11 +16,23 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         responses = QuestionResponseEntity.objects.filter(
             question_id='48cd9a54-65ee-4809-8d0d-743222a6c17d'
-        ).values('question__title').annotate(count=Count(F('uuid')))
-        print(responses)
-        print(responses.query)
+        )
         # Adding extra JOIN
-        join = BaseTable(table_name=QuestionGroup._meta.db_table, alias='TTT')
-        responses.query.join(join=join)
+        join_config = JsonbFunctionTable(
+            table_name=QuestionResponseEntity._meta.db_table,
+            alias='answers',
+            function_name=JsonbFunction.JSONB_TO_RECORDSET,
+            field_name='answer__value',
+            columns=[('value', 'TEXT'), ('uuid', 'TEXT')]
+        )
+        responses.query.join(join=join_config)
+        # Values
+        responses = responses.values('question__title')
+        responses = responses.annotate(
+            count=Count(F('uuid')),
+            answer_value=ForceF(model=QuestionResponseEntity, name='answers__value'),
+        )
+        responses = responses.values("question__title", "answer_value", "count")
         print(responses.query)
-        print(responses)
+        for _res in responses:
+            print(_res)
