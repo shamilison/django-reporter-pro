@@ -1,7 +1,8 @@
+from django.contrib.postgres.fields import JSONField
 from django.db.models import F, CharField, Expression
 from django.db.models.constants import LOOKUP_SEP
 from django.utils.deconstruct import deconstructible
-from django.contrib.postgres.fields import JSONField
+
 
 class ForceColumn(Expression):
     """
