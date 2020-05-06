@@ -45,6 +45,12 @@ export default {
             }
             return false;
         },
+        isJsonType: function (field) {
+            if (['json'].indexOf(INPUT_TYPE[field._python_type]) >= 0) {
+                return true;
+            }
+            return false;
+        },
     },
     created() {
     },

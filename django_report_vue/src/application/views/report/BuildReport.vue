@@ -127,10 +127,10 @@
                 },
                 tab: null,
                 items: [
+                    {tab: 'measures', content: 'Measure'},
                     {tab: 'information', content: 'Information'},
                     {tab: 'dimensions', content: 'Dimension'},
                     {tab: 'filters', content: 'Filter'},
-                    {tab: 'measures', content: 'Measure'},
                     {tab: 'searches', content: 'Searches'},
                 ],
                 uniqueReportKey: this.$uuid.v4(),
