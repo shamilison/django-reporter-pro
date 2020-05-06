@@ -136,8 +136,8 @@ export default {
                     allowPointSelect: true,
                     cursor: 'pointer',
                     showInLegend: true,
-                    innerSize: 30,
-                    depth: 45,
+                    innerSize: 5,
+                    depth: 30,
                     dataLabels: {
                         enabled: true,
                         format: '<b>{point.name}</b>: {point.y} ({point.percentage:.1f}%)'

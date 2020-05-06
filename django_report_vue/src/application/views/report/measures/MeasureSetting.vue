@@ -117,7 +117,7 @@
             jsonbAggregateField: function (newVal, oldVal) {
                 this.field['_measure_config']['jsonb_config']['aggregate_field'] = newVal;
             },
-            jsonbColumnTypes: function (newVal, oldVal) {
+            jsonbColumns: function (newVal, oldVal) {
                 this.field['_measure_config']['jsonb_config']['jsonb_columns'] = newVal;
             },
             applyAsDate: function (newVal) {
