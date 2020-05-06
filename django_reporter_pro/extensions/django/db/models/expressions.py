@@ -55,5 +55,5 @@ class ForceF(F):
         if not isinstance(final_field, JSONField):
             raise Exception('`ForeF` only available for JSON Fields')
         _dummy_field = CharField(db_column=_field_ref, name=_field_ref)
-        _dummy_field.contribute_to_class(cls=self.model, name=_field_ref)
+        _dummy_field.model = self.model
         return ForceColumn(_dummy_field, _dummy_field)
