@@ -6,4 +6,5 @@ exclude manage.py
 exclude settings.py
 exclude urls.py
 exclude wsgi.py
+exclude release.sh
 recursive-exclude config *
