@@ -10,7 +10,7 @@ from django_reporter_pro.extensions.basic.time_fication import get_date_n_week_a
 # Field.register_lookup(NotLike)
 # Field.register_lookup(NotILike)
 
-
+# TODO: Upgrade filter checks using dynamically determined operator valuation
 class FilterTypeEnum(EnumMixin):
     EQUAL = 'eq'
     NOT_EQUAL = 'neq'
