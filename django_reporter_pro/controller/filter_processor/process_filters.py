@@ -119,7 +119,7 @@ class ProcessFilter(object):
         elif filter_type == FilterTypeEnum.NOT_LIKE_CASE_INS.value:
             _exclude_dict[key + '__icontains'] = filter_inputs[0]
         elif filter_type == FilterTypeEnum.MATCHES_REGEX.value:
-            _exclude_dict[key + '__icontains'] = filter_inputs[0]
+            _include_dict[key + '__regex'] = r'{0}'.format(filter_inputs[0])
         elif filter_type == FilterTypeEnum.GREATER_THAN.value:
             _include_dict[key + '__gt'] = float(filter_inputs[0])
         elif filter_type == FilterTypeEnum.GREATER_THAN_EQUAL.value:
