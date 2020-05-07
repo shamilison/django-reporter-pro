@@ -15,6 +15,7 @@ class FilterTypeEnum(EnumMixin):
     NOT_LIKE = 'not_like'
     LIKE_CASE_INS = 'ilike'
     NOT_LIKE_CASE_INS = 'not_ilike'
+    MATCHES_REGEX = 'regex'
     GREATER_THAN = 'gt'
     GREATER_THAN_EQUAL = 'gte'
     LESS_THAN = 'lt'
