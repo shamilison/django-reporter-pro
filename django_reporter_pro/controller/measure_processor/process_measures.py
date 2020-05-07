@@ -29,7 +29,7 @@ class ProcessMeasure(object):
         for key in measures.keys():
             _measure_field = measures.get(key)
             _measure_config = _measure_field.get('_measure_config')
-            _measure = _measure_config.get('aggregation')
+            _measure = _measure_config.get('aggregation', 'unagg')
             # Adding annotations functions
             if str(_measure).startswith('jsonb'):
                 _annotation_key = _measure_field.get('query_name') + '_' + _measure

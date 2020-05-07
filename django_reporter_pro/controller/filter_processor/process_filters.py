@@ -1,9 +1,14 @@
 from django.db.models import Q
 from django_reporter_pro.enums.enum_mixin import EnumMixin
-from time import time
 
 from django_reporter_pro.extensions.basic.time_fication import get_date_n_week_ago, get_date_n_days_ago, \
     get_date_n_month_ago, get_date_n_year_ago, get_date_from_string
+
+
+# Field.register_lookup(NotEqual)
+# Field.register_lookup(NotIn)
+# Field.register_lookup(NotLike)
+# Field.register_lookup(NotILike)
 
 
 class FilterTypeEnum(EnumMixin):
@@ -28,6 +33,18 @@ class FilterTypeEnum(EnumMixin):
     N_YEAR = 'n_year'
     IS_NULL = 'is_null'
     NOT_NULL = 'not_null'
+
+    # IS_NULL = 'isnull'
+    # NOT_NULL = 'not_null'
+    # EXACT = 'exact'
+    # IEXACT = 'iexact'
+    # CONTAINS = 'contains'
+    # ICONTAINS = 'icontains'
+    # STARTSWITH = 'startswith'
+    # ISTARTSWITH = 'istartswith'
+    # ENDSWITH = 'endswith'
+    # IENDSWITH = 'iendswith'
+    # DATE_RANGE = 'range'
 
 
 class ProcessFilter(object):
@@ -100,6 +117,8 @@ class ProcessFilter(object):
         elif filter_type == FilterTypeEnum.LIKE_CASE_INS.value:
             _include_dict[key + '__icontains'] = filter_inputs[0]
         elif filter_type == FilterTypeEnum.NOT_LIKE_CASE_INS.value:
+            _exclude_dict[key + '__icontains'] = filter_inputs[0]
+        elif filter_type == FilterTypeEnum.MATCHES_REGEX.value:
             _exclude_dict[key + '__icontains'] = filter_inputs[0]
         elif filter_type == FilterTypeEnum.GREATER_THAN.value:
             _include_dict[key + '__gt'] = float(filter_inputs[0])
