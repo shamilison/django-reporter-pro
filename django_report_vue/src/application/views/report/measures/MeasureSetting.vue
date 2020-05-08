@@ -1,7 +1,7 @@
 <template>
 	<form class="pa-5 pt-5 pb-5 white">
 		<v-text-field label="Field Label" v-model="label"></v-text-field>
-		<v-select :items="sortOptions" dense label="Sort by" outlined v-model="sort"></v-select>
+		<v-select :items="sortOptions" dense label="Sort by" outlined v-model="sort" clearable></v-select>
 		<v-switch :disabled="dateDisabled" class="ma-2" label="Apply as date" v-model="applyAsDate"></v-switch>
 		<v-select :items="aggregateOptions" dense label="Aggregation" outlined v-model="aggregation"></v-select>
 		<v-content class="mb-4 text-center"
