@@ -32,6 +32,8 @@
                                                 v-else-if="item.tab === 'filters'"></FilterList>
                                     <SearchList :reportSchema="reportSchema"
                                                 v-if="item.tab === 'searches'"></SearchList>
+                                    <DimensionList :reportSchema="reportSchema"
+                                                   v-if="item.tab === 'orders'"></DimensionList>
                                 </v-card>
                             </v-tab-item>
                         </v-tabs-items>
@@ -135,11 +137,12 @@
                 searchConfig: {},
                 tab: null,
                 items: [
-                    {tab: 'measures', content: 'Measure'},
                     {tab: 'information', content: 'Information'},
                     {tab: 'dimensions', content: 'Dimension'},
+                    {tab: 'measures', content: 'Measure'},
                     {tab: 'filters', content: 'Filter'},
                     {tab: 'searches', content: 'Searches'},
+                    {tab: 'orders', content: 'Orders'},
                 ],
                 uniqueReportKey: this.$uuid.v4(),
                 uniqueSearchKey: this.$uuid.v4(),

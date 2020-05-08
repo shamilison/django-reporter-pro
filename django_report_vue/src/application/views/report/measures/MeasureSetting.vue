@@ -80,10 +80,8 @@
                 timeAnnotations: [
                     {value: 'daily', text: 'By daily'},
                     {value: 'weekly', text: 'By weekly'},
-                    {value: 'bi_weekly', text: 'By bi-weekly'},
                     {value: 'monthly', text: 'By month'},
                     {value: 'quarterly', text: 'By quarter year'},
-                    {value: 'half_yearly', text: 'By half year'},
                     {value: 'yearly', text: 'By year'},
                 ],
                 jsonbPath: null,

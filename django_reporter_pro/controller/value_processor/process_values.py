@@ -16,7 +16,10 @@ class AggregateEnum(EnumMixin):
     MAXIMUM = 'max'
     # Date aggregations
     GROUP_DAILY = 'daily'
+    GROUP_WEEKLY = 'weekly'
     GROUP_MONTHLY = 'monthly'
+    GROUP_QUARTERLY = 'quarterly'
+    GROUP_YEARLY = 'yearly'
     # Jsonb aggregations
     JSONB_AGGREGATION = 'jsonb_aggregation'
     JSONB_JOIN = 'jsonb_join'
@@ -106,8 +109,14 @@ class ProcessMeasure(object):
             _function = Max(key)
         elif measure == AggregateEnum.GROUP_DAILY.value:
             _function = DateFromTimeStamp(key, 'YYYY-MM-DD')
+        elif measure == AggregateEnum.GROUP_WEEKLY.value:
+            _function = DateFromTimeStamp(key, 'YYYY-IW')
         elif measure == AggregateEnum.GROUP_MONTHLY.value:
             _function = DateFromTimeStamp(key, 'YYYY-MM')
+        elif measure == AggregateEnum.GROUP_QUARTERLY.value:
+            _function = DateFromTimeStamp(key, 'YYYY-IQ')
+        elif measure == AggregateEnum.GROUP_YEARLY.value:
+            _function = DateFromTimeStamp(key, 'YYYY')
         return _function
 
     @classmethod
