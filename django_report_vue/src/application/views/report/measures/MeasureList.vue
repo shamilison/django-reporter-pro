@@ -74,8 +74,10 @@
             },
             onItemSelected(item) {
                 if (!this.reportSchema['measures'].hasOwnProperty(item.key_name)) {
+                	item['_measure_config'] = {};
                     this.reportSchema['measures'][item.key_name] = item;
                     this.populateListItems(this.reportSchema['measures']);
+                    this.reportSchema['orders'].push(item);
                 } else {
                     this.$notify({
                         type: 'warn',

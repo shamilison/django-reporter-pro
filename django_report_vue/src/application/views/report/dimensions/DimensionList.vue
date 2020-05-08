@@ -74,9 +74,11 @@
             },
             onItemSelected(item) {
                 if (!this.reportSchema['dimensions'].hasOwnProperty(item.key_name)) {
+                	item['_dimension_config'] = {};
                     this.reportSchema['dimensions'][item.key_name] = item;
-                    this.populateListItems(this.reportSchema['dimensions']);
-                } else {
+					this.populateListItems(this.reportSchema['dimensions']);
+					this.reportSchema['orders'].push(item);
+				} else {
                     this.$notify({
                         type: 'warn',
                         title: 'Field already ADDED!',

@@ -32,8 +32,8 @@
                                                 v-else-if="item.tab === 'filters'"></FilterList>
                                     <SearchList :reportSchema="reportSchema"
                                                 v-if="item.tab === 'searches'"></SearchList>
-                                    <DimensionList :reportSchema="reportSchema"
-                                                   v-if="item.tab === 'orders'"></DimensionList>
+                                    <OrderList :reportSchema="reportSchema"
+                                               v-if="item.tab === 'orders'"></OrderList>
                                 </v-card>
                             </v-tab-item>
                         </v-tabs-items>
@@ -91,10 +91,12 @@
     import ReportInformation from "@/application/views/report/information/ReportInformation";
     import {ErrorWrapper} from "./services/utils";
     import SearchRenderer from "@/application/views/report/renderer/search/SearchRenderer";
+    import OrderList from "@/application/views/report/orders/OrderList";
 
     export default {
         name: 'BuildReport',
         components: {
+            OrderList,
             SearchRenderer,
             ReportInformation, DimensionList, MeasureList, FilterList, SearchList,
             SummeryRenderer, HighChartRenderer, TableRenderer,
@@ -133,16 +135,17 @@
                     filters: [],
                     fields: {},
                     searches: {},
+                    orders: [],
                 },
                 searchConfig: {},
                 tab: null,
                 items: [
+                    {tab: 'orders', content: 'Orders'},
                     {tab: 'information', content: 'Information'},
                     {tab: 'dimensions', content: 'Dimension'},
                     {tab: 'measures', content: 'Measure'},
                     {tab: 'filters', content: 'Filter'},
                     {tab: 'searches', content: 'Searches'},
-                    {tab: 'orders', content: 'Orders'},
                 ],
                 uniqueReportKey: this.$uuid.v4(),
                 uniqueSearchKey: this.$uuid.v4(),
@@ -299,6 +302,9 @@
                         if (data.searches === undefined || data.searches === null)
                             data.searches = {};
                         this.reportSchema['searches'] = data.searches;
+                        if (data.orders === undefined || data.orders === null)
+                            data.orders = [];
+                        this.reportSchema['orders'] = data.orders;
                         if (data.report_config === undefined || data.report_config === null)
                             data.report_config = {
                                 report_type: {value: 'table', text: 'Table'}
@@ -328,6 +334,7 @@
                         filters: [],
                         fields: {},
                         searches: {},
+                        orders: [],
                     }
                     this.previewHeaders = [];
                     this.previewData = [];
@@ -353,6 +360,7 @@
                         this.reportSchema['measures'] = {};
                         this.reportSchema['filters'] = [];
                         this.reportSchema['searches'] = {};
+                        this.reportSchema['orders'] = [];
                     }
                     if (newVal !== null && newVal !== undefined) {
                         this.reportSchema['table'] = newVal;
