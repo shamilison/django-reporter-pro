@@ -141,6 +141,9 @@
                         if (data.searches === undefined || data.searches === null)
                             data.searches = {};
                         this.reportSchema['searches'] = data.searches;
+                        if (data.orders === undefined || data.orders === null)
+                            data.orders = [];
+                        this.reportSchema['orders'] = data.orders;
                         if (data.report_config !== null && data.report_config !== undefined)
                             this.reportSchema.report_config = data.report_config;
                         this.previewReportConfiguration();

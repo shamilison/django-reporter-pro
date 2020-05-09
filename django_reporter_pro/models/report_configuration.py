@@ -17,6 +17,7 @@ class ReportConfiguration(models.Model):
     measures = JSONField(max_length=8192, default=None, null=True)
     filters = JSONField(max_length=8192, default=None, null=True)
     searches = JSONField(max_length=8192, default=None, null=True)
+    orders = JSONField(max_length=8192, default=None, null=True)
     report_config = JSONField(max_length=8192, default=None, null=True)
 
     def __init__(self, *args, **kwargs):
@@ -26,7 +27,7 @@ class ReportConfiguration(models.Model):
         return f'Model: {self.model}'
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None, **kwargs):
-        super(ReportConfiguration, self).save(force_insert, force_update, using, update_fields, **kwargs)
+        super(ReportConfiguration, self).save(force_insert, force_update, using, update_fields)
 
     class Meta:
         app_label = 'django_reporter_pro'

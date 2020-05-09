@@ -25,8 +25,8 @@ class QueryProcessor(object):
             searches=configuration.get('searches'), search_inputs=configuration.get('search_inputs')
         )
         # Apply dimension and measure Configs
-        headers, query = ProcessMeasure.build_query(
-            model=model, query=query,
-            dimensions=configuration.get('dimensions'),
+        headers = configuration.get('orders')
+        query = ProcessMeasure.build_query(
+            model=model, query=query, dimensions=configuration.get('dimensions'),
             measures=configuration.get('measures'))
         return headers, query

@@ -30,7 +30,7 @@
                         Settings
                     </v-btn>
                 </template>
-                <MeasureSetting :closeMenu="closeMenu" :field="field"></MeasureSetting>
+                <MeasureSetting :closeMenu="closeMenu" :field="field" :schema="schema"></MeasureSetting>
             </v-menu>
             <v-icon @click="deleteField(field)" class="mr-2 ml-2 mt-1 float-right" small>
                 mdi-delete
@@ -46,6 +46,11 @@
         name: 'MeasureField',
         components: {MeasureSetting},
         props: {
+            schema: {
+                type: Object,
+                default: function () {
+                }
+            },
             field: {
                 type: Object,
                 default: function () {

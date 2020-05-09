@@ -18,7 +18,7 @@
                             </div>
                         </v-col>
                         <v-col class="pa-3 pt-1 pb-2" cols="4">
-                            <v-checkbox label="Visible" v-model="_field['is_visible']"></v-checkbox>
+                            <v-checkbox label="Hide?" v-model="_field['is_hidden']"></v-checkbox>
                         </v-col>
                     </v-row>
                 </v-list-item-content>
@@ -50,8 +50,15 @@
         },
         computed: {},
         watch: {
-            'reportSchema.orders': function (newVal) {
+            'reportSchema.dimensions': function (newVal) {
                 this.populateListItems(this.reportSchema);
+                this.uniqueKey = this.$uuid.v4();
+            },
+            'reportSchema.measures': function (newVal) {
+                this.populateListItems(this.reportSchema);
+                this.uniqueKey = this.$uuid.v4();
+            },
+            'reportSchema.orders': function (newVal) {
                 this.uniqueKey = this.$uuid.v4();
             },
         }, created() {
@@ -60,32 +67,75 @@
             dragAction(drag) {
                 // TODO: Update order of reportSchema order option
                 if (!drag) {
-                    this.populateDimensions(this.fields);
+                    this.reportSchema['orders'] = this.fields;
                     this.uniqueKey = this.$uuid.v4();
                 }
             },
             populateListItems(schema) {
                 let _fields = [];
+                // Update existing orders
+                let _dimensionKeys = Object.keys(schema['dimensions']);
+                let _measureKeys = Object.keys(schema['measures']);
                 let orders = schema['orders'];
-                let o_keys = Object.keys(orders);
-                for (let index = 0; index < o_keys.length; index++) {
-                    let _item = {key_name: orders[o_keys[index]].key_name,};
-                    if (orders[o_keys[index]]._display_config !== undefined) {
-                        _item['label'] = orders[o_keys[index]]._display_config.label;
+                // Add existing orders fields
+                for (let index = 0; index < orders.length; index++) {
+                    let _item = {
+                        label: orders[index].label,
+                        key_name: orders[index].key_name,
+                        text: orders[index].text,
+                        value: orders[index].value,
+                        type: orders[index].type,
+                        is_hidden: orders[index].is_hidden === undefined ? false : orders[index].is_hidden,
+                    };
+                    if (orders[index].type === 'dimension' && _dimensionKeys.indexOf(_item.key_name) > -1) {
+                        _dimensionKeys.splice(_dimensionKeys.indexOf(_item.key_name), 1);
+                        _item['type'] = 'dimension';
+                        _fields.push(_item);
+                    } else if (orders[index].type === 'measure' && _measureKeys.indexOf(orders[index].key_name) > -1) {
+                        // Special code to add aggregation type as suffix for measure field
+                        // As their value converts to special format
+                        let _field = schema['measures'][orders[index].key_name];
+                        _item.type = 'measure';
+                        _item['value'] = _field.key_name + '_' + _field._measure_config.aggregation;
+                        // End special code to add aggregation type as suffix
+                        _measureKeys.splice(_measureKeys.indexOf(orders[index].key_name), 1);
+                        _fields.push(_item);
                     }
+                }
+                // Add new dimensions if available
+                for (let index = 0; index < _dimensionKeys.length; index++) {
+                    let _item = {
+                        key_name: schema['dimensions'][_dimensionKeys[index]].key_name,
+                        type: 'dimension',
+                        is_hidden: false,
+                    };
+                    _item['value'] = _item['key_name'];
+                    _item['label'] = schema['dimensions'][_dimensionKeys[index]]._display_config.label;
+                    _item['text'] = _item['label'];
                     _fields.push(_item);
                 }
-                // TODO: Implement options to add missing columns from dimensions and measures at the end of list
-                // TODO: Remove a column which has been removed from dimension and measures list
+                // Add new measures if available
+                for (let index = 0; index < _measureKeys.length; index++) {
+                    let _field = schema['measures'][_measureKeys[index]];
+                    let _item = {
+                        key_name: _field.key_name,
+                        value: _field.key_name + '_' + _field._measure_config.aggregation,
+                        type: 'measure',
+                        is_hidden: false,
+                    };
+                    _item['label'] = schema['measures'][_measureKeys[index]]._measure_config.label;
+                    _item['text'] = _item['label'];
+                    _fields.push(_item);
+                }
                 this.fields = _fields;
+                this.reportSchema['orders'] = this.fields;
             },
         },
         mounted() {
-            // TODO: Save order in server side
-            // TODO: Load initial orders
             this.populateListItems(this.reportSchema);
         }
-    };
+    }
+
 </script>
 
 <style lang="scss" scoped>

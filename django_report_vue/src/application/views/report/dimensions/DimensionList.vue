@@ -1,17 +1,17 @@
 <template>
-	<v-list :key="uniqueKey" dense>
-		<FieldPicker :fields="reportSchema['fields']" :model="reportSchema['table']"
-					 :onItemSelected="onItemSelected" :purpose="'Dimension'">
-		</FieldPicker>
-		<Draggable @end="dragAction(false)" @start="dragAction(true)" group="dimension" v-model="fields">
-			<v-list-item :key="item.key_name" @click="" v-for="item in fields">
-				<v-list-item-content class="pt-0 pb-0">
-					<v-divider></v-divider>
-					<DimensionField :deleteField="deleteField" :field="item"></DimensionField>
-				</v-list-item-content>
-			</v-list-item>
-		</Draggable>
-	</v-list>
+    <v-list :key="uniqueKey" dense>
+        <FieldPicker :fields="reportSchema['fields']" :model="reportSchema['table']"
+                     :onItemSelected="onItemSelected" :purpose="'Dimension'">
+        </FieldPicker>
+        <Draggable @end="dragAction(false)" @start="dragAction(true)" group="dimension" v-model="fields">
+            <v-list-item :key="item.key_name" @click="" v-for="item in fields">
+                <v-list-item-content class="pt-0 pb-0">
+                    <v-divider></v-divider>
+                    <DimensionField :deleteField="deleteField" :field="item" :schema="reportSchema"></DimensionField>
+                </v-list-item-content>
+            </v-list-item>
+        </Draggable>
+    </v-list>
 </template>
 
 <script>
@@ -74,11 +74,11 @@
             },
             onItemSelected(item) {
                 if (!this.reportSchema['dimensions'].hasOwnProperty(item.key_name)) {
-                	item['_dimension_config'] = {};
+                    item['_dimension_config'] = {};
                     this.reportSchema['dimensions'][item.key_name] = item;
-					this.populateListItems(this.reportSchema['dimensions']);
-					this.reportSchema['orders'].push(item);
-				} else {
+                    this.populateListItems(this.reportSchema['dimensions']);
+                    this.addToOrderList(this.reportSchema, item, item.key_name, 'dimension');
+                } else {
                     this.$notify({
                         type: 'warn',
                         title: 'Field already ADDED!',

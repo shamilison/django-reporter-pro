@@ -140,11 +140,11 @@
                 searchConfig: {},
                 tab: null,
                 items: [
-                    {tab: 'orders', content: 'Orders'},
                     {tab: 'information', content: 'Information'},
                     {tab: 'dimensions', content: 'Dimension'},
                     {tab: 'measures', content: 'Measure'},
                     {tab: 'filters', content: 'Filter'},
+                    {tab: 'orders', content: 'Orders'},
                     {tab: 'searches', content: 'Searches'},
                 ],
                 uniqueReportKey: this.$uuid.v4(),

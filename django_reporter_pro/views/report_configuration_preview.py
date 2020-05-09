@@ -55,6 +55,7 @@ class ReportConfigurationPreView(APIView):
             'measures': report_config.measures,
             'filters': report_config.filters,
             'searches': report_config.searches,
+            'orders': report_config.orders,
             'search_inputs': search_inputs,
             'report_config': report_config.report_config,
         }

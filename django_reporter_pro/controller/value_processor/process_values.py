@@ -30,7 +30,6 @@ class ProcessMeasure(object):
     def build_query(cls, model=None, query=None, dimensions=None, measures=None):
         # Process values
         _values = []
-        _headers = []
         _order_by = []
         for key in dimensions.keys():
             _dimension_field = dimensions.get(key)
@@ -46,10 +45,6 @@ class ProcessMeasure(object):
                     _order_by.append(_field_key)
                 elif _display_config.get('sort') == 'descending':
                     _order_by.append('-' + _field_key)
-            _headers.append({
-                "text": _text,
-                "value": _field_key,
-            })
         # Process _annotations
         _pre_annotations = {}
         _annotations = {}
@@ -80,17 +75,13 @@ class ProcessMeasure(object):
                     _order_by.append(_annotation_key)
                 elif _measure_config.get('sort') == 'descending':
                     _order_by.append('-' + _annotation_key)
-            _headers.append({
-                "text": _text,
-                "value": _annotation_key,
-            })
         # measure end
         query = query.annotate(**_pre_annotations) if len(_pre_annotations.keys()) > 0 else query
         query = query.values(*_values) if _values else query
         query = query.annotate(**_annotations) if len(_annotations.keys()) > 0 else query
         query = query.values(*list(_annotations.keys())) if not _values else query
         query = query.order_by(*_order_by) if _order_by else query
-        return _headers, query
+        return query
 
     @classmethod
     def build_measure_function(cls, key, measure):

@@ -39,11 +39,17 @@
 
 <script>
     import ModelInfoMixin from "@/application/views/report/mixin/ModelInfoMixin";
+	import ReportHeaderOrderMixin from "@/application/views/report/mixin/ReportHeaderOrderMixin";
 
     export default {
         name: 'MeasureSetting',
         components: {},
         props: {
+            schema: {
+                type: Object,
+                default: function () {
+                }
+            },
             field: {
                 type: Object,
                 default: function () {
@@ -55,7 +61,7 @@
                 }
             },
         },
-        mixins: [ModelInfoMixin],
+        mixins: [ModelInfoMixin, ReportHeaderOrderMixin],
         data() {
             return {
                 label: "",
@@ -102,12 +108,14 @@
         watch: {
             label: function (newVal, oldVal) {
                 this.field['_measure_config']['label'] = newVal;
+                this.updateMeasureInOrderList(this.schema, this.field['_measure_config'], this.field.key_name);
             },
             sort: function (newVal, oldVal) {
                 this.field['_measure_config']['sort'] = newVal;
             },
             aggregation: function (newVal, oldVal) {
                 this.field['_measure_config']['aggregation'] = newVal;
+                this.updateMeasureInOrderList(this.schema, this.field['_measure_config'], this.field.key_name);
             },
             jsonbPath: function (newVal, oldVal) {
                 this.field['_measure_config']['jsonb_config']['jsonb_path'] = newVal;
