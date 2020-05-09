@@ -11,6 +11,8 @@ Field.register_lookup(NotILike)
 class FilterTypeEnum(EnumMixin):
     EQUAL = 'eq'
     NOT_EQUAL = 'neq'
+    STARTSWITH = 'startswith'
+    ISTARTSWITH = 'istartswith'
     IN = 'in'
     NOT_IN = 'not_in'
     LIKE = 'like'
@@ -21,15 +23,15 @@ class FilterTypeEnum(EnumMixin):
     GREATER_THAN_EQUAL = 'gte'
     LESS_THAN = 'lt'
     LESS_THAN_EQUAL = 'lte'
-    BETWEEN_INCLUSIVE = 'numbti'
-    IS_NULL = 'isnull'
+    BETWEEN_INCLUSIVE = 'bi'
+    IS_NULL = 'is_null'
     NOT_NULL = 'not_null'
+    REGEX = 'regex'
+    IREGEX = 'iregex'
     EXACT = 'exact'
     IEXACT = 'iexact'
     CONTAINS = 'contains'
     ICONTAINS = 'icontains'
-    STARTSWITH = 'startswith'
-    ISTARTSWITH = 'istartswith'
     ENDSWITH = 'endswith'
     IENDSWITH = 'iendswith'
     DATE_RANGE = 'range'
@@ -90,6 +92,18 @@ class ProcessFilter(object):
             _query_dict[key + '__lte'] = float(filter_inputs[1])
         elif filter_type == FilterTypeEnum.GREATER_THAN.value:
             _query_dict[key + '__gt'] = float(filter_inputs[0])
+        elif filter_type == FilterTypeEnum.LESS_THAN.value:
+            _query_dict[key + '__lt'] = float(filter_inputs[0])
+        elif filter_type == FilterTypeEnum.LESS_THAN_EQUAL.value:
+            _query_dict[key + '__lte'] = float(filter_inputs[0])
+        elif filter_type == FilterTypeEnum.STARTSWITH.value:
+            _query_dict[key + '__startswith'] = filter_inputs[0]
+        elif filter_type == FilterTypeEnum.ISTARTSWITH.value:
+            _query_dict[key + '__istartswith'] = filter_inputs[0]
+        elif filter_type == FilterTypeEnum.ENDSWITH.value:
+            _query_dict[key + '__endswith'] = filter_inputs[0]
+        elif filter_type == FilterTypeEnum.IENDSWITH.value:
+            _query_dict[key + '__iendswith'] = filter_inputs[0]
         elif filter_type == FilterTypeEnum.IN.value:
             _query_dict[key + '__in'] = filter_inputs
         elif filter_type == FilterTypeEnum.NOT_IN.value:
@@ -110,6 +124,10 @@ class ProcessFilter(object):
             _query_dict[key + '__isnull'] = True
         elif filter_type == FilterTypeEnum.NOT_NULL.value:
             _query_dict[key + '__isnull'] = False
+        elif filter_type == FilterTypeEnum.REGEX.value:
+            _query_dict[key + '__regex'] = filter_inputs[0]
+        elif filter_type == FilterTypeEnum.IREGEX.value:
+            _query_dict[key + '__iregex'] = filter_inputs[0]
         if _query_dict:
             _query = Q(**_query_dict)
         return _query
