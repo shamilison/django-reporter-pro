@@ -8,10 +8,17 @@
 </template>
 
 <script>
+    import ReportHeaderOrderMixin from "@/application/views/report/mixin/ReportHeaderOrderMixin";
+
     export default {
         name: 'DimensionSetting',
         components: {},
         props: {
+            schema: {
+                type: Object,
+                default: function () {
+                }
+            },
             field: {
                 type: Object,
                 default: function () {
@@ -23,7 +30,7 @@
                 }
             },
         },
-        mixins: [],
+        mixins: [ReportHeaderOrderMixin],
         data() {
             return {
                 label: "",
@@ -38,6 +45,7 @@
         watch: {
             label: function (newVal, oldVal) {
                 this.field['_display_config']['label'] = newVal;
+                this.updateDimensionInOrderList(this.schema, this.field['_display_config'], this.field.key_name);
             },
             sort: function (newVal, oldVal) {
                 this.field['_display_config']['sort'] = newVal;

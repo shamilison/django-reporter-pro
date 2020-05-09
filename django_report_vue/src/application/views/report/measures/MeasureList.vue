@@ -1,22 +1,23 @@
 <template>
-	<v-list :key="uniqueKey" dense>
-		<FieldPicker :fields="reportSchema['fields']" :model="reportSchema['table']"
-					 :onItemSelected="onItemSelected" :purpose="'Measure'">
-		</FieldPicker>
-		<Draggable @end="dragAction(false)" @start="dragAction(true)" group="measure" v-model="fields">
-			<v-list-item :key="item.key_name" @click="" v-for="item in fields">
-				<v-list-item-content class="pt-0 pb-0">
-					<v-divider></v-divider>
-					<MeasureField :deleteField="deleteField" :field="item"></MeasureField>
-				</v-list-item-content>
-			</v-list-item>
-		</Draggable>
-	</v-list>
+    <v-list :key="uniqueKey" dense>
+        <FieldPicker :fields="reportSchema['fields']" :model="reportSchema['table']"
+                     :onItemSelected="onItemSelected" :purpose="'Measure'">
+        </FieldPicker>
+        <Draggable @end="dragAction(false)" @start="dragAction(true)" group="measure" v-model="fields">
+            <v-list-item :key="item.key_name" @click="" v-for="item in fields">
+                <v-list-item-content class="pt-0 pb-0">
+                    <v-divider></v-divider>
+                    <MeasureField :deleteField="deleteField" :field="item" :schema="reportSchema"></MeasureField>
+                </v-list-item-content>
+            </v-list-item>
+        </Draggable>
+    </v-list>
 </template>
 
 <script>
     import FieldPicker from "@/application/views/report/pickers/FieldPicker";
     import MeasureField from "@/application/views/report/measures/MeasureField";
+    import ReportHeaderOrderMixin from "@/application/views/report/mixin/ReportHeaderOrderMixin";
     import Draggable from 'vuedraggable'
 
     export default {
@@ -30,7 +31,7 @@
                 }
             },
         },
-        mixins: [],
+        mixins: [ReportHeaderOrderMixin],
         data() {
             return {
                 fields: [],
@@ -74,8 +75,10 @@
             },
             onItemSelected(item) {
                 if (!this.reportSchema['measures'].hasOwnProperty(item.key_name)) {
+                    item['_measure_config'] = {};
                     this.reportSchema['measures'][item.key_name] = item;
                     this.populateListItems(this.reportSchema['measures']);
+                    this.addToOrderList(this.reportSchema, item, item.key_name, 'measure');
                 } else {
                     this.$notify({
                         type: 'warn',

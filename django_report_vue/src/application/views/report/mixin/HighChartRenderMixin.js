@@ -12,6 +12,18 @@ export default {
                 return [];
             }
         },
+        livePreview: {
+            type: Boolean,
+            default: function () {
+                return true;
+            }
+        },
+        renderKey: {
+            type: String,
+            default: function () {
+                return null;
+            }
+        },
     },
     data: () => ({
         chartType: null,
@@ -36,6 +48,12 @@ export default {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false,
+                // options3d: {
+                //     enabled: true,
+                //     alpha: 0,
+                //     beta: -15,
+                //     depth: 45,
+                // }
             },
             title: {
                 text: null
@@ -60,9 +78,31 @@ export default {
                 min: 0,
             },
             legend: {
-                layout: 'horizontal',
-                align: 'center',
-                verticalAlign: 'bottom'
+                enabled: true,
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'bottom',
+                borderWidth: 0,
+                useHTML: true,
+                labelFormatter: function () {
+                    if (this.y_label !== undefined) {
+                        if (this.is_total === true) {
+                            return '<div class="mt-1 pt-1" style="width:200px; border-top: 1px solid darkgrey;">' +
+                                '<span style="float:left">' + this.name +
+                                '</span><span style="float:right">' + this.y_label +
+                                '</span></div>';
+                        } else if (this.percentage !== undefined) {
+                            return '<div style="width:200px"><span style="float:left">' + this.name +
+                                '</span><span style="float:right">(' +
+                                this.percentage.toFixed(1) + '%) ' + this.y_label + ' </span></div>';
+                        } else {
+                            return '<div style="width:200px"><span style="float:left">' + this.name +
+                                '</span><span style="float:right">' + this.y_label + ' </span></div>';
+                        }
+                    } else {
+                        return '<div style="width:200px"><span style="float:left">' + this.name + '</span></div>';
+                    }
+                },
             },
             pane: {
                 size: '80%'
@@ -96,9 +136,11 @@ export default {
                     allowPointSelect: true,
                     cursor: 'pointer',
                     showInLegend: true,
+                    innerSize: 5,
+                    depth: 30,
                     dataLabels: {
                         enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                        format: '<b>{point.name}</b>: {point.y} ({point.percentage:.1f}%)'
                     }
                 },
             },
@@ -115,29 +157,35 @@ export default {
                             verticalAlign: 'bottom'
                         },
                         pane: {
-                            size: '70%'
+                            size: '80%'
                         }
                     }
                 }]
-            }
+            },
+            credits: {
+                enabled: false
+            },
         },
     }),
     computed: {},
     watch: {
         headers: function (newVal) {
         },
+        renderKey: function (newVal, oldVal) {
+            this.renderChart();
+        },
         chartGroup: function (newVal, oldVal) {
-            if (oldVal !== null) {
+            if (oldVal !== null && this.livePreview) {
                 this.renderChart();
             }
         },
         xColumn: function (newVal, oldVal) {
-            if (oldVal !== null) {
+            if (oldVal !== null && this.livePreview) {
                 this.renderChart();
             }
         },
         yColumn: function (newVal, oldVal) {
-            if (oldVal !== null) {
+            if (oldVal !== null && this.livePreview) {
                 this.renderChart();
             }
         },
@@ -153,7 +201,8 @@ export default {
                 this.chartOptions.plotOptions.column.stacking = null;
                 this.chartOptions.chart.type = this.chartType.value;
             }
-            this.renderChart();
+            if (this.livePreview)
+                this.renderChart();
         },
     },
     methods: {
@@ -167,6 +216,7 @@ export default {
             // Prepare X-Series values and format data to generate Y-Series values
             let groupDataFormatter = {};
             let xDataFormatter = {};
+            let chartSubTitle = null;
             for (let index = 0; index < this.data.length; index++) {
                 let _key = this.data[index][this.xColumn.value];
                 let _groupKey = this.data[index][this.chartGroup.value];
@@ -184,6 +234,7 @@ export default {
                     groupDataFormatter[_groupKey][_key] = this.data[index][this.yColumn.value];
                 else
                     groupDataFormatter[_groupKey][_key] += this.data[index][this.yColumn.value];
+                chartSubTitle = this.data[index][this.chartGroup.value];
             }
             let groupData = Object.keys(groupDataFormatter);
             let xSeriesData = Object.keys(xDataFormatter);
@@ -206,10 +257,13 @@ export default {
             }
             this.chartOptions.xAxis.categories = xSeriesData;
             this.chartOptions.series = ySeriesData;
+            this.chartOptions.title.text = this.reportSchema.information.title;
+            this.chartOptions.subtitle.text = chartSubTitle;
         },
         renderPieChart: function () {
             // Prepare X-Series values and format data to generate Y-Series values
             let groupDataFormatter = {};
+            let chartSubTitle = null;
             for (let index = 0; index < this.data.length; index++) {
                 let _groupKey = this.data[index][this.chartGroup.value];
                 // Grouping Data
@@ -217,26 +271,36 @@ export default {
                     groupDataFormatter[_groupKey] = this.data[index][this.yColumn.value];
                 else
                     groupDataFormatter[_groupKey] += this.data[index][this.yColumn.value];
+                chartSubTitle = this.data[index][this.xColumn.value]
             }
             let groupData = Object.keys(groupDataFormatter);
             let pieSeriesData = {
-                name: 'Brands',
+                name: this.yColumn.text,
                 colorByPoint: true,
                 data: []
             };
+            let _total = 0;
             for (let depth = 0; depth < groupData.length; depth++) {
                 let _key = groupData[depth];
-                let _ySeriesItem = {name: _key, y: 0,};
+                let _ySeriesItem = {name: _key, y: 0, y_label: 0,};
                 try {
                     _ySeriesItem.y = parseFloat(groupDataFormatter[_key]);
+                    _ySeriesItem.y_label = _ySeriesItem.y;
+                    _total += _ySeriesItem.y;
                 } catch (e) {
                     _ySeriesItem.y = 0;
+                    _ySeriesItem.y_label = 0;
                 }
                 pieSeriesData.data.push(_ySeriesItem);
             }
+            pieSeriesData.data.push({
+                'name': 'Total', 'y': null, is_total: true, 'y_label': _total, 'color': 'transparent'
+            })
             // Prepare Y-Series values
             console.log(groupDataFormatter, [pieSeriesData]);
             this.chartOptions.series = [pieSeriesData];
+            this.chartOptions.title.text = this.reportSchema.information.title;
+            this.chartOptions.subtitle.text = chartSubTitle;
         },
     },
     created() {

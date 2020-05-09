@@ -30,7 +30,8 @@ let MODEL_FIELD_TYPES = {
     DJANGO_UUID: "django.db.models.fields.UUIDField",
     DJANGO_FOREIGN_KEY: "django.db.models.fields.related.ForeignKey",
     DJANGO_MANY_TO_MANY: "django.db.models.fields.related.ManyToManyField",
-    DJANGO_ONE_TO_ONE: "django.db.models.fields.related.OneToOneField"
+    DJANGO_ONE_TO_ONE: "django.db.models.fields.related.OneToOneField",
+    DJANGO_JSON_FIELD: "django.contrib.postgres.fields.jsonb.JSONField",
 };
 let FIELD_QUERY_GROUPS = {
     'measure': {
@@ -45,7 +46,8 @@ let FIELD_QUERY_GROUPS = {
             MODEL_FIELD_TYPES.DJANGO_POSITIVE_INT,
             MODEL_FIELD_TYPES.DJANGO_POSITIVE_SMALL_INT,
             MODEL_FIELD_TYPES.DJANGO_SMALL_INT,
-            MODEL_FIELD_TYPES.DJANGO_AUTO
+            MODEL_FIELD_TYPES.DJANGO_AUTO,
+            MODEL_FIELD_TYPES.DJANGO_JSON_FIELD,
         ],
         'query_type': 'in'
     },
@@ -64,7 +66,7 @@ let FIELD_QUERY_GROUPS = {
             MODEL_FIELD_TYPES.DJANGO_GENERIC_IP_ADDRESS,
             MODEL_FIELD_TYPES.DJANGO_SLUG,
             MODEL_FIELD_TYPES.DJANGO_URL,
-            MODEL_FIELD_TYPES.DJANGO_UUID
+            MODEL_FIELD_TYPES.DJANGO_UUID,
         ],
         'query_type': 'in'
     },
@@ -73,7 +75,7 @@ let FIELD_QUERY_GROUPS = {
         'value': [
             MODEL_FIELD_TYPES.DJANGO_FOREIGN_KEY,
             MODEL_FIELD_TYPES.DJANGO_MANY_TO_MANY,
-            MODEL_FIELD_TYPES.DJANGO_ONE_TO_ONE
+            MODEL_FIELD_TYPES.DJANGO_ONE_TO_ONE,
         ],
         'query_type': 'in'
     }
@@ -106,5 +108,6 @@ INPUT_TYPE[MODEL_FIELD_TYPES.DJANGO_UUID] = 'string';
 INPUT_TYPE[MODEL_FIELD_TYPES.DJANGO_FOREIGN_KEY] = 'relation';
 INPUT_TYPE[MODEL_FIELD_TYPES.DJANGO_MANY_TO_MANY] = 'relation';
 INPUT_TYPE[MODEL_FIELD_TYPES.DJANGO_ONE_TO_ONE] = 'relation';
+INPUT_TYPE[MODEL_FIELD_TYPES.DJANGO_JSON_FIELD] = 'json';
 
 export {MODEL_FIELD_TYPES, FIELD_QUERY_GROUPS, INPUT_TYPE}

@@ -37,6 +37,7 @@ class ReportConfigurationGETView(APIView):
             'measures': report_config.measures,
             'filters': report_config.filters,
             'searches': report_config.searches,
+            'orders': report_config.orders,
             'report_config': report_config.report_config,
         })
 

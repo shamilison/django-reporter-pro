@@ -1,35 +1,31 @@
-from django.db.models import Q, Field
-from django_reporter_pro.enums.enum_mixin import EnumMixin
-from django_reporter_pro.models.lookups import NotEqual
+from django.db.models import Q
+from django_reporter_pro.controller.filter_processor.filter_functions import *
 
-Field.register_lookup(NotEqual)
-
-
-class FilterTypeEnum(EnumMixin):
-    EQUAL = 'eq'
-    NOT_EQUAL = 'neq'
-    IN = 'in'
-    NOT_IN = 'not_in'
-    LIKE = 'like'
-    NOT_LIKE = 'not_like'
-    LIKE_CASE_INS = 'ilike'
-    NOT_LIKE_CASE_INS = 'not_ilike'
-    GREATER_THAN = 'gt'
-    GREATER_THAN_EQUAL = 'gte'
-    LESS_THAN = 'lt'
-    LESS_THAN_EQUAL = 'lte'
-    BETWEEN_INCLUSIVE = 'numbti'
-    IS_NULL = 'isnull'
-    NOT_NULL = 'not_null'
-    EXACT = 'exact'
-    IEXACT = 'iexact'
-    CONTAINS = 'contains'
-    ICONTAINS = 'icontains'
-    STARTSWITH = 'startswith'
-    ISTARTSWITH = 'istartswith'
-    ENDSWITH = 'endswith'
-    IENDSWITH = 'iendswith'
-    DATE_RANGE = 'range'
+FILTERS_MAPPING = {
+    'eq': EqualFilter,
+    'neq': NotEqualFilter,
+    'in': InFilter,
+    'not_in': NotInFilter,
+    'like': LikeFilter,
+    'not_like': NotLikeFilter,
+    'ilike': LikeCaseIFilter,
+    'not_ilike': NotLikeCaseIFilter,
+    'regex': RegexMatchFilter,
+    'gt': GreaterThanFilter,
+    'gte': GreaterThanEqualFilter,
+    'lt': LessThanFilter,
+    'lte': LessThanEqualFilter,
+    'numbti': BetweenFilter,
+    'd_gte': DateLessOrEqualFilter,
+    'd_lte': DateGreaterOrEqualFilter,
+    'd_range': DateRangeFilter,
+    'n_day': LastNDaysFilter,
+    'n_week': LastNWeeksFilter,
+    'n_month': LastNMonthFilter,
+    'n_year': LastNYearsFilter,
+    'is_null': IsEmptyFilter,
+    'not_null': NotIsEmptyFilter,
+}
 
 
 class ProcessFilter(object):
@@ -42,8 +38,7 @@ class ProcessFilter(object):
             _and_queries = None
             for key in _and_filters.keys():
                 _filter = _and_filters.get(key)
-                _filter_key = _filter.get('query_name')
-                _filter_query = cls.get_q_expression(key=_filter_key, config=_filter.get('_filter_config'))
+                _filter_query = cls.get_q_expression(_filter=_filter)
                 _and_queries = _filter_query if not _and_queries else _and_queries & _filter_query
             if _and_queries:
                 _filter_queries = _and_queries if not _filter_queries else _filter_queries | Q(_and_queries)
@@ -53,6 +48,19 @@ class ProcessFilter(object):
         if _filter_queries:
             query = query.filter(_filter_queries)
         return query
+
+    @classmethod
+    def get_q_expression(cls, _filter):
+        _query = Q()
+        key = _filter.get('query_name')
+        config = _filter.get('_filter_config')
+        filter_type = config.get('filter')
+        filter_inputs = config.get('filterInputs')
+        filter_function = FILTERS_MAPPING.get(filter_type)
+        if filter_function:
+            _is_not, _expression = filter_function(key, filter_inputs, _filter=_filter).get_filter_expression()
+            _query = ~Q(**_expression) if _is_not else Q(**_expression)
+        return _query
 
     @classmethod
     def build_search_query(cls, searches=None, search_inputs=None):
@@ -75,26 +83,3 @@ class ProcessFilter(object):
             if _or_queries:
                 _search_queries = _or_queries if not _search_queries else _search_queries & Q(_or_queries)
         return _search_queries
-
-    @classmethod
-    def get_q_expression(cls, key, config):
-        _query = Q()
-        filter_type = config.get('filter')
-        filter_inputs = config.get('filterInputs')
-        _query_dict = {}
-        if filter_type == FilterTypeEnum.BETWEEN_INCLUSIVE.value:
-            _query_dict[key + '__gte'] = float(filter_inputs[0])
-            _query_dict[key + '__lte'] = float(filter_inputs[1])
-        elif filter_type == FilterTypeEnum.GREATER_THAN.value:
-            _query_dict[key + '__gt'] = float(filter_inputs[0])
-        elif filter_type == FilterTypeEnum.EQUAL.value:
-            _query_dict[key] = filter_inputs[0]
-        elif filter_type == FilterTypeEnum.NOT_EQUAL.value:
-            _query_dict[key + '__ne'] = filter_inputs[0]
-        elif filter_type == FilterTypeEnum.IS_NULL.value:
-            _query_dict[key + '__isnull'] = True
-        elif filter_type == FilterTypeEnum.NOT_NULL.value:
-            _query_dict[key + '__isnull'] = False
-        if _query_dict:
-            _query = Q(**_query_dict)
-        return _query

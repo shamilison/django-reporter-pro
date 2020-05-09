@@ -24,7 +24,7 @@
 						Settings
 					</v-btn>
 				</template>
-				<DimensionSetting :closeMenu="closeMenu" :field="field"></DimensionSetting>
+				<DimensionSetting :closeMenu="closeMenu" :field="field" :schema="schema"></DimensionSetting>
 			</v-menu>
 			<v-icon @click="deleteField(field)" class="mr-2 ml-2 mt-1 float-right" small>
 				mdi-delete
@@ -40,6 +40,11 @@
         name: 'DimensionField',
         components: {DimensionSetting},
         props: {
+            schema: {
+                type: Object,
+                default: function () {
+                }
+            },
             field: {
                 type: Object,
                 default: function () {

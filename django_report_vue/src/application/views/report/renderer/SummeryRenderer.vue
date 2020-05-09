@@ -9,7 +9,7 @@
 		<v-list class="transparent">
 			<v-list-item two-line>
 				<v-list-item-content>
-					<v-list-item-title class="headline">Summery Report</v-list-item-title>
+					<v-list-item-title class="headline">{{reportSchema.information.title}}</v-list-item-title>
 				</v-list-item-content>
 			</v-list-item>
 		</v-list>

@@ -18,13 +18,30 @@
 						  outlined return-object v-model="yColumn"></v-select>
 			</v-col>
 		</v-row>
-		<highcharts :options="chartOptions"></highcharts>
+		<highcharts :options="chartOptions" :highcharts="highChart"></highcharts>
 	</v-card>
 </template>
 
 <script>
-
+    import HighChart from 'highcharts';
+    import HighChart3D from 'highcharts/highcharts-3d';
     import HighChartRenderMixin from "@/application/views/report/mixin/HighChartRenderMixin";
+
+    HighChart.setOptions({
+        colors: HighChart.map(HighChart.getOptions().colors, function (color) {
+            return {
+                radialGradient: {
+                    cx: 0.5,
+                    cy: 0.3,
+                    r: 0.7
+                },
+                stops: [
+                    [0, color],
+                    [1, HighChart.color(color).brighten(-0.3).get('rgb')] // darken
+                ]
+            };
+        })
+    });
 
     export default {
         name: 'HighChartRenderer',
@@ -46,6 +63,8 @@
         },
         data() {
             return {
+                highChart3D: HighChart3D(HighChart),
+                highChart: HighChart,
 			}
         },
         computed: {},
@@ -83,6 +102,7 @@
                     this.xColumn = this.reportSchema.report_config.chart['x_column'];
                     this.yColumn = this.reportSchema.report_config.chart['y_column'];
                 }
+                this.renderChart();
             } catch (e) {
             }
         },

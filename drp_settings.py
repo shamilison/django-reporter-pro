@@ -141,7 +141,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 APPLICATION_DIR = os.path.join(BASE_DIR, 'django_report_vue')
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'django_reporter_pro', 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'django_reporter_pro', 'static-collects')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),

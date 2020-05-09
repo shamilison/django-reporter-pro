@@ -1,5 +1,6 @@
 # coding=utf-8
 # Created by shamilsakib at 7/19/2016
+from django.db.models import QuerySet
 from django.http.response import JsonResponse
 from django_reporter_pro.controller.query_processor import QueryProcessor
 from django_reporter_pro.extensions.handlers.json_handler import JSONHandler
@@ -21,9 +22,13 @@ class ReportConfigurationPreView(APIView):
     def post(self, request, *args, **kwargs):
         post_data = request.data
         headers, query = QueryProcessor.build_query(configuration=post_data)
+        if isinstance(query, dict):
+            results = [query]
+        else:
+            results = list(query)
         return JsonResponse(data={
             'headers': headers,
-            'results': list(query),
+            'results': results,
         })
 
     def put(self, request, *args, **kwargs):
@@ -50,11 +55,16 @@ class ReportConfigurationPreView(APIView):
             'measures': report_config.measures,
             'filters': report_config.filters,
             'searches': report_config.searches,
+            'orders': report_config.orders,
             'search_inputs': search_inputs,
             'report_config': report_config.report_config,
         }
         headers, query = QueryProcessor.build_query(request=request, configuration=configuration)
+        if isinstance(query, dict):
+            results = [query]
+        else:
+            results = list(query)
         return JsonResponse(data={
             'headers': headers,
-            'results': list(query),
+            'results': results,
         })

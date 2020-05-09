@@ -2,6 +2,7 @@ import VueRouter from "vue-router";
 import BuildReport from "@/application/views/report/BuildReport";
 import ApplicationBase from "@/application/views/ApplicationBase";
 import ViewReport from "@/application/views/report/ViewReport";
+import ManageReport from "@/application/views/report/ManageReport";
 
 let applicationPages = {
     path: "/",
@@ -9,6 +10,12 @@ let applicationPages = {
     component: ApplicationBase,
     redirect: '/build-report/create',
     children: [
+        {
+            path: "/build-report/list",
+            name: "ManageReport",
+            component: ManageReport,
+            meta: {},
+        },
         {
             path: "/build-report/create",
             name: "CreateReport",
