@@ -1,15 +1,15 @@
 <template>
-	<v-list dense>
-		<FieldPicker :fields="reportSchema['fields']" :model="reportSchema['table']"
-					 :onItemSelected="onItemSelected" :purpose="'Filter'">
-		</FieldPicker>
-		<v-list-item :key="item.key_name" @click="" v-for="item in fields">
-			<v-list-item-content class="pt-0 pb-0">
-				<v-divider></v-divider>
-				<FilterField :deleteField="deleteField" :field="item"></FilterField>
-			</v-list-item-content>
-		</v-list-item>
-	</v-list>
+    <v-list dense>
+        <FieldPicker :fields="reportSchema['fields']" :model="reportSchema['table']"
+                     :onItemSelected="onItemSelected" :purpose="'Filter'">
+        </FieldPicker>
+        <v-list-item :key="item.key_name" @click="" v-for="item in fields">
+            <v-list-item-content class="pt-0 pb-0">
+                <v-divider></v-divider>
+                <FilterField :deleteField="deleteField" :field="item"></FilterField>
+            </v-list-item-content>
+        </v-list-item>
+    </v-list>
 </template>
 
 <script>
@@ -39,7 +39,8 @@
                 fields: [],
             }
         },
-        computed: {},
+        computed: {
+        },
         watch: {
             filters: function (newVal) {
                 this.populateListItems(this.filters);
@@ -61,8 +62,9 @@
                 this.fields = _fields;
             },
             onItemSelected(item) {
-                if (!this.filters.hasOwnProperty(item.key_name)) {
-                    this.filters[item.key_name] = item;
+                let clonedItem = this._.cloneDeep(item);
+                if (!this.filters.hasOwnProperty(clonedItem.key_name)) {
+                    this.filters[clonedItem.key_name] = clonedItem;
                     this.populateListItems(this.filters);
                 } else {
                     this.$notify({

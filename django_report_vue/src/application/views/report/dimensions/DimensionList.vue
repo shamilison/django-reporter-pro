@@ -73,11 +73,12 @@
                 this.reportSchema['dimensions'] = dimensions;
             },
             onItemSelected(item) {
-                if (!this.reportSchema['dimensions'].hasOwnProperty(item.key_name)) {
-                    item['_dimension_config'] = {};
-                    this.reportSchema['dimensions'][item.key_name] = item;
+                let clonedItem = this._.cloneDeep(item);
+                if (!this.reportSchema['dimensions'].hasOwnProperty(clonedItem.key_name)) {
+                    clonedItem['_dimension_config'] = {};
+                    this.reportSchema['dimensions'][clonedItem.key_name] = clonedItem;
                     this.populateListItems(this.reportSchema['dimensions']);
-                    this.addToOrderList(this.reportSchema, item, item.key_name, 'dimension');
+                    this.addToOrderList(this.reportSchema, clonedItem, clonedItem.key_name, 'dimension');
                 } else {
                     this.$notify({
                         type: 'warn',

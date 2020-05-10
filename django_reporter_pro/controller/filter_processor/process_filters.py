@@ -50,9 +50,9 @@ class ProcessFilter(object):
         return query
 
     @classmethod
-    def get_q_expression(cls, _filter):
+    def get_q_expression(cls, _filter, _key=None):
         _query = Q()
-        key = _filter.get('query_name')
+        key = _filter.get('query_name') if not _key else _key
         config = _filter.get('_filter_config')
         filter_type = config.get('filter')
         filter_inputs = config.get('filterInputs')

@@ -73,8 +73,9 @@
                 this.reportSchema['searches'] = searches;
             },
             onItemSelected(item) {
-                if (!this.reportSchema['searches'].hasOwnProperty(item.key_name)) {
-                    this.reportSchema['searches'][item.key_name] = item;
+                let clonedItem = this._.cloneDeep(item);
+                if (!this.reportSchema['searches'].hasOwnProperty(clonedItem.key_name)) {
+                    this.reportSchema['searches'][clonedItem.key_name] = clonedItem;
                     this.populateListItems(this.reportSchema['searches']);
                 } else {
                     this.$notify({

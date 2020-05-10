@@ -1,4 +1,5 @@
 from django.db.models import F, Sum, Count, Max, Min, Avg
+from django_reporter_pro.controller.filter_processor.process_filters import ProcessFilter
 from django_reporter_pro.enums.enum_mixin import EnumMixin
 from django_reporter_pro.extensions.django.db.models.expressions import ForceF
 from django_reporter_pro.extensions.django.db.models.functions.postgresql.timestamp import DateFromTimeStamp
@@ -48,6 +49,7 @@ class ProcessMeasure(object):
         # Process _annotations
         _pre_annotations = {}
         _annotations = {}
+        _post_filters = None
         for key in measures.keys():
             _measure_field = measures.get(key)
             _measure_config = _measure_field.get('_measure_config')
@@ -68,17 +70,23 @@ class ProcessMeasure(object):
                 else:
                     _annotations[_annotation_key] = _function
             # Adding _annotations in table values list
-            _text = _measure_field.get('verbose_name')
             if _measure_config:
-                _text = _measure_config.get('label')
                 if _measure_config.get('sort') == 'ascending':
                     _order_by.append(_annotation_key)
                 elif _measure_config.get('sort') == 'descending':
                     _order_by.append('-' + _annotation_key)
+            if _measure_config.get('apply_filter', False):
+                _q_expression = ProcessFilter.get_q_expression(
+                    _measure_field, '{0}_{1}'.format(
+                        _measure_field.get('query_name'), _measure_config.get('aggregation')
+                    )
+                )
+                _post_filters = _post_filters & _q_expression if _post_filters else _q_expression
         # measure end
         query = query.annotate(**_pre_annotations) if len(_pre_annotations.keys()) > 0 else query
         query = query.values(*_values) if _values else query
         query = query.annotate(**_annotations) if len(_annotations.keys()) > 0 else query
+        query = query.filter(_post_filters) if _post_filters else query
         query = query.values(*list(_annotations.keys())) if not _values else query
         query = query.order_by(*_order_by) if _order_by else query
         return query

@@ -2,16 +2,15 @@
 
 ### Last Update
 
-* Table column ordering feature added
-* Added sorting both annotated and dimension in one list for report table output
+* Added filter option for measured fields
+* Added lodash library
 
 ----
 
 ### Immediate TODO:
 
-* Add annotated fields available for filtering
-* Add custom annotated field adding support
 * Add options to filter by own field
+* Add custom annotated field adding support
 * Add segment-offset and API call based pagination in Table
 
 ----

@@ -1,31 +1,55 @@
 <template>
-	<form class="pa-5 pt-5 pb-5 white">
-		<v-text-field label="Field Label" v-model="label"></v-text-field>
-		<v-switch :disabled="dateFilterDisabled" class="ma-2" label="Apply date filters"
-				  v-model="applyDateFilter"></v-switch>
-		<v-select :items="filterOptions" dense label="Condition" outlined return-object v-model="filter"></v-select>
-		<v-content :key="filterInputKey" class="mb-4 text-center" v-if="filterInputs.length > 0 || showAddInput">
-			<template v-for="(input, index) in filterInputs">
-				<v-menu :close-on-content-click="false" :nudge-right="40" min-width="290px"
-						offset-y transition="scale-transition" v-if="filterDateInput"
-						v-model="dateInputs[index]">
-					<template v-slot:activator="{ on }">
-						<v-text-field :label="`Date ` + (index + 1)" prepend-icon="event" readonly
-									  v-model="filterInputs[index]" v-on="on"></v-text-field>
-					</template>
-					<v-date-picker @input="dateInputs[index] = false"
-								   v-model="filterInputs[index]"></v-date-picker>
-				</v-menu>
-				<v-text-field :label="`Input ` + (index + 1)" @click:clear="clearInput(index)"
-							  clearable v-else v-model="filterInputs[index]"></v-text-field>
-			</template>
-			<v-btn @click="addInput" icon outlined small v-show="showAddInput">
-				<v-icon small>mdi-plus</v-icon>
-			</v-btn>
-		</v-content>
-		<v-btn @click="submit" class="mr-4 primary" small>ok</v-btn>
-		<v-btn @click="cancel" small>cancel</v-btn>
-	</form>
+    <form class="pa-5 pt-5 pb-5 white" v-if="!filterOnly">
+        <v-text-field label="Field Label" v-model="label"></v-text-field>
+        <v-switch :disabled="dateFilterDisabled" class="ma-2" label="Apply date filters"
+                  v-model="applyDateFilter"></v-switch>
+        <v-select :items="filterOptions" dense label="Condition" outlined return-object v-model="filter"></v-select>
+        <v-content :key="filterInputKey" class="mb-4 text-center" v-if="filterInputs.length > 0 || showAddInput">
+            <template v-for="(input, index) in filterInputs">
+                <v-menu :close-on-content-click="false" :nudge-right="40" min-width="290px"
+                        offset-y transition="scale-transition" v-if="filterDateInput"
+                        v-model="dateInputs[index]">
+                    <template v-slot:activator="{ on }">
+                        <v-text-field :label="`Date ` + (index + 1)" prepend-icon="event" readonly
+                                      v-model="filterInputs[index]" v-on="on"></v-text-field>
+                    </template>
+                    <v-date-picker @input="dateInputs[index] = false"
+                                   v-model="filterInputs[index]"></v-date-picker>
+                </v-menu>
+                <v-text-field :label="`Input ` + (index + 1)" @click:clear="clearInput(index)"
+                              clearable v-else v-model="filterInputs[index]"></v-text-field>
+            </template>
+            <v-btn @click="addInput" icon outlined small v-show="showAddInput">
+                <v-icon small>mdi-plus</v-icon>
+            </v-btn>
+        </v-content>
+        <v-btn @click="submit" class="mr-4 primary" small>ok</v-btn>
+        <v-btn @click="cancel" small>cancel</v-btn>
+    </form>
+    <v-content v-else>
+        <v-switch :disabled="dateFilterDisabled" class="ma-2" label="Apply date filters"
+                  v-model="applyDateFilter"></v-switch>
+        <v-select :items="filterOptions" dense label="Condition" outlined return-object v-model="filter"></v-select>
+        <v-content :key="filterInputKey" class="mb-4 text-center" v-if="filterInputs.length > 0 || showAddInput">
+            <template v-for="(input, index) in filterInputs">
+                <v-menu :close-on-content-click="false" :nudge-right="40" min-width="290px"
+                        offset-y transition="scale-transition" v-if="filterDateInput"
+                        v-model="dateInputs[index]">
+                    <template v-slot:activator="{ on }">
+                        <v-text-field :label="`Date ` + (index + 1)" prepend-icon="event" readonly
+                                      v-model="filterInputs[index]" v-on="on"></v-text-field>
+                    </template>
+                    <v-date-picker @input="dateInputs[index] = false"
+                                   v-model="filterInputs[index]"></v-date-picker>
+                </v-menu>
+                <v-text-field :label="`Input ` + (index + 1)" @click:clear="clearInput(index)"
+                              clearable v-else v-model="filterInputs[index]"></v-text-field>
+            </template>
+            <v-btn @click="addInput" icon outlined small v-show="showAddInput">
+                <v-icon small>mdi-plus</v-icon>
+            </v-btn>
+        </v-content>
+    </v-content>
 </template>
 
 <script>
@@ -35,9 +59,22 @@
         name: 'FilterSetting',
         components: {},
         props: {
+            filterOnly: {
+                type: Boolean,
+                default: function () {
+                    return false;
+                }
+            },
+            defaultMeasure: {
+                type: Boolean,
+                default: function () {
+                    return false;
+                }
+            },
             field: {
                 type: Object,
                 default: function () {
+                    return {};
                 }
             },
             closeMenu: {
@@ -64,7 +101,7 @@
                     {value: 'not_like', text: 'is not like', input: 1,},
                     {value: 'ilike', text: 'like (case insensitive)', input: 1,},
                     {value: 'not_ilike', text: 'not like (case insensitive)', input: 1,},
-					{value: 'regex', text: 'matches regex', input: 1,},
+                    {value: 'regex', text: 'matches regex', input: 1,},
                     {value: 'is_null', text: 'is empty', input: 0,},
                     {value: 'not_null', text: 'is not empty', input: 0,},
                 ],
@@ -132,7 +169,7 @@
                 } else {
                     this.showAddInput = false;
                     this.filterInputs = [];
-				}
+                }
             },
             filterInputs: function (newVal, oldVal) {
                 this.field['_filter_config']['filterInputs'] = newVal;
@@ -158,7 +195,7 @@
         },
         mounted() {
             let fieldType = this.getFieldCategory(this.field);
-            if (fieldType === 'measure') {
+            if (fieldType === 'measure' || this.defaultMeasure) {
                 this.dateFilterDisabled = false;
                 this.filterOptions = this.measureFilterOptions;
             } else if (fieldType === 'dimension') {

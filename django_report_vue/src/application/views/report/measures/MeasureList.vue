@@ -74,11 +74,12 @@
                 this.reportSchema['measures'] = measures;
             },
             onItemSelected(item) {
-                if (!this.reportSchema['measures'].hasOwnProperty(item.key_name)) {
-                    item['_measure_config'] = {};
-                    this.reportSchema['measures'][item.key_name] = item;
+                let clonedItem = this._.cloneDeep(item);
+                if (!this.reportSchema['measures'].hasOwnProperty(clonedItem.key_name)) {
+                    clonedItem['_measure_config'] = {};
+                    this.reportSchema['measures'][clonedItem.key_name] = clonedItem;
                     this.populateListItems(this.reportSchema['measures']);
-                    this.addToOrderList(this.reportSchema, item, item.key_name, 'measure');
+                    this.addToOrderList(this.reportSchema, clonedItem, clonedItem.key_name, 'measure');
                 } else {
                     this.$notify({
                         type: 'warn',
