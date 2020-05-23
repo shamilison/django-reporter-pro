@@ -18,6 +18,7 @@
     import FieldPicker from "@/application/views/report/pickers/FieldPicker";
     import DimensionField from "@/application/views/report/dimensions/DimensionField";
     import Draggable from 'vuedraggable'
+    import ReportHeaderOrderMixin from "@/application/views/report/mixin/ReportHeaderOrderMixin";
 
     export default {
         name: 'DimensionList',
@@ -30,7 +31,7 @@
                 }
             },
         },
-        mixins: [],
+        mixins: [ReportHeaderOrderMixin],
         data() {
             return {
                 fields: [],
