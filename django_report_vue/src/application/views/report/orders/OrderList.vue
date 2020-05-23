@@ -80,36 +80,38 @@
                 // Add existing orders fields
                 for (let index = 0; index < orders.length; index++) {
                     let _item = {
-                        label: orders[index].label,
+                        unique_id: orders[index].unique_id,
                         key_name: orders[index].key_name,
-                        text: orders[index].text,
                         value: orders[index].value,
+                        label: orders[index].label,
+                        text: orders[index].text,
                         type: orders[index].type,
                         is_hidden: orders[index].is_hidden === undefined ? false : orders[index].is_hidden,
                     };
-                    if (orders[index].type === 'dimension' && _dimensionKeys.indexOf(_item.key_name) > -1) {
-                        _dimensionKeys.splice(_dimensionKeys.indexOf(_item.key_name), 1);
+                    if (_item.type === 'dimension' && _dimensionKeys.indexOf(_item.unique_id) > -1) {
+                        _dimensionKeys.splice(_dimensionKeys.indexOf(_item.unique_id), 1);
                         _item['type'] = 'dimension';
                         _fields.push(_item);
-                    } else if (orders[index].type === 'measure' && _measureKeys.indexOf(orders[index].key_name) > -1) {
+                    } else if (_item.type === 'measure' && _measureKeys.indexOf(_item.unique_id) > -1) {
                         // Special code to add aggregation type as suffix for measure field
                         // As their value converts to special format
-                        let _field = schema['measures'][orders[index].key_name];
-                        _item.type = 'measure';
+                        let _field = schema['measures'][_item.unique_id];
+                        _item['type'] = 'measure';
                         _item['value'] = _field.key_name + '_' + _field._measure_config.aggregation;
                         // End special code to add aggregation type as suffix
-                        _measureKeys.splice(_measureKeys.indexOf(orders[index].key_name), 1);
+                        _measureKeys.splice(_measureKeys.indexOf(_item.unique_id), 1);
                         _fields.push(_item);
                     }
                 }
                 // Add new dimensions if available
                 for (let _i_dim = 0; _i_dim < _dimensionKeys.length; _i_dim++) {
                     let _item = {
+                        unique_id: _dimensionKeys[_i_dim],
                         key_name: schema['dimensions'][_dimensionKeys[_i_dim]].key_name,
                         type: 'dimension',
                         is_hidden: false,
                     };
-                    _item['value'] = _item['key_name'];
+                    _item['value'] = _item['query_name'];
                     _item['label'] = schema['dimensions'][_dimensionKeys[_i_dim]]._dimension_config.label;
                     _item['text'] = _item['label'];
                     _fields.push(_item);
@@ -118,6 +120,7 @@
                 for (let _i_mes = 0; _i_mes < _measureKeys.length; _i_mes++) {
                     let _field = schema['measures'][_measureKeys[_i_mes]];
                     let _item = {
+                        unique_id: _measureKeys[_i_mes],
                         key_name: _field.key_name,
                         value: _field.key_name + '_' + _field._measure_config.aggregation,
                         type: 'measure',

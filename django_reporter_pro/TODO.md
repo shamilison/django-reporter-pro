@@ -4,6 +4,7 @@
 
 * Added filter option for measured fields
 * Added lodash library
+* Replace field key names with random: Access Key
 
 ----
 

@@ -10,12 +10,12 @@
                                    v-for="(field, i) in fields">
                                 <template v-if="field._search_config.category === 'text'">
                                     <v-text-field :label="field._search_config.label" dense
-                                                  v-model="searchInputs[field.key_name]">
+                                                  v-model="searchInputs[field.unique_id]">
                                     </v-text-field>
                                 </template>
                                 <template v-if="field._search_config.category === 'number'">
                                     <v-text-field :label="field._search_config.label" dense type="number"
-                                                  v-model="searchInputs[field.key_name]">
+                                                  v-model="searchInputs[field.unique_id]">
                                     </v-text-field>
                                 </template>
                                 <template v-if="field._search_config.category === 'date'">
@@ -27,14 +27,14 @@
                                 <template v-if="field._search_config.category === 'static_choice'">
                                     <v-select :items="field._search_config.choices"
                                               :label="field._search_config.label" dense outlined
-                                              v-model="searchInputs[field.key_name]"></v-select>
+                                              v-model="searchInputs[field.unique_id]"></v-select>
                                 </template>
                                 <template v-if="field._search_config.category === 'dynamic_choice'">
-                                    <v-select :item-text="dynamicChoiceMap[field.key_name].text"
-                                              :item-value="dynamicChoiceMap[field.key_name].value"
-                                              :items="dynamicChoiceMap[field.key_name].items"
+                                    <v-select :item-text="dynamicChoiceMap[field.unique_id].text"
+                                              :item-value="dynamicChoiceMap[field.unique_id].value"
+                                              :items="dynamicChoiceMap[field.unique_id].items"
                                               :label="field._search_config.label" dense outlined
-                                              v-model="searchInputs[field.key_name]"></v-select>
+                                              v-model="searchInputs[field.unique_id]"></v-select>
                                 </template>
                             </v-col>
                         </v-row>
@@ -115,7 +115,7 @@ panel
                 let keys = Object.keys(fields);
                 for (let index = 0; index < keys.length; index++) {
                     if (fields[keys[index]]._search_config.category === 'dynamic_choice') {
-                        let keyName = fields[keys[index]].key_name;
+                        let keyName = fields[keys[index]].unique_id;
                         _vm.dynamicChoiceMap[keyName] = {
                             text: "text",
                             value: "value",

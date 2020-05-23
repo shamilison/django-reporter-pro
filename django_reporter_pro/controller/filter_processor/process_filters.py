@@ -54,6 +54,8 @@ class ProcessFilter(object):
         _query = Q()
         key = _filter.get('query_name') if not _key else _key
         config = _filter.get('_filter_config')
+        if config.get('jsonb_path', None):
+            key = key + '__' + config.get('jsonb_path').replace('.', '__')
         filter_type = config.get('filter')
         filter_inputs = config.get('filterInputs')
         filter_function = FILTERS_MAPPING.get(filter_type)

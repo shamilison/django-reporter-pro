@@ -45,7 +45,7 @@
         watch: {
             label: function (newVal, oldVal) {
                 this.field['_dimension_config']['label'] = newVal;
-                this.updateDimensionInOrderList(this.schema, this.field['_dimension_config'], this.field.key_name);
+                this.updateDimensionInOrderList(this.schema, this.field['_dimension_config'], this.field.unique_id);
             },
             sort: function (newVal, oldVal) {
                 this.field['_dimension_config']['sort'] = newVal;

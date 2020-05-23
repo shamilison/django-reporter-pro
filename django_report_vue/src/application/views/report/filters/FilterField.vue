@@ -7,6 +7,9 @@
 			<span v-else>{{field.key_name}}</span>
 		</v-col>
 		<v-col class="pa-3 pt-1 pb-2" cols="4">
+			<span v-if="field._filter_config !== undefined && field._filter_config.jsonb_path !== null">
+				<span>{{field.key_name}}.{{field._filter_config.jsonb_path}} =></span>
+			</span>
 			<span v-if="field._filter_config !== undefined && field._filter_config.filter !== ''">
 				{{field._filter_config.filter}}
 			</span>

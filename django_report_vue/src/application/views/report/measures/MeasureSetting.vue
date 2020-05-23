@@ -8,11 +8,11 @@
                    v-if="aggregation !== null && aggregation.startsWith('jsonb')">
             <v-row class="mx-0">
                 <v-col class="pa-0 ma-0" cols="6">
-                    <v-text-field class="mr-1" cols="6" label="Jsonb Field Path"
+                    <v-text-field class="mr-1" label="Jsonb Field Path"
                                   v-model="jsonbPath"></v-text-field>
                 </v-col>
                 <v-col class="pa-0 ma-0" cols="6">
-                    <v-text-field class="ml-1" cols="6" label="Aggregating Jsonb Field"
+                    <v-text-field class="ml-1" label="Aggregating Jsonb Field"
                                   v-model="jsonbAggregateField"></v-text-field>
                 </v-col>
             </v-row>
@@ -114,14 +114,14 @@
         watch: {
             label: function (newVal, oldVal) {
                 this.field['_measure_config']['label'] = newVal;
-                this.updateMeasureInOrderList(this.schema, this.field['_measure_config'], this.field.key_name);
+                this.updateMeasureInOrderList(this.schema, this.field['_measure_config'], this.field.unique_id);
             },
             sort: function (newVal, oldVal) {
                 this.field['_measure_config']['sort'] = newVal;
             },
             aggregation: function (newVal, oldVal) {
                 this.field['_measure_config']['aggregation'] = newVal;
-                this.updateMeasureInOrderList(this.schema, this.field['_measure_config'], this.field.key_name);
+                this.updateMeasureInOrderList(this.schema, this.field['_measure_config'], this.field.unique_id);
             },
             jsonbPath: function (newVal, oldVal) {
                 this.field['_measure_config']['jsonb_config']['jsonb_path'] = newVal;

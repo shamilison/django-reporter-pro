@@ -3,6 +3,13 @@
         <v-text-field label="Field Label" v-model="label"></v-text-field>
         <v-switch :disabled="dateFilterDisabled" class="ma-2" label="Apply date filters"
                   v-model="applyDateFilter"></v-switch>
+        <v-content class="mb-4 text-center" v-if="isJsonField">
+            <v-row class="mx-0">
+                <v-col class="pa-0 ma-0" cols="12">
+                    <v-text-field class="mr-1" label="Jsonb Field Path" v-model="jsonbPath"></v-text-field>
+                </v-col>
+            </v-row>
+        </v-content>
         <v-select :items="filterOptions" dense label="Condition" outlined return-object v-model="filter"></v-select>
         <v-content :key="filterInputKey" class="mb-4 text-center" v-if="filterInputs.length > 0 || showAddInput">
             <template v-for="(input, index) in filterInputs">
@@ -135,6 +142,8 @@
                 showAddInput: false,
                 dateFieldPopup: false,
                 dateInputs: {},
+                isJsonField: false,
+                jsonbPath: null,
             }
         },
         computed: {},
@@ -174,6 +183,9 @@
             filterInputs: function (newVal, oldVal) {
                 this.field['_filter_config']['filterInputs'] = newVal;
             },
+            jsonbPath: function (newVal, oldVal) {
+                this.field['_filter_config']['jsonb_path'] = newVal;
+            },
         },
         created() {
         },
@@ -195,6 +207,7 @@
         },
         mounted() {
             let fieldType = this.getFieldCategory(this.field);
+            this.isJsonField = this.isJsonType(this.field);
             if (fieldType === 'measure' || this.defaultMeasure) {
                 this.dateFilterDisabled = false;
                 this.filterOptions = this.measureFilterOptions;
@@ -205,6 +218,7 @@
                 this.field['_filter_config'] = {};
                 this.field['_filter_config']['label'] = "";
                 this.field['_filter_config']['filter'] = null;
+                this.field['_filter_config']['jsonb_path'] = null;
                 this.field['_filter_config']['apply_date_filter'] = false;
                 this.field['_filter_config']['filterInputs'] = [];
                 this.newField = true;
@@ -212,6 +226,7 @@
                 this.label = this.field['_filter_config']['label'];
                 this.filterInputs = this.field['_filter_config']['filterInputs'];
                 this.applyDateFilter = this.field['_filter_config']['apply_date_filter'];
+                this.jsonbPath = this.field['_filter_config']['jsonb_path'];
                 if (this.applyDateFilter) {
                     this.filterOptions = this.dateFilterOptions;
                 }

@@ -50,7 +50,7 @@
         },
         methods: {
             deleteField(field) {
-                delete this.filters[field.key_name];
+                delete this.filters[field.unique_id];
                 this.populateListItems(this.filters);
             },
             populateListItems(fields) {
@@ -63,8 +63,10 @@
             },
             onItemSelected(item) {
                 let clonedItem = this._.cloneDeep(item);
-                if (!this.filters.hasOwnProperty(clonedItem.key_name)) {
-                    this.filters[clonedItem.key_name] = clonedItem;
+                let uuid_key = this.$uuid.v4().replace(/-/g, "");
+                if (!this.filters.hasOwnProperty(uuid_key)) {
+                    clonedItem['unique_id'] = uuid_key;
+                    this.filters[uuid_key] = clonedItem;
                     this.populateListItems(this.filters);
                 } else {
                     this.$notify({

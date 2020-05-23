@@ -53,7 +53,7 @@
             },
             deleteField: {
                 type: Function,
-                default: function (item) {
+                default: function (field) {
                 }
             },
         },

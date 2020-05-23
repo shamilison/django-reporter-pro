@@ -1,17 +1,15 @@
 <template>
-    <v-list :key="uniqueKey" dense>
-        <FieldPicker :fields="reportSchema['fields']" :model="reportSchema['table']"
-                     :onItemSelected="onItemSelected" :purpose="'Measure'">
-        </FieldPicker>
-        <Draggable @end="dragAction(false)" @start="dragAction(true)" group="measure" v-model="fields">
-            <v-list-item :key="item.key_name" @click="" v-for="item in fields">
-                <v-list-item-content class="pt-0 pb-0">
-                    <v-divider></v-divider>
-                    <MeasureField :deleteField="deleteField" :field="item" :schema="reportSchema"></MeasureField>
-                </v-list-item-content>
-            </v-list-item>
-        </Draggable>
-    </v-list>
+	<v-list :key="uniqueKey" dense>
+		<FieldPicker :fields="reportSchema['fields']" :model="reportSchema['table']"
+					 :onItemSelected="onItemSelected" :purpose="'Measure'">
+		</FieldPicker>
+		<v-list-item :key="item.key_name" @click="" v-for="item in fields">
+			<v-list-item-content class="pt-0 pb-0">
+				<v-divider></v-divider>
+				<MeasureField :deleteField="deleteField" :field="item" :schema="reportSchema"></MeasureField>
+			</v-list-item-content>
+		</v-list-item>
+	</v-list>
 </template>
 
 <script>
@@ -47,14 +45,8 @@
         }, created() {
         },
         methods: {
-            dragAction(drag) {
-                if (!drag) {
-                    this.serializeMeasures(this.fields);
-                    this.uniqueKey = this.$uuid.v4();
-                }
-            },
             deleteField(field) {
-                delete this.reportSchema['measures'][field.key_name];
+                delete this.reportSchema['measures'][field.unique_id];
                 this.populateListItems(this.reportSchema['measures']);
             },
             populateListItems(fields) {
@@ -65,19 +57,13 @@
                 }
                 this.fields = _fields;
             },
-            serializeMeasures(fields) {
-                let measures = {};
-                for (let index = 0; index < fields.length; index++) {
-                    let _field = fields[index];
-                    measures[_field.key_name] = _field;
-                }
-                this.reportSchema['measures'] = measures;
-            },
             onItemSelected(item) {
                 let clonedItem = this._.cloneDeep(item);
+                let uuid_key = this.$uuid.v4().replace(/-/g, "");
                 if (!this.reportSchema['measures'].hasOwnProperty(clonedItem.key_name)) {
                     clonedItem['_measure_config'] = {};
-                    this.reportSchema['measures'][clonedItem.key_name] = clonedItem;
+                    clonedItem['unique_id'] = uuid_key;
+                    this.reportSchema['measures'][uuid_key] = clonedItem;
                     this.populateListItems(this.reportSchema['measures']);
                     this.addToOrderList(this.reportSchema, clonedItem, clonedItem.key_name, 'measure');
                 } else {
