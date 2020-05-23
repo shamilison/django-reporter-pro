@@ -70,10 +70,13 @@
             </v-row>
         </v-col>
         <v-col class="json-container" cols="4" sm="4">
+            <VueJsonPretty :data="reportSchema['dimensions']" :deep="4" :highlightMouseoverNode="true"
+                           :showLength="true" :showLine="true" :showSelectController="true">
+            </VueJsonPretty>
             <VueJsonPretty :data="reportSchema['measures']" :deep="4" :highlightMouseoverNode="true"
                            :showLength="true" :showLine="true" :showSelectController="true">
             </VueJsonPretty>
-            <VueJsonPretty :data="reportSchema['filters']" :deep="4" :highlightMouseoverNode="true"
+            <VueJsonPretty :data="reportSchema['orders']" :deep="4" :highlightMouseoverNode="true"
                            :showLength="true" :showLine="true" :showSelectController="true">
             </VueJsonPretty>
         </v-col>
@@ -143,10 +146,10 @@
                 searchConfig: {},
                 tab: null,
                 items: [
-                    {tab: 'measures', content: 'Measure'},
+                    {tab: 'filters', content: 'Filter'},
                     {tab: 'information', content: 'Information'},
                     {tab: 'dimensions', content: 'Dimension'},
-                    {tab: 'filters', content: 'Filter'},
+                    {tab: 'measures', content: 'Measure'},
                     {tab: 'orders', content: 'Orders'},
                     {tab: 'searches', content: 'Searches'},
                 ],

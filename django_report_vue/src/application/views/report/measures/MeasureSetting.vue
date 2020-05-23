@@ -179,7 +179,8 @@
             } else {
                 this.label = this.field['_measure_config']['label'];
                 this.sort = this.field['_measure_config']['sort'];
-                this.aggregation = this.field['_measure_config']['aggregation'];
+                if (this.field['_measure_config']['aggregation'] !== undefined)
+                    this.aggregation = this.field['_measure_config']['aggregation'];
                 this.applyAsDate = this.field['_measure_config']['apply_as_date'];
                 if (this.field['_measure_config']['jsonb_config'] === undefined ||
                     this.field['_measure_config']['jsonb_config'] === null) {

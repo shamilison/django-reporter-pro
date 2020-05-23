@@ -34,17 +34,17 @@ class ProcessMeasure(object):
         _order_by = []
         for key in dimensions.keys():
             _dimension_field = dimensions.get(key)
-            _display_config = _dimension_field.get('_display_config')
+            _dimension_config = _dimension_field.get('_dimension_config')
             # Adding dimensions as query VALUES fields
             _field_key = _dimension_field.get('query_name')
             _values.append(_field_key)
             # Populating dimension display detail
             _text = _dimension_field.get('verbose_name')
-            if _display_config:
-                _text = _display_config.get('label')
-                if _display_config.get('sort') == 'ascending':
+            if _dimension_config:
+                _text = _dimension_config.get('label')
+                if _dimension_config.get('sort') == 'ascending':
                     _order_by.append(_field_key)
-                elif _display_config.get('sort') == 'descending':
+                elif _dimension_config.get('sort') == 'descending':
                     _order_by.append('-' + _field_key)
         # Process _annotations
         _pre_annotations = {}

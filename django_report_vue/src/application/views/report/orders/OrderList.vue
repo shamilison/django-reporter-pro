@@ -103,27 +103,27 @@
                     }
                 }
                 // Add new dimensions if available
-                for (let index = 0; index < _dimensionKeys.length; index++) {
+                for (let _i_dim = 0; _i_dim < _dimensionKeys.length; _i_dim++) {
                     let _item = {
-                        key_name: schema['dimensions'][_dimensionKeys[index]].key_name,
+                        key_name: schema['dimensions'][_dimensionKeys[_i_dim]].key_name,
                         type: 'dimension',
                         is_hidden: false,
                     };
                     _item['value'] = _item['key_name'];
-                    _item['label'] = schema['dimensions'][_dimensionKeys[index]]._display_config.label;
+                    _item['label'] = schema['dimensions'][_dimensionKeys[_i_dim]]._dimension_config.label;
                     _item['text'] = _item['label'];
                     _fields.push(_item);
                 }
                 // Add new measures if available
-                for (let index = 0; index < _measureKeys.length; index++) {
-                    let _field = schema['measures'][_measureKeys[index]];
+                for (let _i_mes = 0; _i_mes < _measureKeys.length; _i_mes++) {
+                    let _field = schema['measures'][_measureKeys[_i_mes]];
                     let _item = {
                         key_name: _field.key_name,
                         value: _field.key_name + '_' + _field._measure_config.aggregation,
                         type: 'measure',
                         is_hidden: false,
                     };
-                    _item['label'] = schema['measures'][_measureKeys[index]]._measure_config.label;
+                    _item['label'] = schema['measures'][_measureKeys[_i_mes]]._measure_config.label;
                     _item['text'] = _item['label'];
                     _fields.push(_item);
                 }

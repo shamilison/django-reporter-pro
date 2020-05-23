@@ -7,7 +7,7 @@ export default {
         addToOrderList: function (schema, field, key, type) {
             schema['orders'].push({
                 key_name: key,
-                value: key,
+                value: field.query_name,
                 label: '',
                 text: '',
                 type: type,
