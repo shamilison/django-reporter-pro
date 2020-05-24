@@ -105,13 +105,14 @@
                 }
                 // Add new dimensions if available
                 for (let _i_dim = 0; _i_dim < _dimensionKeys.length; _i_dim++) {
+                    let _field = schema['dimensions'][_dimensionKeys[_i_dim]];
                     let _item = {
                         unique_id: _dimensionKeys[_i_dim],
                         key_name: schema['dimensions'][_dimensionKeys[_i_dim]].key_name,
+                        value: _field.query_name,
                         type: 'dimension',
                         is_hidden: false,
                     };
-                    _item['value'] = _item['query_name'];
                     _item['label'] = schema['dimensions'][_dimensionKeys[_i_dim]]._dimension_config.label;
                     _item['text'] = _item['label'];
                     _fields.push(_item);

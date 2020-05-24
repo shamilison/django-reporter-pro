@@ -2,13 +2,19 @@
 	<v-row>
 		<v-col cols="12" sm="12">
 			<v-card class="px-2 py-0">
+				<v-card-title>
+					<div class="display-1">Report List</div>
+				</v-card-title>
 				<v-list :key="uniqueListKey" class="pa-2" lar>
 					<template v-for="(item, index) in reports">
-						<v-divider v-if="index > 0"></v-divider>
+						<v-divider></v-divider>
 						<v-list-item class="py-2">
 							<v-list-item-content>
-								<v-list-item-title v-text="item.title"></v-list-item-title>
-								<v-list-item-subtitle v-text="item.identifier"></v-list-item-subtitle>
+								<v-list-item-title class="title" v-text="item.title"></v-list-item-title>
+								<v-list-item-subtitle class="subtitle-2" v-text="item.identifier">
+								</v-list-item-subtitle>
+								<v-list-item-subtitle class="subtitle-1" v-text="item.created_at">
+								</v-list-item-subtitle>
 							</v-list-item-content>
 							<v-list-item-action class="mx-2">
 								<v-btn icon x-small>
@@ -70,7 +76,8 @@
         mixins: [ModelInfoMixin],
         data() {
             return {
-                reportListURL: '/all-report-list/',
+                reportListURL: '/report-configuration/list/',
+                reportDisableURL: '/report-configuration/delete/',
                 reportPreviewURL: '/report-configuration-preview/',
                 reports: [],
                 deleteDialog: false,
@@ -82,9 +89,7 @@
             mounted: function () {
                 axios.get(
                     this.reportListURL, {
-                        headers: {}, params: {
-                            all_models: 'yes',
-                        },
+                        headers: {}, params: {},
                     }
                 ).then(response => {
                     this.reports = response.data.results;
@@ -127,7 +132,44 @@
             disableReport: function () {
                 this.deleteDialog = false;
                 if (this.deleteCandidate !== null) {
-                    // Implement delete option
+                    axios.put(
+                        this.reportDisableURL + this.deleteCandidate.key + '/', {
+                            headers: {}, params: {}
+                        }
+                    ).then(response => {
+                        if(response.data.success) {
+                            this.$notify({
+                                type: 'success',
+                                title: 'Delete Done!',
+                                text: 'Item deleted successfully.',
+                                duration: 3000,
+                                speed: 1000,
+                                data: {}
+                            });
+                            this.mounted();
+						} else {
+                            this.$notify({
+                                type: 'error',
+                                title: 'Delete Failed!',
+                                text: 'Item deletion failed.',
+                                duration: 3000,
+                                speed: 1000,
+                                data: {}
+                            });
+						}
+                    }).catch(error => {
+                        this.$notify({
+                            type: 'error',
+                            title: 'Delete Failed!',
+                            text: 'Item deletion failed.',
+                            duration: 3000,
+                            speed: 1000,
+                            data: {}
+                        });
+                        new ErrorWrapper(error);
+                    }).finally(() => {
+                        this.deleteCandidate = null;
+                    });
                 }
                 this.deleteCandidate = null;
             },

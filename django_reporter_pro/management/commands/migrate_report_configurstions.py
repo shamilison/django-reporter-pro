@@ -22,6 +22,9 @@ class Command(BaseCommand):
                     _field['unique_id'] = _new_key
                     _dimensions[_new_key] = _field
                     del _dimensions[_key]
+                if _field.get('_display_config') and not _field.get('_dimension_config'):
+                    _field['_dimension_config'] = _field['_display_config']
+                    del _field['_display_config']
             print(_dimensions)
             report_config.dimensions = _dimensions
             # Updating Keys for measures
@@ -68,6 +71,8 @@ class Command(BaseCommand):
                                 _field['unique_id'] = _m_field.get('unique_id')
                     else:
                         pass
+                    if _field.get('key_name') and not _field.get('value'):
+                        _field['value'] = _field['key_name']
             print(_orders)
             report_config.orders = _orders
             # Updating Keys for searches

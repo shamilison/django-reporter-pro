@@ -1,6 +1,6 @@
 <template>
 	<v-row>
-		<v-col :key="uniqueReportKey" class="pt-0 pb-0" cols="8" sm="8">
+		<v-col :cols="getWidth" :key="uniqueReportKey" :sm="getWidth" class="pt-0 pb-0">
 			<v-row>
 				<v-col class="pb-0" cols="12" sm="12">
 					<v-autocomplete :clearable="true" :items="tables" class="mt-2" dense item-text="label"
@@ -65,7 +65,7 @@
 				</v-col>
 			</v-row>
 		</v-col>
-		<v-col class="json-container" cols="4" sm="4">
+		<v-col class="json-container" cols="4" sm="4" v-if="debug">
 			<VueJsonPretty :data="reportSchema['orders']" :deep="4" :highlightMouseoverNode="true"
 						   :showLength="true" :showLine="true" :showSelectController="true">
 			</VueJsonPretty>
@@ -101,6 +101,7 @@
         mixins: [ModelInfoMixin],
         data() {
             return {
+                debug: false,
                 fabEnabled: false,
                 reportPostURL: '/report-configuration/create',
                 reportPutURL: '/report-configuration/update/',
@@ -150,10 +151,13 @@
             reportType: function () {
                 try {
                     return this.reportSchema.report_config['report_type'].value;
-				} catch (e) {
-					return '';
+                } catch (e) {
+                    return '';
                 }
-            }
+            },
+            getWidth: function () {
+                return (this.debug) ? 8 : 12;
+            },
         },
         methods: {
             mounted: function () {

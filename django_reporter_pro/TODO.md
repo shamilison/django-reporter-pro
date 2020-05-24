@@ -9,14 +9,15 @@
 #### High Priority TODO:
 
 * Add custom annotated field adding support
-* Add segment-offset and API call based pagination in Table
+* Add report data API call pagination for large data set
+* Add celery task to cache report data in NO SQL database system. No SQL Target: Mongo DB
 
 ----
 
 #### Planned TODO:
 
-* Add widget rendering configuration
 * Add proper UI information/errors to users in whole interface
+* Add settings for table data for grouping/comparing/transposing information
+* Add widget rendering configuration
 * Add dashboard building settings
 * Add dashboard styling configurations support to client side
-* Add settings for table data for grouping/comparing/transposing information

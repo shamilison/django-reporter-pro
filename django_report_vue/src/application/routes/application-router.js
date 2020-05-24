@@ -8,7 +8,7 @@ let applicationPages = {
     path: "/",
     name: "ApplicationBase",
     component: ApplicationBase,
-    redirect: '/build-report/create',
+    redirect: '/build-report/list',
     children: [
         {
             path: "/build-report/list",
