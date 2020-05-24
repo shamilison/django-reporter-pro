@@ -3,10 +3,10 @@
         <FieldPicker :fields="reportSchema['fields']" :model="reportSchema['table']"
                      :onItemSelected="onItemSelected" :purpose="'Filter'">
         </FieldPicker>
-        <v-list-item :key="item.key_name" @click="" v-for="item in fields">
+        <v-list-item :key="item.unique_id" @click="" v-for="item in fields">
             <v-list-item-content class="pt-0 pb-0">
                 <v-divider></v-divider>
-                <FilterField :deleteField="deleteField" :field="item"></FilterField>
+                <FilterField :deleteField="deleteField" :field="item" :reportSchema="reportSchema"></FilterField>
             </v-list-item-content>
         </v-list-item>
     </v-list>

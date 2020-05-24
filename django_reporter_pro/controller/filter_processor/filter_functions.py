@@ -1,3 +1,4 @@
+from django.db.models import F
 from django_reporter_pro.extensions.basic.time_fication import get_date_from_string, get_date_n_days_ago, \
     get_date_n_week_ago, get_date_n_month_ago, get_date_n_year_ago
 
@@ -7,11 +8,13 @@ class BaseFilterFunction:
     inputs = []
     to_many = False
     is_not = False
+    apply_self = False
 
     def __init__(self, key, inputs, **kwargs):
         self.key = key
         if inputs:
             self.inputs = inputs
+        self.apply_self = kwargs.get('_apply_self', False)
 
     def process_inputs(self):
         return self.inputs
@@ -22,11 +25,12 @@ class BaseFilterFunction:
         if not self.to_many:
             for _op, _input in zip(self.operators, processed_inputs):
                 if _op:
-                    expression[self.key + '__' + _op] = _input
+                    expression[self.key + '__' + _op] = F(_input) if self.apply_self else _input
                 else:
-                    expression[self.key] = _input
+                    expression[self.key] = F(_input) if self.apply_self else _input
         else:
-            expression[self.key + '__' + self.operators[0]] = self.inputs
+            expression[self.key + '__' + self.operators[0]] = [F(_input) for _input in self.inputs] \
+                if self.apply_self else self.inputs
         return self.is_not, expression
 
 

@@ -59,8 +59,10 @@ class ProcessFilter(object):
         filter_type = config.get('filter')
         filter_inputs = config.get('filterInputs')
         filter_function = FILTERS_MAPPING.get(filter_type)
+        apply_self_filter = config.get('apply_self_filter')
         if filter_function:
-            _is_not, _expression = filter_function(key, filter_inputs, _filter=_filter).get_filter_expression()
+            _is_not, _expression = filter_function(
+                key, filter_inputs, _filter=_filter, _apply_self=apply_self_filter).get_filter_expression()
             _query = ~Q(**_expression) if _is_not else Q(**_expression)
         return _query
 

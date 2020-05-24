@@ -5,7 +5,7 @@
         </v-toolbar>
         <Draggable @end="dragAction(false)" @start="dragAction(true)"
                    group="orders" v-model="fields">
-            <v-list-item :key="_field.key_name" @click="" v-for="_field in fields">
+            <v-list-item :key="_field.unique_id" @click="" v-for="_field in fields">
                 <v-list-item-content class="pt-0 pb-0">
                     <v-divider></v-divider>
                     <v-row>
