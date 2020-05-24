@@ -3,11 +3,22 @@
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields import JSONField
 from django.db import models
+from django.utils import timezone
 
 
 # BASE_MODEL = models.Model
 # if hasattr(settings, 'BASE_MODEL') and getattr(settings, 'BASE_MODEL'):
 #     BASE_MODEL = getattr(settings, 'BASE_MODEL')
+
+
+class ReportConfigurationManager(models.Manager):
+    def __init__(self, user_field=None, user_fields=None):
+        super(ReportConfigurationManager, self).__init__()
+
+    def get_queryset(self):
+        queryset = super(ReportConfigurationManager, self).get_queryset()
+        queryset = queryset.filter(is_deleted=0, is_active=True)
+        return queryset
 
 
 class ReportConfiguration(models.Model):
@@ -19,6 +30,15 @@ class ReportConfiguration(models.Model):
     searches = JSONField(max_length=8192, default=None, null=True)
     orders = JSONField(max_length=8192, default=None, null=True)
     report_config = JSONField(max_length=8192, default=None, null=True)
+
+    is_draft = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_deleted = models.SmallIntegerField(default=0)
+
+    created_at = models.DateTimeField(editable=False, default=timezone.now)
+    updated_at = models.DateTimeField(editable=False, default=timezone.now)
+
+    objects = ReportConfigurationManager()
 
     def __init__(self, *args, **kwargs):
         super(ReportConfiguration, self).__init__(*args, **kwargs)

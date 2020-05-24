@@ -50,15 +50,19 @@ class ProcessFilter(object):
         return query
 
     @classmethod
-    def get_q_expression(cls, _filter):
+    def get_q_expression(cls, _filter, _key=None):
         _query = Q()
-        key = _filter.get('query_name')
+        key = _filter.get('query_name') if not _key else _key
         config = _filter.get('_filter_config')
+        if config.get('jsonb_path', None):
+            key = key + '__' + config.get('jsonb_path').replace('.', '__')
         filter_type = config.get('filter')
         filter_inputs = config.get('filterInputs')
         filter_function = FILTERS_MAPPING.get(filter_type)
+        apply_self_filter = config.get('apply_self_filter')
         if filter_function:
-            _is_not, _expression = filter_function(key, filter_inputs, _filter=_filter).get_filter_expression()
+            _is_not, _expression = filter_function(
+                key, filter_inputs, _filter=_filter, _apply_self=apply_self_filter).get_filter_expression()
             _query = ~Q(**_expression) if _is_not else Q(**_expression)
         return _query
 

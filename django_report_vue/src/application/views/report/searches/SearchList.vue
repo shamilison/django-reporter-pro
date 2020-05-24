@@ -53,7 +53,7 @@
                 }
             },
             deleteField(field) {
-                delete this.reportSchema['searches'][field.key_name];
+                delete this.reportSchema['searches'][field.unique_id];
                 this.populateListItems(this.reportSchema['searches']);
             },
             populateListItems(fields) {
@@ -68,13 +68,16 @@
                 let searches = {};
                 for (let index = 0; index < fields.length; index++) {
                     let _field = fields[index];
-                    searches[_field.key_name] = _field;
+                    searches[_field.unique_id] = _field;
                 }
                 this.reportSchema['searches'] = searches;
             },
             onItemSelected(item) {
-                if (!this.reportSchema['searches'].hasOwnProperty(item.key_name)) {
-                    this.reportSchema['searches'][item.key_name] = item;
+                let clonedItem = this._.cloneDeep(item);
+                let uuid_key = this.$uuid.v4().replace(/-/g, "");
+                if (!this.reportSchema['searches'].hasOwnProperty(clonedItem.key_name)) {
+                    clonedItem['unique_id'] = uuid_key;
+                    this.reportSchema['searches'][uuid_key] = clonedItem;
                     this.populateListItems(this.reportSchema['searches']);
                 } else {
                     this.$notify({

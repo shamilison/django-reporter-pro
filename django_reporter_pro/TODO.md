@@ -1,23 +1,23 @@
-### Django Reporter Pro
+## Django Reporter Pro
 
-### Last Update
+#### Last Update
 
-* Table column ordering feature added
-* Added sorting both annotated and dimension in one list for report table output
+* Add report list view where user can create/edit/view reports
 
 ----
 
-### Immediate TODO:
+#### High Priority TODO:
 
-* Add annotated fields available for filtering
 * Add custom annotated field adding support
-* Add options to filter by own field
-* Add segment-offset and API call based pagination in Table
+* Add report data API call pagination for large data set
+* Add celery task to cache report data in NO SQL database system. No SQL Target: Mongo DB
 
 ----
 
-### Advanced TODO:
+#### Planned TODO:
 
 * Add proper UI information/errors to users in whole interface
+* Add settings for table data for grouping/comparing/transposing information
 * Add widget rendering configuration
+* Add dashboard building settings
 * Add dashboard styling configurations support to client side

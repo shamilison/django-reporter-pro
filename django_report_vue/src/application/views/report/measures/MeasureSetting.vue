@@ -1,49 +1,54 @@
 <template>
-	<form class="pa-5 pt-5 pb-5 white">
-		<v-text-field label="Field Label" v-model="label"></v-text-field>
-		<v-select :items="sortOptions" dense label="Sort by" outlined v-model="sort" clearable></v-select>
-		<v-switch :disabled="dateDisabled" class="ma-2" label="Apply as date" v-model="applyAsDate"></v-switch>
-		<v-select :items="aggregateOptions" dense label="Aggregation" outlined v-model="aggregation"></v-select>
-		<v-content class="mb-4 text-center"
-				   v-if="aggregation !== null && aggregation.startsWith('jsonb')">
-			<v-row class="mx-0">
-				<v-col class="pa-0 ma-0" cols="6">
-					<v-text-field class="mr-1" cols="6" label="Jsonb Field Path"
-								  v-model="jsonbPath"></v-text-field>
-				</v-col>
-				<v-col class="pa-0 ma-0" cols="6">
-					<v-text-field class="ml-1" cols="6" label="Aggregating Jsonb Field"
-								  v-model="jsonbAggregateField"></v-text-field>
-				</v-col>
-			</v-row>
-			<v-content :key="jsonbColumnsKey" v-if="aggregation ==='jsonb_join'">
-				<v-row class="mx-0" v-for="(item, index) in jsonbColumns">
-					<v-col class="pa-0 ma-0" cols="6">
-						<v-text-field @click:clear="clearInput(index)" class="mr-1" clearable
-									  label="Column Field" v-model="item.field"></v-text-field>
-					</v-col>
-					<v-col class="pa-0 ma-0" cols="6">
-						<v-select :items="jsonbColumnTypes" class="ml-1" cols="6" dense label="Column Type"
-								  outlined v-model="item.type"></v-select>
-					</v-col>
-				</v-row>
-				<v-btn @click="addInput" icon outlined small>
-					<v-icon small>mdi-plus</v-icon>
-				</v-btn>
-			</v-content>
-		</v-content>
-		<v-btn @click="submit" class="mr-4 primary">ok</v-btn>
-		<v-btn @click="cancel">cancel</v-btn>
-	</form>
+    <form class="pa-5 pt-5 pb-5 white">
+        <v-text-field label="Field Label" v-model="label"></v-text-field>
+        <v-select :items="sortOptions" clearable dense label="Sort by" outlined v-model="sort"></v-select>
+        <v-switch :disabled="dateDisabled" class="ma-2" label="Apply as date" v-model="applyAsDate"></v-switch>
+        <v-select :items="aggregateOptions" dense label="Aggregation" outlined v-model="aggregation"></v-select>
+        <v-content class="mb-4 text-center"
+                   v-if="aggregation !== null && aggregation.startsWith('jsonb')">
+            <v-row class="mx-0">
+                <v-col class="pa-0 ma-0" cols="6">
+                    <v-text-field class="mr-1" label="Jsonb Field Path"
+                                  v-model="jsonbPath"></v-text-field>
+                </v-col>
+                <v-col class="pa-0 ma-0" cols="6">
+                    <v-text-field class="ml-1" label="Aggregating Jsonb Field"
+                                  v-model="jsonbAggregateField"></v-text-field>
+                </v-col>
+            </v-row>
+            <v-content :key="jsonbColumnsKey" v-if="aggregation ==='jsonb_join'">
+                <v-row class="mx-0" v-for="(item, index) in jsonbColumns">
+                    <v-col class="pa-0 ma-0" cols="6">
+                        <v-text-field @click:clear="clearInput(index)" class="mr-1" clearable
+                                      label="Column Field" v-model="item.field"></v-text-field>
+                    </v-col>
+                    <v-col class="pa-0 ma-0" cols="6">
+                        <v-select :items="jsonbColumnTypes" class="ml-1" cols="6" dense label="Column Type"
+                                  outlined v-model="item.type"></v-select>
+                    </v-col>
+                </v-row>
+                <v-btn @click="addInput" icon outlined small>
+                    <v-icon small>mdi-plus</v-icon>
+                </v-btn>
+            </v-content>
+        </v-content>
+        <v-switch :disabled="dateDisabled" class="ma-2" label="Apply filter" v-model="applyFilter"></v-switch>
+        <template v-if="applyFilter === true">
+            <FilterSetting :defaultMeasure="true" :field="field" :filterOnly="true"></FilterSetting>
+        </template>
+        <v-btn @click="submit" class="mr-4 primary">ok</v-btn>
+        <v-btn @click="cancel">cancel</v-btn>
+    </form>
 </template>
 
 <script>
     import ModelInfoMixin from "@/application/views/report/mixin/ModelInfoMixin";
-	import ReportHeaderOrderMixin from "@/application/views/report/mixin/ReportHeaderOrderMixin";
+    import ReportHeaderOrderMixin from "@/application/views/report/mixin/ReportHeaderOrderMixin";
+    import FilterSetting from "@/application/views/report/filters/FilterSetting";
 
     export default {
         name: 'MeasureSetting',
-        components: {},
+        components: {FilterSetting},
         props: {
             schema: {
                 type: Object,
@@ -102,20 +107,21 @@
                     {value: 'int', text: 'Int'},
                 ],
                 jsonbColumnsKey: this.$uuid.v4(),
+                applyFilter: false,
             }
         },
         computed: {},
         watch: {
             label: function (newVal, oldVal) {
                 this.field['_measure_config']['label'] = newVal;
-                this.updateMeasureInOrderList(this.schema, this.field['_measure_config'], this.field.key_name);
+                this.updateMeasureInOrderList(this.schema, this.field['_measure_config'], this.field.unique_id);
             },
             sort: function (newVal, oldVal) {
                 this.field['_measure_config']['sort'] = newVal;
             },
             aggregation: function (newVal, oldVal) {
                 this.field['_measure_config']['aggregation'] = newVal;
-                this.updateMeasureInOrderList(this.schema, this.field['_measure_config'], this.field.key_name);
+                this.updateMeasureInOrderList(this.schema, this.field['_measure_config'], this.field.unique_id);
             },
             jsonbPath: function (newVal, oldVal) {
                 this.field['_measure_config']['jsonb_config']['jsonb_path'] = newVal;
@@ -133,6 +139,9 @@
                     this.aggregateOptions = this.generalAnnotations;
                 }
                 this.field['_measure_config']['apply_as_date'] = newVal;
+            },
+            applyFilter: function (newVal, oldValue) {
+                this.field['_measure_config']['apply_filter'] = newVal;
             },
         },
         created() {
@@ -165,11 +174,13 @@
                         aggregate_field: null,
                         jsonb_columns: [],
                     },
+                    apply_filter: false,
                 };
             } else {
                 this.label = this.field['_measure_config']['label'];
                 this.sort = this.field['_measure_config']['sort'];
-                this.aggregation = this.field['_measure_config']['aggregation'];
+                if (this.field['_measure_config']['aggregation'] !== undefined)
+                    this.aggregation = this.field['_measure_config']['aggregation'];
                 this.applyAsDate = this.field['_measure_config']['apply_as_date'];
                 if (this.field['_measure_config']['jsonb_config'] === undefined ||
                     this.field['_measure_config']['jsonb_config'] === null) {
@@ -183,6 +194,7 @@
                     this.jsonbAggregateField = this.field['_measure_config']['jsonb_config']['aggregate_field'];
                     this.jsonbColumns = this.field['_measure_config']['jsonb_config']['jsonb_columns'];
                 }
+                this.applyFilter = this.field['_measure_config']['apply_filter'];
             }
             if (this.isJsonType(this.field)) {
                 this.applyAsDate = false;

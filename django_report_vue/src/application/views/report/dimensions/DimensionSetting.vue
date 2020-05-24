@@ -44,11 +44,11 @@
         computed: {},
         watch: {
             label: function (newVal, oldVal) {
-                this.field['_display_config']['label'] = newVal;
-                this.updateDimensionInOrderList(this.schema, this.field['_display_config'], this.field.key_name);
+                this.field['_dimension_config']['label'] = newVal;
+                this.updateDimensionInOrderList(this.schema, this.field['_dimension_config'], this.field.unique_id);
             },
             sort: function (newVal, oldVal) {
-                this.field['_display_config']['sort'] = newVal;
+                this.field['_dimension_config']['sort'] = newVal;
             },
         },
         created() {
@@ -62,13 +62,13 @@
             },
         },
         mounted() {
-            if (this.field['_display_config'] === undefined || this.field['_display_config'] === null) {
-                this.field['_display_config'] = {};
-                this.field['_display_config']['label'] = "";
-                this.field['_display_config']['sort'] = null;
+            if (this.field['_dimension_config'] === undefined || this.field['_dimension_config'] === null) {
+                this.field['_dimension_config'] = {};
+                this.field['_dimension_config']['label'] = "";
+                this.field['_dimension_config']['sort'] = null;
             } else {
-                this.label = this.field['_display_config']['label'];
-                this.sort = this.field['_display_config']['sort'];
+                this.label = this.field['_dimension_config']['label'];
+                this.sort = this.field['_dimension_config']['sort'];
             }
         }
     };

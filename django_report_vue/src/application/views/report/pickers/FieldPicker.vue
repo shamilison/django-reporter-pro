@@ -1,8 +1,10 @@
 <template>
 	<v-toolbar color="white" dense flat>
-		<v-toolbar-title v-if="purpose != null">{{purpose}} Fields</v-toolbar-title>
-		<v-divider class="mx-4" inset v-if="purpose != null" vertical></v-divider>
-		<v-spacer></v-spacer>
+		<template v-if="purpose != null && !onlyAction">
+			<v-toolbar-title>{{purpose}} Fields</v-toolbar-title>
+			<v-divider class="mx-4" inset vertical></v-divider>
+			<v-spacer></v-spacer>
+		</template>
 		<v-dialog max-width="500px" v-if="onItemSelected!= null" v-model="dialog">
 			<template v-slot:activator="{ on }">
 				<v-btn class="mb-1" color="primary" dark small v-on="on">Add {{purpose}} Field</v-btn>
@@ -27,19 +29,19 @@
 					<v-subheader class="pa-2">Dimension Fields</v-subheader>
 					<v-chip @click="displaySelected(item)" class="ml-4 mb-3" small
 							v-for="(item, i) in currentFields['dimensions']">
-						{{item.name}}
+						{{item.name | title_case}}
 					</v-chip>
 					<v-subheader class="pa-2">Measure Fields</v-subheader>
 					<v-chip @click="measureSelected(item)" class="ml-4 mb-3" small
 							v-for="(item, i) in currentFields['measures']">
-						{{item.name}}
+						{{item.name | title_case}}
 					</v-chip>
 					<v-subheader class="pa-2">Relational Fields</v-subheader>
 					<v-chip @click="relationSelected(item, false)"
 							@click:close="relationSelected(item, true)" class="ml-4 mb-3"
 							close close-icon="subdirectory_arrow_right" small
 							v-for="(item, i) in currentFields['relations']">
-						{{item.name}}
+						{{item.name | title_case}}
 					</v-chip>
 				</div>
 			</v-card>
@@ -76,6 +78,18 @@
                 type: Function,
                 default: null,
             },
+            target: {
+                type: String | Number,
+                default: null,
+            },
+            onlyAction: {
+                type: Boolean,
+                default: false,
+            },
+            depth: {
+                type: Number,
+                default: 4,
+            },
         },
         components: {},
         mixins: [ModelInfoMixin],
@@ -95,19 +109,19 @@
             fields(newVal) {
                 this.currentFields = newVal;
             },
-			model(newVal) {
-				this.currentFields = this.fields;
-				if (newVal !== null) {
-					this.breadCrumbs.push({
-						key: this.$uuid.v4(),
-						label: newVal.label,
-						text: newVal.object_name,
-						model: newVal,
-						selectedField: null,
-						fields: null,
-						disabled: true,
-					});
-				}
+            model(newVal) {
+                this.currentFields = this.fields;
+                if (newVal !== null) {
+                    this.breadCrumbs.push({
+                        key: this.$uuid.v4(),
+                        label: newVal.label,
+                        text: newVal.object_name,
+                        model: newVal,
+                        selectedField: null,
+                        fields: null,
+                        disabled: true,
+                    });
+                }
             },
         }, created() {
             this.initialize()
@@ -122,7 +136,7 @@
                 let relations = [], _k_name = '', _q_name = '';
                 for (let index = 0; index < this.breadCrumbs.length; index++) {
                     let _item = this.breadCrumbs[index];
-                    if(_item.selectedField === null)
+                    if (_item.selectedField === null)
                         continue;
                     relations.push({
                         table: _item.model,
@@ -139,25 +153,25 @@
             displaySelected: function (item) {
                 this.close();
                 item = this.getNestedRelations(item);
-                this.onItemSelected(item);
+                this.onItemSelected(item, this.target);
             },
             measureSelected: function (item) {
                 this.close();
                 item = this.getNestedRelations(item);
-                this.onItemSelected(item);
+                this.onItemSelected(item, this.target);
             },
             relationSelected: function (item, explore) {
                 if (!explore) {
                     this.close();
                     item = this.getNestedRelations(item);
-                    this.onItemSelected(item);
+                    this.onItemSelected(item, this.target);
                 } else {
                     let model = item.related_model._meta;
-                    if (this.breadCrumbs.length >= 4) {
+                    if (this.breadCrumbs.length >= this.depth) {
                         this.$notify({
                             type: 'warn',
                             title: 'STOP PLEASE!',
-                            text: 'You can not dig deeper than 4 nested levels.',
+                            text: 'You can not dig deeper than ' + this.depth + ' nested levels.',
                             duration: 3000,
                             speed: 1000,
                             data: {}
@@ -199,28 +213,28 @@
                 let _breadCrumbs = [], _currentFields = null;
                 for (let index = 0; index < this.breadCrumbs.length; index++) {
                     let _item = this.breadCrumbs[index];
-                    if(_item.key !== _breadCrumb.key) {
+                    if (_item.key !== _breadCrumb.key) {
                         _breadCrumbs.push(_item);
-					} else {
+                    } else {
                         _currentFields = _item.fields;
                         _item.selectedField = null;
                         _item.fields = null;
                         _item.disabled = true;
                         _breadCrumbs.push(_item);
                         break;
-					}
+                    }
                 }
-                if(_currentFields !== null) {
+                if (_currentFields !== null) {
                     this.currentFields = _currentFields;
                     this.breadCrumbs = _breadCrumbs;
-				}
+                }
             },
         },
         mounted() {
             this.currentFields = this.fields;
             if (this.model !== null) {
                 this.breadCrumbs.push({
-					key: this.$uuid.v4(),
+                    key: this.$uuid.v4(),
                     label: this.model.label,
                     text: this.model.object_name,
                     model: this.model,

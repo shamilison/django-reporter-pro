@@ -1,23 +1,22 @@
 <template>
-    <v-list :key="uniqueKey" dense>
-        <FieldPicker :fields="reportSchema['fields']" :model="reportSchema['table']"
-                     :onItemSelected="onItemSelected" :purpose="'Dimension'">
-        </FieldPicker>
-        <Draggable @end="dragAction(false)" @start="dragAction(true)" group="dimension" v-model="fields">
-            <v-list-item :key="item.key_name" @click="" v-for="item in fields">
-                <v-list-item-content class="pt-0 pb-0">
-                    <v-divider></v-divider>
-                    <DimensionField :deleteField="deleteField" :field="item" :schema="reportSchema"></DimensionField>
-                </v-list-item-content>
-            </v-list-item>
-        </Draggable>
-    </v-list>
+	<v-list :key="uniqueKey" dense>
+		<FieldPicker :fields="reportSchema['fields']" :model="reportSchema['table']"
+					 :onItemSelected="onItemSelected" :purpose="'Dimension'">
+		</FieldPicker>
+		<v-list-item :key="item.unique_id" @click="" v-for="item in fields">
+			<v-list-item-content class="pt-0 pb-0">
+				<v-divider></v-divider>
+				<DimensionField :deleteField="deleteField" :field="item" :schema="reportSchema"></DimensionField>
+			</v-list-item-content>
+		</v-list-item>
+	</v-list>
 </template>
 
 <script>
     import FieldPicker from "@/application/views/report/pickers/FieldPicker";
     import DimensionField from "@/application/views/report/dimensions/DimensionField";
     import Draggable from 'vuedraggable'
+    import ReportHeaderOrderMixin from "@/application/views/report/mixin/ReportHeaderOrderMixin";
 
     export default {
         name: 'DimensionList',
@@ -30,7 +29,7 @@
                 }
             },
         },
-        mixins: [],
+        mixins: [ReportHeaderOrderMixin],
         data() {
             return {
                 fields: [],
@@ -46,15 +45,10 @@
         }, created() {
         },
         methods: {
-            dragAction(drag) {
-                if (!drag) {
-                    this.populateDimensions(this.fields);
-                    this.uniqueKey = this.$uuid.v4();
-                }
-            },
             deleteField(field) {
-                delete this.reportSchema['dimensions'][field.key_name];
+                delete this.reportSchema['dimensions'][field.unique_id];
                 this.populateListItems(this.reportSchema['dimensions']);
+                this.uniqueKey = this.$uuid.v4();
             },
             populateListItems(fields) {
                 let keys = Object.keys(fields);
@@ -64,20 +58,15 @@
                 }
                 this.fields = _fields;
             },
-            populateDimensions(fields) {
-                let dimensions = {};
-                for (let index = 0; index < fields.length; index++) {
-                    let _field = fields[index];
-                    dimensions[_field.key_name] = _field;
-                }
-                this.reportSchema['dimensions'] = dimensions;
-            },
             onItemSelected(item) {
-                if (!this.reportSchema['dimensions'].hasOwnProperty(item.key_name)) {
-                    item['_dimension_config'] = {};
-                    this.reportSchema['dimensions'][item.key_name] = item;
+                let clonedItem = this._.cloneDeep(item);
+                let uuid_key = this.$uuid.v4().replace(/-/g, "");
+                if (!this.reportSchema['dimensions'].hasOwnProperty(uuid_key)) {
+                    clonedItem['_dimension_config'] = {};
+                    clonedItem['unique_id'] = uuid_key;
+                    this.reportSchema['dimensions'][uuid_key] = clonedItem;
                     this.populateListItems(this.reportSchema['dimensions']);
-                    this.addToOrderList(this.reportSchema, item, item.key_name, 'dimension');
+                    this.addToOrderList(this.reportSchema, clonedItem, clonedItem.key_name, 'dimension');
                 } else {
                     this.$notify({
                         type: 'warn',

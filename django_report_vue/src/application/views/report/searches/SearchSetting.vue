@@ -98,8 +98,10 @@
             },
             loadMacros: function () {
                 axios.get(
-                    '/macro-report-list/', {
-                        headers: {}, params: {},
+                    '/report-configuration/list/', {
+                        headers: {}, params: {
+                            type: 'macro',
+						},
                     }
                 ).then(response => {
                     let data = response.data;

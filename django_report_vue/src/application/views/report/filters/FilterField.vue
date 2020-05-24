@@ -7,6 +7,9 @@
 			<span v-else>{{field.key_name}}</span>
 		</v-col>
 		<v-col class="pa-3 pt-1 pb-2" cols="4">
+			<span v-if="field._filter_config !== undefined && field._filter_config.jsonb_path !== null">
+				<span>{{field.key_name}}.{{field._filter_config.jsonb_path}} =></span>
+			</span>
 			<span v-if="field._filter_config !== undefined && field._filter_config.filter !== ''">
 				{{field._filter_config.filter}}
 			</span>
@@ -26,7 +29,7 @@
 						Settings
 					</v-btn>
 				</template>
-				<FilterSetting :closeMenu="closeMenu" :field="field"></FilterSetting>
+				<FilterSetting :closeMenu="closeMenu" :field="field" :reportSchema="reportSchema"></FilterSetting>
 			</v-menu>
 			<v-icon @click="deleteField(field)" class="mr-2 ml-2 mt-1 float-right" small>
 				mdi-delete
@@ -42,6 +45,12 @@
         name: 'FilterField',
         components: {FilterSetting},
         props: {
+            reportSchema: {
+                type: Object,
+                default: function () {
+                    return {};
+                }
+            },
             field: {
                 type: Object,
                 default: function () {
