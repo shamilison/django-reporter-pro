@@ -1,28 +1,19 @@
-### Django Reporter Pro
+## Django Reporter Pro
 
-### Last Update
-
-* Added lodash library
-* JSON Field filter support
-* Add options to filter by own field
-* Replace field key names with random: Access Key
-
-----
-
-### Immediate TODO:
+#### Last Update
 
 * Add report list view where user can create/edit/view reports
 
 ----
 
-### Semi-Immediate TODO:
+#### High Priority TODO:
 
 * Add custom annotated field adding support
 * Add segment-offset and API call based pagination in Table
 
 ----
 
-### Advanced TODO:
+#### Planned TODO:
 
 * Add widget rendering configuration
 * Add proper UI information/errors to users in whole interface

@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.urls import path
 from django.views.generic import TemplateView
+from django_reporter_pro.views.all_report_list_view import AllReportListGETView
 from django_reporter_pro.views.macro_report_list_view import MacroReportListGETView
 
 from django_reporter_pro.views.report_configuration_get_view import ReportConfigurationGETView
@@ -30,5 +31,6 @@ urlpatterns = [
         name='report_configuration_targeted_preview'),
 
     # Macro Report APIs
+    url(r'all-report-list/', AllReportListGETView.as_view(), name='all_report_list'),
     url(r'macro-report-list/', MacroReportListGETView.as_view(), name='macro_report_list'),
 ]
