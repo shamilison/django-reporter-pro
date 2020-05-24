@@ -1,6 +1,6 @@
-# Django Reporter Pro
+# Django Reporter Pro (No Stable Release YET! We are working on it.)
 
-### Setup in your django project:
+### How to use in your Django Project
 
 * Clone into `django_reporter` folder of you `project's root` directory
 	```bash
