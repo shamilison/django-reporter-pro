@@ -129,3 +129,7 @@
 ##### With any of your feedback, complain or suggestion:
  * Open issue in Github
  * Contact here: shamilsakib@gmail.com
+ 
+ ---
+ 
+ [Apache License Version 2.0](LICENSE)
