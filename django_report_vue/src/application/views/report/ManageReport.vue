@@ -7,17 +7,22 @@
 						<v-divider v-if="index > 0"></v-divider>
 						<v-list-item class="py-2">
 							<v-list-item-content>
-								<v-list-item-title v-text="item.text"></v-list-item-title>
+								<v-list-item-title v-text="item.title"></v-list-item-title>
 								<v-list-item-subtitle v-text="item.identifier"></v-list-item-subtitle>
 							</v-list-item-content>
-							<v-list-item-action>
-								<v-btn icon>
-									<v-icon color="primary lighten-1">mdi-pencil</v-icon>
+							<v-list-item-action class="mx-2">
+								<v-btn icon x-small>
+									<v-icon @click="viewReport(item)" color="grey lighten-1">mdi-eye</v-icon>
 								</v-btn>
 							</v-list-item-action>
-							<v-list-item-action>
-								<v-btn icon>
-									<v-icon color="primary lighten-1">mdi-delete</v-icon>
+							<v-list-item-action class="mx-2">
+								<v-btn icon x-small>
+									<v-icon @click="editReport(item)" color="primary lighten-1">mdi-pencil</v-icon>
+								</v-btn>
+							</v-list-item-action>
+							<v-list-item-action class="mx-2">
+								<v-btn icon x-small>
+									<v-icon @click="showDeleteConsent(item)" color="red lighten-1">mdi-delete</v-icon>
 								</v-btn>
 							</v-list-item-action>
 						</v-list-item>
@@ -25,11 +30,30 @@
 				</v-list>
 				<v-card-text style="position: sticky;bottom: 40px;left: 50%;width: 5px;">
 					<v-fab-transition>
-						<v-btn absolute bottom color="primary" dark fab right>
+						<v-btn @click="gotoNewReport" absolute bottom color="primary" dark fab right>
 							<v-icon>mdi-plus</v-icon>
 						</v-btn>
 					</v-fab-transition>
 				</v-card-text>
+				<v-dialog max-width="450" v-model="deleteDialog">
+					<v-card>
+						<v-card-title class="title">Are you due to delete this report?</v-card-title>
+						<v-card-text>
+							<template v-if="deleteCandidate !== null">
+								<div>{{deleteCandidate.title}}</div>
+							</template>
+						</v-card-text>
+						<v-card-actions>
+							<v-spacer></v-spacer>
+							<v-btn @click="hideDeleteDialog()" color="primary darken-1" text>
+								No
+							</v-btn>
+							<v-btn @click="disableReport()" color="red darken-1" text>
+								Yes, sure
+							</v-btn>
+						</v-card-actions>
+					</v-card>
+				</v-dialog>
 			</v-card>
 		</v-col>
 	</v-row>
@@ -49,6 +73,8 @@
                 reportListURL: '/all-report-list/',
                 reportPreviewURL: '/report-configuration-preview/',
                 reports: [],
+                deleteDialog: false,
+                deleteCandidate: null,
                 uniqueListKey: this.$uuid.v4(),
             };
         },
@@ -67,6 +93,43 @@
                     new ErrorWrapper(error)
                 }).finally(() => {
                 });
+            },
+            gotoNewReport: function () {
+                this.$router.push({
+                    name: 'CreateReport',
+                    params: {}
+                });
+            },
+            viewReport: function (report) {
+                this.$router.push({
+                    name: 'ViewReport',
+                    params: {
+                        contentID: report.key
+                    }
+                });
+            },
+            editReport: function (report) {
+                this.$router.push({
+                    name: 'UpdateReport',
+                    params: {
+                        contentID: report.key
+                    }
+                });
+            },
+            showDeleteConsent: function (item) {
+                this.deleteDialog = true;
+                this.deleteCandidate = item;
+            },
+            hideDeleteDialog: function (item) {
+                this.deleteDialog = false;
+                this.deleteCandidate = null;
+            },
+            disableReport: function () {
+                this.deleteDialog = false;
+                if (this.deleteCandidate !== null) {
+                    // Implement delete option
+                }
+                this.deleteCandidate = null;
             },
         },
         watch: {

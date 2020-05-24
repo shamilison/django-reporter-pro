@@ -17,9 +17,9 @@ class AllReportListGETView(APIView):
         _reports = ReportConfiguration.objects.all()
         return JsonResponse(data={
             "results": [{
-                'text': _report.information.get('title') if _report.information else None,
+                'key': _report.pk,
+                'title': _report.information.get('title') if _report.information else None,
                 'identifier': _report.information.get('identifier') if _report.information else None,
-                'value': _report.pk
             } for _report in _reports]
         })
 
