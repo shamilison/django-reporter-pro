@@ -1,4 +1,4 @@
-# Django Reporter Pro (No Stable Release YET! We are working on it.)
+# Django Reporter Pro (No Stable Release YET!)
 
 ### How to use in your Django Project
 
