@@ -7,7 +7,6 @@ asgiref==3.2.7
 autopep8==1.4.4
 Babel==2.6.0
 backcall==0.1.0
-beyonic==0.1.14
 billiard==3.6.1.0
 bleach==3.1.4
 celery==4.4.0

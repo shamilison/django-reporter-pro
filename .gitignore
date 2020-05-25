@@ -232,5 +232,4 @@ secret_config.py
 *.prof
 
 pybeyonic/
-report_builder_git/
 django-reporter-pro.wiki/
